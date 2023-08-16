@@ -12,7 +12,10 @@ class HomeBloc extends ChangeNotifier {
   List<Course> courses = [];
   BannerSlider? bottomBanner;
 
-  bool packagesLoading = false;
+  bool bannerSliderLoading = true;
+  bool packagesLoading = true;
+  bool coursesLoading = true;
+  bool bottomBannerLoading = true;
 
   Future<void> loadDate() async {
     await Future.wait([
@@ -20,13 +23,13 @@ class HomeBloc extends ChangeNotifier {
       loadPackages(),
       loadCourses(),
       loadBottomBanner(),
-      loadPopularStations(),
     ]);
   }
 
   Future<void> loadBannerSlider() async {
     try {
       sliders = await HomeRemoteProvider.getBannerSlider() ?? [];
+      bannerSliderLoading = false;
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
@@ -36,6 +39,7 @@ class HomeBloc extends ChangeNotifier {
   Future<void> loadPackages() async {
     try {
       packages = await HomeRemoteProvider.getPackages() ?? [];
+      packagesLoading = false;
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
@@ -45,6 +49,7 @@ class HomeBloc extends ChangeNotifier {
   Future<void> loadCourses() async {
     try {
       courses = await HomeRemoteProvider.getCourses() ?? [];
+      coursesLoading = false;
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
@@ -54,15 +59,7 @@ class HomeBloc extends ChangeNotifier {
   Future<void> loadBottomBanner() async {
     try {
       bottomBanner = await HomeRemoteProvider.getBanner();
-      notifyListeners();
-    } catch (e, s) {
-      LoggerHelper.errorLog(e, s);
-    }
-  }
-
-  Future<void> loadPopularStations() async {
-    try {
-      await HomeRemoteProvider.getPopularStations();
+      bottomBannerLoading = false;
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);

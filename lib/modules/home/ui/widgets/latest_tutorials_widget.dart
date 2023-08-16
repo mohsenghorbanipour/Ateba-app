@@ -2,6 +2,7 @@ import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/modules/home/bloc/home_bloc.dart';
 import 'package:ateba_app/modules/home/data/models/course.dart';
 import 'package:ateba_app/modules/home/ui/widgets/course_card.dart';
+import 'package:ateba_app/modules/home/ui/widgets/latest_toturial_shimmer_card.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,23 +27,38 @@ class LatestTutorialsWidget extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
-            Expanded(
-              child: Selector<HomeBloc, List<Course>>(
-                selector: (context, bloc) => bloc.courses,
-                builder: (context, courses, child) => ListView.separated(
+            if (context.select<HomeBloc, bool>((bloc) => bloc.coursesLoading))
+              Expanded(
+                child: ListView.separated(
                   physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   scrollDirection: Axis.horizontal,
-                  itemCount: courses.length,
+                  itemCount: 5,
                   separatorBuilder: (_, __) => const SizedBox(
                     width: 12,
                   ),
-                  itemBuilder: (context, index) => CourseCard(
-                    course: courses[index],
+                  itemBuilder: (context, index) =>
+                      const LatestTutorialShimmerCard(),
+                ),
+              )
+            else
+              Expanded(
+                child: Selector<HomeBloc, List<Course>>(
+                  selector: (context, bloc) => bloc.courses,
+                  builder: (context, courses, child) => ListView.separated(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: courses.length,
+                    separatorBuilder: (_, __) => const SizedBox(
+                      width: 12,
+                    ),
+                    itemBuilder: (context, index) => CourseCard(
+                      course: courses[index],
+                    ),
                   ),
                 ),
               ),
-            ),
           ],
         ),
       );

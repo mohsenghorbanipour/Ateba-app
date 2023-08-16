@@ -76,21 +76,4 @@ class HomeRemoteProvider {
       return null;
     }
   }
-
-  static Future<List<Package>?> getPopularStations() async {
-    try {
-      Response response =
-          await _networkHelper.dio.get(RemoteRoutes.getPopularStations);
-      if (response.data != null) {
-        final result = json.decode(response.data);
-        return (result as List<dynamic>)
-            .map<Package>((i) => Package.fromJson(i as Map<String, dynamic>))
-            .toList();
-      }
-      return [];
-    } catch (e, s) {
-      LoggerHelper.errorLog(e, s);
-      return [];
-    }
-  }
 }
