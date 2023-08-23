@@ -55,11 +55,10 @@ class AtebaApp extends StatelessWidget {
                     localizationsDelegates: context.localizationDelegates,
                     supportedLocales: context.supportedLocales,
                     locale: context.locale,
-                    // builder: (context, child) {
-                    //   // child = myBuilder(context, child);
-                    //   // child = botToastBuilder(context, child);
-                    //   // return child;
-                    // },
+                    builder: (context, child) {
+                      child = myBuilder(context, child);
+                      return child!;
+                    },
                     initialRoute: Routes.main,
                     onGenerateRoute: AtebaRouter.router.generator,
                     debugShowCheckedModeBanner: false,
@@ -74,4 +73,20 @@ class AtebaApp extends StatelessWidget {
           ),
         ),
       );
+
+  Widget? myBuilder(BuildContext context, Widget? child) {
+    return Builder(
+      builder: (context) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+        child: Builder(
+          builder: (context) => Material(
+            child: SafeArea(
+              bottom: false,
+              child: child ?? Container(),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

@@ -16,14 +16,9 @@ class ShimmerContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var brightness = MediaQuery.of(context).platformBrightness;
     return Shimmer.fromColors(
-      baseColor: (brightness == Brightness.light)
-          ? const Color(0x08000000)
-          : const Color(0x08FFFFFF),
-      highlightColor: (brightness == Brightness.light)
-          ? const Color(0x12000000)
-          : const Color(0x12FFFFFF),
+      baseColor: const Color(0x08000000),
+      highlightColor: const Color(0x12000000),
       direction: ShimmerDirection.rtl,
       child: Container(
         margin: margin,
