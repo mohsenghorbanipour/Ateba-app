@@ -19,4 +19,13 @@ class Assets {
   static const String calendarIc = '${_iconsBasePath}calendar_ic.svg';
   static const String clockIc = '${_iconsBasePath}clock_ic.svg';
   static const String checkIc = '${_iconsBasePath}check_ic.svg';
+  static const String shareIc = '${_iconsBasePath}share_ic.svg';
+  static const String playIc = '${_iconsBasePath}play_ic.svg';
+  static const String loginPattern = '${_imagesBasePath}login_pattern.svg';
+  static const String atebaLogoLogin = '${_imagesBasePath}ateba_login_logo.svg';
+  static const String musicIc = '${_iconsBasePath}music_ic.svg';
+  static const String galleryAddIc = '${_iconsBasePath}gallery_add_ic.svg';
+
+  static const String testIc = '${_iconsBasePath}test_ic.png';
+  static const String test2Ic = '${_iconsBasePath}test_2_ic.svg';
 }

@@ -1,7 +1,8 @@
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/modules/home/bloc/home_bloc.dart';
 import 'package:ateba_app/modules/home/data/models/course.dart';
-import 'package:ateba_app/modules/home/ui/widgets/course_card.dart';
+import 'package:ateba_app/modules/home/data/models/tutorial.dart';
+import 'package:ateba_app/modules/home/ui/widgets/tutorial_card.dart';
 import 'package:ateba_app/modules/home/ui/widgets/latest_toturial_shimmer_card.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class LatestTutorialsWidget extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
-            if (context.select<HomeBloc, bool>((bloc) => bloc.coursesLoading))
+            if (context.select<HomeBloc, bool>((bloc) => bloc.toturialsLoading))
               Expanded(
                 child: ListView.separated(
                   physics: const BouncingScrollPhysics(),
@@ -43,18 +44,18 @@ class LatestTutorialsWidget extends StatelessWidget {
               )
             else
               Expanded(
-                child: Selector<HomeBloc, List<Course>>(
-                  selector: (context, bloc) => bloc.courses,
-                  builder: (context, courses, child) => ListView.separated(
+                child: Selector<HomeBloc, List<Tutorial>>(
+                  selector: (context, bloc) => bloc.tutorials,
+                  builder: (context, tutorials, child) => ListView.separated(
                     physics: const BouncingScrollPhysics(),
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     scrollDirection: Axis.horizontal,
-                    itemCount: courses.length,
+                    itemCount: tutorials.length,
                     separatorBuilder: (_, __) => const SizedBox(
                       width: 12,
                     ),
-                    itemBuilder: (context, index) => CourseCard(
-                      course: courses[index],
+                    itemBuilder: (context, index) => TutorialCard(
+                      tutorial: tutorials[index],
                     ),
                   ),
                 ),

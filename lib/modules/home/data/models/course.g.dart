@@ -7,12 +7,15 @@ part of 'course.dart';
 // **************************************************************************
 
 Course _$CourseFromJson(Map<String, dynamic> json) => Course(
-      attach: json['attach'] as String?,
-      cover: json['cover'] as String?,
-      date: json['date'] as String?,
       id: json['id'] as int?,
-      teacher: json['teacher'] as String?,
       title: json['title'] as String?,
+      subtitle: json['subtitle'] as String?,
+      teacher: json['teacher'] == null
+          ? null
+          : Teacher.fromJson(json['teacher'] as Map<String, dynamic>),
+      thumbnail_url: json['thumbnail_url'] as String?,
+      duration: json['duration'] as String?,
+      created_at: json['created_at'] as String?,
     );
 
 Map<String, dynamic> _$CourseToJson(Course instance) {
@@ -26,9 +29,10 @@ Map<String, dynamic> _$CourseToJson(Course instance) {
 
   writeNotNull('id', instance.id);
   writeNotNull('title', instance.title);
-  writeNotNull('teacher', instance.teacher);
-  writeNotNull('cover', instance.cover);
-  writeNotNull('attach', instance.attach);
-  writeNotNull('date', instance.date);
+  writeNotNull('subtitle', instance.subtitle);
+  writeNotNull('teacher', instance.teacher?.toJson());
+  writeNotNull('thumbnail_url', instance.thumbnail_url);
+  writeNotNull('duration', instance.duration);
+  writeNotNull('created_at', instance.created_at);
   return val;
 }

@@ -11,7 +11,5 @@ Future<void> main() async {
   
   await Hive.initFlutter();
 
-  AtebaRouter.setupRouter();
-
   runApp(const AtebaApp());
 }

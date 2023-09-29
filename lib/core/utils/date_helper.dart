@@ -20,14 +20,15 @@ class DateHelper {
   }
 
   static String getDistanceWithToday(String date) {
-    int day = int.parse(date.substring(0, date.indexOf('/')));
+    int year = int.parse(date.substring(0, date.indexOf('-')));
     int month = int.parse(
-        date.substring((date.indexOf('/')) + 1, date.lastIndexOf('/')));
-    int year = int.parse(date.substring((date.lastIndexOf('/') + 1)));
+        date.substring((date.indexOf('-')) + 1, date.lastIndexOf('-')));
+    int day = int.parse(date.substring(
+        (date.lastIndexOf('-') + 1), (date.lastIndexOf('-') + 3)));
     Jalali jalali = Jalali.fromGregorian(
       Gregorian(year, month, day),
     );
-    int distance = jalali.distanceFrom(Jalali.now());
+    int distance = jalali.distanceFrom(Jalali.now()) * -1;
     return '$distance ${'day_ago'.tr()}';
   }
 }

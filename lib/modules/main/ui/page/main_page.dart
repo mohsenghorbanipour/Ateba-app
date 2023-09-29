@@ -10,6 +10,7 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        backgroundColor: ColorPalette.of(context).scaffoldBackground,
         appBar: AppBar(
           surfaceTintColor: ColorPalette.of(context).background,
           backgroundColor: ColorPalette.of(context).background,

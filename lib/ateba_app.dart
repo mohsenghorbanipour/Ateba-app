@@ -2,10 +2,12 @@ import 'package:ateba_app/core/constants/app_config.dart';
 import 'package:ateba_app/core/router/ateba_router.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/bloc/theme_bloc.dart';
+import 'package:ateba_app/modules/categories/bloc/categories_bloc.dart';
 import 'package:ateba_app/modules/home/bloc/home_bloc.dart';
 import 'package:ateba_app/modules/main/bloc/main_page_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:theme_provider/theme_provider.dart';
 import 'package:ateba_app/core/theme/style/ateba_theme.dart' as mytheme;
@@ -16,6 +18,10 @@ class AtebaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MultiProvider(
         providers: [
+          Provider<AtebaRouter>(
+            lazy: false,
+            create: (BuildContext createContext) => AtebaRouter(),
+          ),
           ChangeNotifierProvider(
             create: (context) => ThemeBloc(),
           ),
@@ -23,9 +29,13 @@ class AtebaApp extends StatelessWidget {
             create: (context) => MainPageBloc(),
           ),
           ChangeNotifierProvider(
+            create: (context) => CategoriesBloc(),
+            lazy: false,
+          ),
+          ChangeNotifierProvider(
             create: (context) => HomeBloc()..loadDate(),
             lazy: false,
-          )
+          ),
         ],
         child: EasyLocalization(
           supportedLocales: AppConfig.supportedLocales,
@@ -50,7 +60,9 @@ class AtebaApp extends StatelessWidget {
               ],
               child: ThemeConsumer(
                 child: Builder(builder: (context) {
-                  return MaterialApp(
+                  final GoRouter router =
+                      Provider.of<AtebaRouter>(context, listen: false).router;
+                  return MaterialApp.router(
                     title: AppConfig.appName,
                     localizationsDelegates: context.localizationDelegates,
                     supportedLocales: context.supportedLocales,
@@ -59,8 +71,9 @@ class AtebaApp extends StatelessWidget {
                       child = myBuilder(context, child);
                       return child!;
                     },
-                    initialRoute: Routes.main,
-                    onGenerateRoute: AtebaRouter.router.generator,
+                    routeInformationParser: router.routeInformationParser,
+                    routerDelegate: router.routerDelegate,
+                    routeInformationProvider: router.routeInformationProvider,
                     debugShowCheckedModeBanner: false,
                     theme: mytheme.AtebaTheme.light,
                     themeMode: ThemeMode.light,

@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 enum theme { system, light, dark }
 
-
 class AtebaTheme {
   static bool isDark(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark ? true : false;
@@ -47,24 +46,24 @@ class AtebaTheme {
     //     borderSide: BorderSide(color: ColorPalette.light.border, width: 1),
     //   ),
     // ),
-    // elevatedButtonTheme: ElevatedButtonThemeData(
-    //   style: ButtonStyle(
-    //     backgroundColor: MaterialStateProperty.all(ColorPalette.light.primary),
-    //     foregroundColor: MaterialStateProperty.all(Colors.white),
-    //     elevation: MaterialStateProperty.all(0),
-    //     shape: MaterialStateProperty.all(
-    //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-    //     ),
-    //     textStyle: MaterialStateProperty.all(
-    //       TextStyle(
-    //         fontSize: 16,
-    //         fontWeight: FontWeight.w700,
-    //         color: ColorPalette.light.white,
-    //         fontFamily: Assets.yekanBakhFont,
-    //       ),
-    //     ),
-    //   ),
-    // ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(ColorPalette.light.primary),
+        foregroundColor: MaterialStateProperty.all(Colors.white),
+        elevation: MaterialStateProperty.all(0),
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+        textStyle: MaterialStateProperty.all(
+          TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+            color: ColorPalette.light.white,
+            fontFamily: Assets.yekanBakhFont,
+          ),
+        ),
+      ),
+    ),
     textTheme: TextTheme(
       labelSmall: Typography.englishLike2021.labelSmall?.copyWith(
         height: 1.5,

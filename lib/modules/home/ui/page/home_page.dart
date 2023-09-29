@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const BannerSliderWidget(),
+            // const BannerSliderWidget(),
             Padding(
               padding: const EdgeInsets.only(top: 24, right: 16, bottom: 12),
               child: Text(
@@ -27,58 +27,58 @@ class HomePage extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
-            if (!context.select<HomeBloc, bool>((bloc) => bloc.packagesLoading))
-              SizedBox(
-                height: 180,
-                width: double.infinity,
-                child: Selector<HomeBloc, List<Package>>(
-                  selector: (context, bloc) => bloc.packages,
-                  builder: (context, packages, child) => ListView.separated(
-                    physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: packages.length,
-                    shrinkWrap: true,
-                    separatorBuilder: (_, __) => const SizedBox(
-                      width: 12,
-                    ),
-                    itemBuilder: (context, index) => PackageCard(
-                      package: packages[index],
-                    ),
-                  ),
-                ),
-              )
-            else
-              SizedBox(
-                height: 180,
-                width: double.infinity,
-                child: ListView.separated(
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 5,
-                  shrinkWrap: true,
-                  separatorBuilder: (_, __) => const SizedBox(
-                    width: 12,
-                  ),
-                  itemBuilder: (context, index) => const PackageShimmerCard(),
-                ),
-              ),
+            // if (!context.select<HomeBloc, bool>((bloc) => bloc.packagesLoading))
+            //   SizedBox(
+            //     height: 180,
+            //     width: double.infinity,
+            //     child: Selector<HomeBloc, List<Package>>(
+            //       selector: (context, bloc) => bloc.packages,
+            //       builder: (context, packages, child) => ListView.separated(
+            //         physics: const BouncingScrollPhysics(),
+            //         padding: const EdgeInsets.symmetric(horizontal: 16),
+            //         scrollDirection: Axis.horizontal,
+            //         itemCount: packages.length,
+            //         shrinkWrap: true,
+            //         separatorBuilder: (_, __) => const SizedBox(
+            //           width: 12,
+            //         ),
+            //         itemBuilder: (context, index) => PackageCard(
+            //           package: packages[index],
+            //         ),
+            //       ),
+            //     ),
+            //   )
+            // else
+            //   SizedBox(
+            //     height: 180,
+            //     width: double.infinity,
+            //     child: ListView.separated(
+            //       physics: const BouncingScrollPhysics(),
+            //       padding: const EdgeInsets.symmetric(horizontal: 16),
+            //       scrollDirection: Axis.horizontal,
+            //       itemCount: 5,
+            //       shrinkWrap: true,
+            //       separatorBuilder: (_, __) => const SizedBox(
+            //         width: 12,
+            //       ),
+            //       itemBuilder: (context, index) => const PackageShimmerCard(),
+            //     ),
+            //   ),
             const LatestTutorialsWidget(),
-            if (context
-                .select<HomeBloc, bool>((bloc) => bloc.bottomBannerLoading))
-              const ShimmerContainer(
-                radius: 0,
-                height: 160,
-                width: double.infinity,
-              )
-            else
-              CachedNetworkImage(
-                width: double.infinity,
-                imageUrl: context.select<HomeBloc, String>(
-                    (bloc) => bloc.bottomBanner?.cover ?? ''),
-                fit: BoxFit.cover,
-              ),
+            // if (context
+            //     .select<HomeBloc, bool>((bloc) => bloc.bottomBannerLoading))
+            //   const ShimmerContainer(
+            //     radius: 0,
+            //     height: 160,
+            //     width: double.infinity,
+            //   )
+            // else
+            //   CachedNetworkImage(
+            //     width: double.infinity,
+            //     imageUrl: context.select<HomeBloc, String>(
+            //         (bloc) => bloc.bottomBanner?.cover ?? ''),
+            //     fit: BoxFit.cover,
+            //   ),
           ],
         ),
       );

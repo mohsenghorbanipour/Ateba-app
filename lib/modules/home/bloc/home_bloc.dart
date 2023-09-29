@@ -1,45 +1,38 @@
+import 'package:ateba_app/core/network/pagination_response_model.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
-import 'package:ateba_app/modules/home/data/models/banner_slider.dart';
 import 'package:ateba_app/modules/home/data/models/course.dart';
-import 'package:ateba_app/modules/home/data/models/package.dart';
+import 'package:ateba_app/modules/home/data/models/tutorial.dart';
 import 'package:ateba_app/modules/home/data/remote/home_remote_provider.dart';
 import 'package:flutter/foundation.dart';
 
 class HomeBloc extends ChangeNotifier {
-  List<BannerSlider> sliders = [];
-  List<Package> packages = [];
-  List<Package> popularStations = [];
-  List<Course> courses = [];
-  BannerSlider? bottomBanner;
+  // ==== Variables ==== //
 
-  bool bannerSliderLoading = true;
-  bool packagesLoading = true;
   bool coursesLoading = true;
-  bool bottomBannerLoading = true;
+  int? coursesCurrentPage;
+  List<Course> courses = [];
+
+  bool toturialsLoading = false;
+  List<Tutorial> tutorials = [];
+
+  // ==== ==== //
 
   Future<void> loadDate() async {
     await Future.wait([
-      loadBannerSlider(),
-      loadPackages(),
+      loadToturials(),
       loadCourses(),
-      loadBottomBanner(),
     ]);
   }
 
-  Future<void> loadBannerSlider() async {
+  Future<void> loadToturials() async {
     try {
-      sliders = await HomeRemoteProvider.getBannerSlider() ?? [];
-      bannerSliderLoading = false;
-      notifyListeners();
-    } catch (e, s) {
-      LoggerHelper.errorLog(e, s);
-    }
-  }
-
-  Future<void> loadPackages() async {
-    try {
-      packages = await HomeRemoteProvider.getPackages() ?? [];
-      packagesLoading = false;
+      PaginationResponseModel<List<Tutorial>>? response =
+          await HomeRemoteProvider.getToturials();
+      if (response != null) {
+        tutorials = response.data ?? [];
+        coursesCurrentPage = response.meta?.current_page ?? 1;
+      }
+      toturialsLoading = false;
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
@@ -48,19 +41,7 @@ class HomeBloc extends ChangeNotifier {
 
   Future<void> loadCourses() async {
     try {
-      courses = await HomeRemoteProvider.getCourses() ?? [];
-      coursesLoading = false;
-      notifyListeners();
-    } catch (e, s) {
-      LoggerHelper.errorLog(e, s);
-    }
-  }
-
-  Future<void> loadBottomBanner() async {
-    try {
-      bottomBanner = await HomeRemoteProvider.getBanner();
-      bottomBannerLoading = false;
-      notifyListeners();
+      await HomeRemoteProvider.getCourses();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
     }

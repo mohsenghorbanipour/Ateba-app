@@ -1,3 +1,4 @@
+import 'package:ateba_app/modules/categories/ui/page/categories_page.dart';
 import 'package:ateba_app/modules/home/ui/page/home_page.dart';
 import 'package:flutter/material.dart';
 
@@ -6,9 +7,7 @@ final List<Widget> pages = <Widget>[
   const Text(
     'Search Page',
   ),
-  const Text(
-    'Category Page',
-  ),
+  const CategoriesPage(),
   const Text(
     'Archive Page',
   ),

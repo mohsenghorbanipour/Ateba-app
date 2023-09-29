@@ -1,3 +1,3 @@
 class Constants {
-  static const baseUrl = 'https://ateba-med.ir/fakeapi/';
+  static const baseUrl = 'http://a-bridge.site/api/';
 }
