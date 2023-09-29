@@ -23,5 +23,8 @@
     "select": "انتخاب",
     "university_of_study": "دانشگاه محل تحصیل",
     "confirm_info": "تایید مشخصات",
-    "add_to_list": "افزودن به لیست"
+    "add_to_list": "افزودن به لیست",
+    "summary_of_tutorial": "خلاصه ای از آموزش",
+    "comments": "نظرات",
+    "your_comment_about_comment": "نظر شما درباره آموزش ..."
 }

@@ -8,6 +8,7 @@ class Teacher implements BaseModel {
   Teacher({
     this.id,
     this.name,
+    this.slug,
     this.expertise,
     this.description,
     this.image_path,
@@ -15,6 +16,7 @@ class Teacher implements BaseModel {
 
   final int? id;
   final String? name;
+  final String? slug;
   final String? expertise;
   final String? description;
   final String? image_path;

@@ -25,6 +25,9 @@ class Assets {
   static const String atebaLogoLogin = '${_imagesBasePath}ateba_login_logo.svg';
   static const String musicIc = '${_iconsBasePath}music_ic.svg';
   static const String galleryAddIc = '${_iconsBasePath}gallery_add_ic.svg';
+  static const String likeFillIc = '${_iconsBasePath}like_fill_ic.svg';
+  static const String downloadIc = '${_iconsBasePath}download_ic.svg';
+  static const String visibilityIc = '${_iconsBasePath}visibility_ic.svg';
 
   static const String testIc = '${_iconsBasePath}test_ic.png';
   static const String test2Ic = '${_iconsBasePath}test_2_ic.svg';

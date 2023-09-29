@@ -7,7 +7,7 @@ class ShimmerContainer extends StatelessWidget {
       this.height,
       this.width,
       this.margin = EdgeInsets.zero,
-      this.radius = 10});
+      this.radius = 4});
   final double? height;
   final double? width;
   final EdgeInsets margin;
