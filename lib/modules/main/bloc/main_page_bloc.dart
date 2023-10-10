@@ -1,5 +1,6 @@
 import 'package:ateba_app/modules/categories/ui/page/categories_page.dart';
 import 'package:ateba_app/modules/home/ui/page/home_page.dart';
+import 'package:ateba_app/modules/profile/ui/page/profile_page.dart';
 import 'package:flutter/material.dart';
 
 final List<Widget> pages = <Widget>[
@@ -11,9 +12,7 @@ final List<Widget> pages = <Widget>[
   const Text(
     'Archive Page',
   ),
-  const Text(
-    'Profile Page',
-  ),
+  const ProfilePage()
 ];
 
 class MainPageBloc extends ChangeNotifier {

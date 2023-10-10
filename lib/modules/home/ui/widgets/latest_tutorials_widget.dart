@@ -1,6 +1,5 @@
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/modules/home/bloc/home_bloc.dart';
-import 'package:ateba_app/modules/home/data/models/course.dart';
 import 'package:ateba_app/modules/home/data/models/tutorial.dart';
 import 'package:ateba_app/modules/home/ui/widgets/tutorial_card.dart';
 import 'package:ateba_app/modules/home/ui/widgets/latest_toturial_shimmer_card.dart';

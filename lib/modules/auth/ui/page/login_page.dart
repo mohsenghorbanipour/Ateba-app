@@ -1,7 +1,6 @@
 import 'package:ateba_app/core/components/button_component.dart';
 import 'package:ateba_app/core/components/textfiled_component.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
-import 'package:ateba_app/core/router/ateba_router.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';

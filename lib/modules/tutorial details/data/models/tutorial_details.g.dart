@@ -29,7 +29,7 @@ TutorialDetaials _$TutorialDetaialsFromJson(Map<String, dynamic> json) =>
       attachments: (json['attachments'] as List<dynamic>?)
           ?.map((e) => Attachment.fromJson(e as Map<String, dynamic>))
           .toList(),
-      comments_sample: (json['comments_sample'] as List<dynamic>?)
+      top_comments: (json['top_comments'] as List<dynamic>?)
           ?.map((e) => Comment.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
@@ -59,7 +59,7 @@ Map<String, dynamic> _$TutorialDetaialsToJson(TutorialDetaials instance) {
   writeNotNull('videos', instance.videos?.map((e) => e.toJson()).toList());
   writeNotNull(
       'attachments', instance.attachments?.map((e) => e.toJson()).toList());
-  writeNotNull('comments_sample',
-      instance.comments_sample?.map((e) => e.toJson()).toList());
+  writeNotNull(
+      'top_comments', instance.top_comments?.map((e) => e.toJson()).toList());
   return val;
 }

@@ -5,7 +5,6 @@ import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/date_helper.dart';
-import 'package:ateba_app/modules/home/data/models/course.dart';
 import 'package:ateba_app/modules/home/data/models/tutorial.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -97,6 +96,9 @@ class TutorialCard extends StatelessWidget {
                                 .labelSmall
                                 ?.copyWith(
                                   fontSize: 8,
+                                  color: ColorPalette.of(context)
+                                      .textPrimary
+                                      .withOpacity(0.7),
                                 ),
                           ),
                         ),

@@ -5,14 +5,17 @@ part 'banner_slider.g.dart';
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
 class BannerSlider implements BaseModel<BannerSlider> {
-
   BannerSlider({
-    this.id,
-    this.cover,
+    this.image_url,
+    this.alternative_text,
+    this.type,
+    this.slug,
   });
 
-  final int? id;
-  final String? cover;
+  final String? image_url;
+  final String? alternative_text;
+  final String? type;
+  final String? slug;
 
   @override
   factory BannerSlider.fromJson(Map<String, dynamic> json) =>

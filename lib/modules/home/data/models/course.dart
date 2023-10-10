@@ -1,5 +1,4 @@
 import 'package:ateba_app/core/base/base_model.dart';
-import 'package:ateba_app/modules/home/data/models/teacher.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'course.g.dart';
@@ -8,22 +7,24 @@ part 'course.g.dart';
 class Course implements BaseModel<Course> {
 
   Course({
-    this.id,
     this.title,
-    this.subtitle,
-    this.teacher,
+    this.slug,
     this.thumbnail_url,
     this.duration,
     this.created_at,
+    this.price,
+    this.tutorials_sample,
+    this.tutorials_count,
   });
 
-  final int? id;
   final String? title;
-  final String? subtitle;
-  final Teacher? teacher;
+  final String? slug;
   final String? thumbnail_url;
   final String? duration;
   final String? created_at;
+  final int? price;
+  final List<String>? tutorials_sample;
+  final int? tutorials_count;
 
 
   @override

@@ -1,6 +1,4 @@
-import 'package:ateba_app/core/network/pagination_response_model.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
-import 'package:ateba_app/modules/categories/data/remote/categories_remote_provider.dart';
 import 'package:ateba_app/modules/home/data/models/package.dart';
 import 'package:flutter/foundation.dart';
 

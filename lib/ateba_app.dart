@@ -1,6 +1,5 @@
 import 'package:ateba_app/core/constants/app_config.dart';
 import 'package:ateba_app/core/router/ateba_router.dart';
-import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/bloc/theme_bloc.dart';
 import 'package:ateba_app/modules/categories/bloc/categories_bloc.dart';
 import 'package:ateba_app/modules/home/bloc/home_bloc.dart';

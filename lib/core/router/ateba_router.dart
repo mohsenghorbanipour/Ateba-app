@@ -5,12 +5,15 @@ import 'package:ateba_app/modules/auth/ui/page/login_otp_page.dart';
 import 'package:ateba_app/modules/auth/ui/page/login_page.dart';
 import 'package:ateba_app/modules/auth/ui/page/splash_page.dart';
 import 'package:ateba_app/modules/auth/ui/page/user_information_page.dart';
+import 'package:ateba_app/modules/course%20details/ui/page/course_details_page.dart';
 import 'package:ateba_app/modules/main/ui/page/main_page.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/page/tutorial_details_page.dart';
+import 'package:ateba_app/modules/video%20player/ui/page/video_player_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:video_player/video_player.dart';
 
 class AtebaRouter {
   late GoRouter router = GoRouter(
@@ -61,7 +64,23 @@ class AtebaRouter {
             pageBuilder: (state) => TutorialDetailsPage(
               slug: state.pathParameters['slug'] as String,
             ),
-          )
+            routes: [
+              _routeFade(
+                path: Routes.videoPalyer,
+                name: Routes.videoPalyer,
+                pageBuilder: (state) => VideoPlayerPage(
+                  controller: state.extra as VideoPlayerController,
+                ),
+              )
+            ],
+          ),
+          _routeFade(
+            path: Routes.courseDetails,
+            name: Routes.courseDetails,
+            pageBuilder: (state) => CourseDetailsPage(
+              slug: state.pathParameters['slug'] as String,
+            ),
+          ),
         ],
       )
       //! bottom navigations

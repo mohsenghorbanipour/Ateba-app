@@ -44,6 +44,7 @@ class ColorPalette {
   final Color border;
   final Color shadow;
   final Color grey = const Color(0xffF5F5F5);
+  final Color lightGrey = const Color(0xffF2F2F2);
   final Color silver = const Color(0xffE0E0E0);
   final Color darkSilver = const Color(0xffEDEDED);
   final Color lightSilver = const Color(0xffE9ECEF);

@@ -25,7 +25,7 @@ class TutorialDetaials implements BaseModel<TutorialDetaials> {
     this.comment_counts,
     this.videos,
     this.attachments,
-    this.comments_sample,
+    this.top_comments,
   });
 
   final String? title;
@@ -38,12 +38,12 @@ class TutorialDetaials implements BaseModel<TutorialDetaials> {
   final String? updated_at;
   final String? description;
   final int? like_count;
-  final bool? is_liked;
+  bool? is_liked;
   final bool? is_bookmarked;
   final int? comment_counts;
   final List<Video>? videos;
   final List<Attachment>? attachments;
-  final List<Comment>? comments_sample;
+  final List<Comment>? top_comments;
 
   @override
   factory TutorialDetaials.fromJson(Map<String, dynamic> json) =>

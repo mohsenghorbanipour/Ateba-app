@@ -1,5 +1,5 @@
 {
-    "ateba_packages": "پکیج های اطــبا",
+    "ateba_courses": "دوره های اموزشی اطبا",
     "includes_training": "شامل آموزش های :",
     "toman": "تومان",
     "latest_tutorials": "جدیدترین آموزش ها",
@@ -26,5 +26,20 @@
     "add_to_list": "افزودن به لیست",
     "summary_of_tutorial": "خلاصه ای از آموزش",
     "comments": "نظرات",
-    "your_comment_about_comment": "نظر شما درباره آموزش ..."
+    "your_comment_about_comment": "نظر شما درباره آموزش ...",
+    "your_answer": "پاسخ شما",
+    "professional_course": "دوره تخصصی",
+    "preview_of_course": "خلاصه ای از دوره تخصصی",
+    "description_info": "طبق آخرین رفرنس های اعلامی از وزارت بهداشت می باشد.",
+    "viewed": "بار دیده شده",
+    "educational_titles": "عنوان آموزشی",
+    "introduction_of_professors": "معرفی اساتید",
+    "your_comment": "نظر شما",
+    "send": "ارسال",
+    "opinions_of_other_users": "نظر بقیه کاربران",
+    "comment_hint": "متن پیام...",
+    "no_commented_yet": "نظری ثبت نشده",
+    "add_to_basket" : "افزودن به سبد خرید",
+    "access_by_subscription": "دسترسی با اشتراک",
+    "buy_a_subscription": "خرید اشتراک"
 }

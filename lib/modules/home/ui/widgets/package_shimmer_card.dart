@@ -2,8 +2,8 @@ import 'package:ateba_app/core/components/shimmer_components.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:flutter/material.dart';
 
-class PackageShimmerCard extends StatelessWidget {
-  const PackageShimmerCard({super.key});
+class CourseShimmerCard extends StatelessWidget {
+  const CourseShimmerCard({super.key});
 
   @override
   Widget build(BuildContext context) => Container(

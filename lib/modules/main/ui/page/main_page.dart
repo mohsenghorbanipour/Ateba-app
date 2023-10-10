@@ -1,9 +1,17 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:io';
+
 import 'package:ateba_app/core/resources/assets/assets.dart';
+import 'package:ateba_app/core/resources/cache%20provider/video_cache_manager.dart';
+import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/modules/main/bloc/main_page_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
@@ -15,19 +23,26 @@ class MainPage extends StatelessWidget {
           surfaceTintColor: ColorPalette.of(context).background,
           backgroundColor: ColorPalette.of(context).background,
           actions: [
-            Container(
-              margin: const EdgeInsets.only(left: 16),
-              padding: const EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: ColorPalette.of(context).grey,
-                border: Border.all(
-                  width: 1.3,
-                  color: ColorPalette.of(context).border,
+            InkWell(
+              onTap: () {
+                VideoCacheManager.downloadVideoAndSave(
+                  'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+                );
+              },
+              child: Container(
+                margin: const EdgeInsets.only(left: 16),
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: ColorPalette.of(context).grey,
+                  border: Border.all(
+                    width: 1.3,
+                    color: ColorPalette.of(context).border,
+                  ),
                 ),
-              ),
-              child: SvgPicture.asset(
-                Assets.basketIc,
+                child: SvgPicture.asset(
+                  Assets.basketIc,
+                ),
               ),
             ),
           ],
@@ -65,7 +80,7 @@ class MainPage extends StatelessWidget {
                 BottomNavigationBar(
                   showSelectedLabels: false,
                   showUnselectedLabels: false,
-                  onTap: (index) {
+                  onTap: (index) async {
                     bloc.changePage(index);
                   },
                   items: [

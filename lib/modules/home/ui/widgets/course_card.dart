@@ -1,36 +1,39 @@
 import 'package:ateba_app/core/components/shimmer_components.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
-import 'package:ateba_app/core/router/ateba_router.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/date_helper.dart';
-import 'package:ateba_app/modules/home/data/models/package.dart';
+import 'package:ateba_app/core/utils/text_input_formatters.dart';
+import 'package:ateba_app/modules/home/data/models/course.dart';
 import 'package:ateba_app/modules/home/ui/widgets/teching_name_chip.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
-class PackageCard extends StatelessWidget {
-  const PackageCard({
-    required this.package,
+class CourseCard extends StatelessWidget {
+  const CourseCard({
+    required this.course,
     this.width,
     super.key,
   });
 
-  final Package package;
+  final Course course;
   final double? width;
 
   @override
   Widget build(BuildContext context) => GestureDetector(
         onTap: () {
-          // AtebaRouter.router.navigateTo(
-          //   context,
-          //   Routes.packageDetails,
-          // );
+          context.goNamed(
+            Routes.courseDetails,
+            pathParameters: {
+              'slug': course.slug ?? '',
+            },
+          );
         },
         child: Container(
-          width: width ?? 270,
+          width: width ?? 280,
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6),
@@ -62,7 +65,7 @@ class PackageCard extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(100),
                             child: CachedNetworkImage(
-                              imageUrl: package.icon ?? '',
+                              imageUrl: course.thumbnail_url ?? '',
                               placeholder: (_, __) => const ShimmerContainer(
                                 width: 48,
                                 height: 48,
@@ -80,7 +83,7 @@ class PackageCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${package.title ?? ''} - ${package.teacher ?? ''}',
+                            course.title ?? '',
                             style: Theme.of(context).textTheme.labelMedium,
                           ),
                           Padding(
@@ -92,13 +95,16 @@ class PackageCard extends StatelessWidget {
                                   padding: const EdgeInsets.only(right: 2),
                                   child: Text(
                                     DateHelper.getShamsiData(
-                                      package.date ?? '',
+                                      course.created_at ?? '',
                                     ),
                                     style: Theme.of(context)
                                         .textTheme
                                         .labelMedium
                                         ?.copyWith(
                                           fontSize: 8,
+                                          color: ColorPalette.of(context)
+                                              .textPrimary
+                                              .withOpacity(0.8),
                                         ),
                                   ),
                                 ),
@@ -109,12 +115,15 @@ class PackageCard extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(right: 2),
                                   child: Text(
-                                    package.duration ?? '',
+                                    course.duration ?? '',
                                     style: Theme.of(context)
                                         .textTheme
                                         .labelMedium
                                         ?.copyWith(
                                           fontSize: 8,
+                                          color: ColorPalette.of(context)
+                                              .textPrimary
+                                              .withOpacity(0.8),
                                         ),
                                   ),
                                 ),
@@ -144,27 +153,38 @@ class PackageCard extends StatelessWidget {
                 runAlignment: WrapAlignment.start,
                 alignment: WrapAlignment.start,
                 children: List.generate(
-                  (package.subsets?.length ?? 0) > 5
-                      ? 6
-                      : (package.subsets?.length ?? 0),
-                  (index) => ((package.subsets?.length ?? 0) > 5 && index == 5)
+                  (course.tutorials_sample?.length ?? 0) > 4
+                      ? 5
+                      : (course.tutorials_sample?.length ?? 0),
+                  (index) => ((course.tutorials_sample?.length ?? 0) > 4 &&
+                          index == 4)
                       ? TechingNameChip(
                           teachingName:
-                              '${(package.subsets?.length ?? 0) - 5}+',
+                              '${(course.tutorials_sample?.length ?? 0) - 4 + (course.tutorials_count ?? 0)}+',
                           isCircle: true,
                         )
                       : TechingNameChip(
-                          teachingName: package.subsets?[index] ?? '',
+                          teachingName: course.tutorials_sample?[index] ?? '',
                         ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 4),
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    package.price.toString() + 'toman'.tr(),
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      TextInputFormatters.toPersianNumber(
+                          course.price.toString()),
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                    Text(
+                      ' ${'toman'.tr()}',
+                      style: Theme.of(context).textTheme.labelSmall,
+                    )
+                  ],
                 ),
               )
             ],

@@ -30,9 +30,11 @@ class BannerTile extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(borderRadius),
             child: CachedNetworkImage(
-              imageUrl: bannerSlider.cover ?? '',
+              imageUrl: bannerSlider.image_url ?? '',
               placeholder: (context, url) => const ShimmerContainer(
-                  width: double.infinity, height: double.infinity),
+                width: double.infinity,
+                height: double.infinity,
+              ),
             ),
           ),
         ),

@@ -28,6 +28,13 @@ class Assets {
   static const String likeFillIc = '${_iconsBasePath}like_fill_ic.svg';
   static const String downloadIc = '${_iconsBasePath}download_ic.svg';
   static const String visibilityIc = '${_iconsBasePath}visibility_ic.svg';
+  static const String personUserIc = '${_iconsBasePath}person_user_ic.svg';
+  static const String likeHandIc = '${_iconsBasePath}like_hand_ic.svg';
+  static const String addIc = '${_iconsBasePath}add_ic.svg';
+  static const String copyIc = '${_iconsBasePath}copy_ic.svg';
+  static const String likeIc = '${_iconsBasePath}like_ic.svg';
+  static const String editWriteIc = '${_iconsBasePath}edit_write_ic.svg';
+  static const String starIc = '${_iconsBasePath}star_ic.svg';
 
   static const String testIc = '${_iconsBasePath}test_ic.png';
   static const String test2Ic = '${_iconsBasePath}test_2_ic.svg';

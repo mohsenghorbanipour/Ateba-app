@@ -19,6 +19,9 @@ class NetworkHelper {
     BaseOptions(
       baseUrl: Constants.baseUrl,
       validateStatus: (status) => status! < 500,
+      headers: {
+        'Authorization': 'Bearer 2|ateba_token_XE7MFIwU7jWWPDFQc7CSbkW0W47RViMgpXF3TrUJ64d3148c'
+      }
     ),
   );
   late bool isLogin;

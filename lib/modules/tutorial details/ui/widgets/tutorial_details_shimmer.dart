@@ -2,6 +2,7 @@ import 'package:ateba_app/core/components/shimmer_components.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class TutorialDetailsShimmer extends StatelessWidget {
   const TutorialDetailsShimmer({super.key});

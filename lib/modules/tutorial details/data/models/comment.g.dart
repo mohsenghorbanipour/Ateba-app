@@ -15,6 +15,10 @@ Comment _$CommentFromJson(Map<String, dynamic> json) => Comment(
           ? null
           : User.fromJson(json['user'] as Map<String, dynamic>),
       is_liked: json['is_liked'] as bool?,
+      is_edited: json['is_edited'] as bool?,
+      is_pined: json['is_pined'] as bool?,
+      likes_count: json['likes_count'] as int?,
+      replies_count: json['replies_count'] as int?,
     );
 
 Map<String, dynamic> _$CommentToJson(Comment instance) {
@@ -32,5 +36,9 @@ Map<String, dynamic> _$CommentToJson(Comment instance) {
   writeNotNull('created_at', instance.created_at);
   writeNotNull('user', instance.user?.toJson());
   writeNotNull('is_liked', instance.is_liked);
+  writeNotNull('replies_count', instance.replies_count);
+  writeNotNull('likes_count', instance.likes_count);
+  writeNotNull('is_edited', instance.is_edited);
+  writeNotNull('is_pined', instance.is_pined);
   return val;
 }

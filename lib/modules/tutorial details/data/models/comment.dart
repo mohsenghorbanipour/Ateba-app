@@ -14,6 +14,10 @@ class Comment implements BaseModel<Comment> {
     this.created_at,
     this.user,
     this.is_liked,
+    this.is_edited,
+    this.is_pined,
+    this.likes_count,
+    this.replies_count,
   });
 
   final int? id;
@@ -22,6 +26,11 @@ class Comment implements BaseModel<Comment> {
   final String? created_at;
   final User? user;
   final bool? is_liked;
+  final int? replies_count;
+  final int? likes_count;
+  final bool? is_edited;
+  final bool? is_pined;
+
 
   @override
   factory Comment.fromJson(Map<String, dynamic> json) =>

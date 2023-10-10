@@ -6,14 +6,15 @@ import 'package:shamsi_date/shamsi_date.dart';
 class DateHelper {
   static String getShamsiData(String date) {
     try {
-      int day = int.parse(date.substring(0, date.indexOf('/')));
+      int year = int.parse(date.substring(0, date.indexOf('-')));
       int month = int.parse(
-          date.substring((date.indexOf('/')) + 1, date.lastIndexOf('/')));
-      int year = int.parse(date.substring((date.lastIndexOf('/') + 1)));
+          date.substring((date.indexOf('-')) + 1, date.lastIndexOf('-')));
+      int day = int.parse(date.substring(
+          (date.lastIndexOf('-') + 1), (date.lastIndexOf('-') + 3)));
       Jalali jalali = Jalali.fromGregorian(
         Gregorian(year, month, day),
       );
-      return '${jalali.formatter.yyyy} - ${jalali.formatter.mN}';
+      return '${jalali.formatter.mN} - ${jalali.formatter.yyyy}';
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
       return '';

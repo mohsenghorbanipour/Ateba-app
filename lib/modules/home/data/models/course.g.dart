@@ -7,15 +7,16 @@ part of 'course.dart';
 // **************************************************************************
 
 Course _$CourseFromJson(Map<String, dynamic> json) => Course(
-      id: json['id'] as int?,
       title: json['title'] as String?,
-      subtitle: json['subtitle'] as String?,
-      teacher: json['teacher'] == null
-          ? null
-          : Teacher.fromJson(json['teacher'] as Map<String, dynamic>),
+      slug: json['slug'] as String?,
       thumbnail_url: json['thumbnail_url'] as String?,
       duration: json['duration'] as String?,
       created_at: json['created_at'] as String?,
+      price: json['price'] as int?,
+      tutorials_sample: (json['tutorials_sample'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      tutorials_count: json['tutorials_count'] as int?,
     );
 
 Map<String, dynamic> _$CourseToJson(Course instance) {
@@ -27,12 +28,13 @@ Map<String, dynamic> _$CourseToJson(Course instance) {
     }
   }
 
-  writeNotNull('id', instance.id);
   writeNotNull('title', instance.title);
-  writeNotNull('subtitle', instance.subtitle);
-  writeNotNull('teacher', instance.teacher?.toJson());
+  writeNotNull('slug', instance.slug);
   writeNotNull('thumbnail_url', instance.thumbnail_url);
   writeNotNull('duration', instance.duration);
   writeNotNull('created_at', instance.created_at);
+  writeNotNull('price', instance.price);
+  writeNotNull('tutorials_sample', instance.tutorials_sample);
+  writeNotNull('tutorials_count', instance.tutorials_count);
   return val;
 }

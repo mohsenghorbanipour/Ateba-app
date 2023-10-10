@@ -1,4 +1,3 @@
-import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';

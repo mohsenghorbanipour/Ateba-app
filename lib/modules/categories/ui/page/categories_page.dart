@@ -1,9 +1,6 @@
-import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/modules/categories/bloc/categories_bloc.dart';
 import 'package:ateba_app/modules/categories/ui/widgets/categories_tab_widget.dart';
 import 'package:ateba_app/modules/categories/ui/widgets/education_video_category_card.dart';
-import 'package:ateba_app/modules/home/bloc/home_bloc.dart';
-import 'package:ateba_app/modules/home/ui/widgets/package_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,23 +33,23 @@ class CategoriesPage extends StatelessWidget {
                 ),
               ),
             )
-          else
-            Expanded(
-              child: ListView.separated(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-                itemCount: 10,
-                separatorBuilder: (_, __) => const SizedBox(
-                  height: 16,
-                ),
-                itemBuilder: (context, index) => PackageCard(
-                  package: Provider.of<CategoriesBloc>(context, listen: false)
-                      .packages
-                      .first,
-                  width: double.infinity,
-                ),
-              ),
-            )
+          // else
+          //   Expanded(
+          //     child: ListView.separated(
+          //       padding:
+          //           const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+          //       itemCount: 10,
+          //       separatorBuilder: (_, __) => const SizedBox(
+          //         height: 16,
+          //       ),
+          //       itemBuilder: (context, index) => PackageCard(
+          //         package: Provider.of<CategoriesBloc>(context, listen: false)
+          //             .packages
+          //             .first,
+          //         width: double.infinity,
+          //       ),
+          //     ),
+          //   )
         ],
       );
 }

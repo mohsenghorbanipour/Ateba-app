@@ -7,8 +7,10 @@ part of 'banner_slider.dart';
 // **************************************************************************
 
 BannerSlider _$BannerSliderFromJson(Map<String, dynamic> json) => BannerSlider(
-      id: json['id'] as int?,
-      cover: json['cover'] as String?,
+      image_url: json['image_url'] as String?,
+      alternative_text: json['alternative_text'] as String?,
+      type: json['type'] as String?,
+      slug: json['slug'] as String?,
     );
 
 Map<String, dynamic> _$BannerSliderToJson(BannerSlider instance) {
@@ -20,7 +22,9 @@ Map<String, dynamic> _$BannerSliderToJson(BannerSlider instance) {
     }
   }
 
-  writeNotNull('id', instance.id);
-  writeNotNull('cover', instance.cover);
+  writeNotNull('image_url', instance.image_url);
+  writeNotNull('alternative_text', instance.alternative_text);
+  writeNotNull('type', instance.type);
+  writeNotNull('slug', instance.slug);
   return val;
 }

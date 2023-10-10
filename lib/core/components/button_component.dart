@@ -68,11 +68,7 @@ class ButtonComponent extends StatelessWidget {
                 shape: MaterialStateProperty.all(
                   RoundedRectangleBorder(
                     borderRadius: borderRadius ?? BorderRadius.circular(6),
-                    side: (enabled && !loading)
-                        ? borderSide
-                        : borderSide.copyWith(
-                            color: ColorPalette.of(context).border,
-                          ),
+                    side: borderSide,
                   ),
                 ),
                 elevation: MaterialStateProperty.all(0),
