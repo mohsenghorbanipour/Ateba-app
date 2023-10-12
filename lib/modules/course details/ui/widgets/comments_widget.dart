@@ -83,6 +83,10 @@ class CommentsWidget extends StatelessWidget {
                       ),
                       itemBuilder: (context, index) => CommentCard(
                         comment: comments[index],
+                        likeTap: () {
+
+                        },
+                        onLongPress: () {},
                       ),
                     ),
             ),

@@ -9,26 +9,28 @@ part 'package.g.dart';
 class Package implements BaseModel<Package> {
 
   Package({
-    this.id,
-    this.duration,
-    this.icon,
-    this.date,
-    this.teacher,
     this.title,
+    this.slug,
+    this.cover_url,
+    this.duration,
+    this.updated_at,
     this.price,
-    this.subsets,
-    this.is_bookmarked,
+    this.tutorials_sample,
+    this.students_count,
+    // this.students_thumbnail,
+    this.tutorials_count,
   });
 
-  final int? id;
   final String? title;
-  final String? teacher;
-  final String? icon;
+  final String? slug;
+  final String? cover_url;
   final String? duration;
-  final String? date;
+  final String? updated_at;
   final int? price;
-  final List<String>? subsets;
-  final bool? is_bookmarked;
+  final List<String>? tutorials_sample;
+  final int? tutorials_count;
+  // final String? students_thumbnail;
+  final int? students_count;
 
   @override
   factory Package.fromJson(Map<String, dynamic> json) =>

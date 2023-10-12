@@ -16,11 +16,25 @@ class TutorialDetaialsBloc extends ChangeNotifier {
   bool commentLoading = true;
 
   TutorialDetaials? tutorialDetaials;
-  List<Comment>? comments = [];
+  List<Comment> comments = [];
 
   bool isLoadingMoreComments = false;
   bool canLoadMoreComment = false;
   int currentPageComments = 1;
+
+  bool _showOptions = false;
+  bool get showOptions => _showOptions;
+  set showOptions(val) {
+    _showOptions = val;
+    notifyListeners();
+  }
+
+  int? _selectedComment;
+  int? get selectedComment => _selectedComment;
+  set selectedComment(val) {
+    _selectedComment = val;
+    notifyListeners();
+  }
 
   Future<void> loadToturialDetials(String slug) async {
     loading = true;
@@ -45,7 +59,7 @@ class TutorialDetaialsBloc extends ChangeNotifier {
       PaginationResponseModel<List<Comment>>? response =
           await TutorialDetaialsRemoteProvider.getTutorialComments(slug);
       if (response != null) {
-        comments = response.data;
+        comments = response.data ?? [];
         currentPageComments = 1;
         if (response.links?.next?.isNotEmpty ?? false) {
           canLoadMoreComment = true;
@@ -90,8 +104,96 @@ class TutorialDetaialsBloc extends ChangeNotifier {
       bool response = await TutorialDetaialsRemoteProvider.likeTutorial(
         slug,
       );
-      tutorialDetaials?.is_liked = response;
-      notifyListeners();
+      if (response) {
+        tutorialDetaials?.is_liked = true;
+        tutorialDetaials?.likes_count =
+            (tutorialDetaials?.likes_count ?? 0) + 1;
+        notifyListeners();
+      }
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> unlikeTutorial(String slug) async {
+    try {
+      bool? response = await TutorialDetaialsRemoteProvider.unlikeTutorial(
+        slug,
+      );
+      if (response) {
+        tutorialDetaials?.is_liked = false;
+        tutorialDetaials?.likes_count =
+            (tutorialDetaials?.likes_count ?? 0) - 1;
+        notifyListeners();
+      }
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> bookmarkTutorial(String slug) async {
+    try {
+      bool response = await TutorialDetaialsRemoteProvider.bookmarkTutorial(
+        slug,
+      );
+      if (response) {
+        tutorialDetaials?.is_bookmarked = true;
+        notifyListeners();
+      }
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> unBookmarkTutorial(String slug) async {
+    try {
+      bool? response = await TutorialDetaialsRemoteProvider.unBookmarkTutorial(
+        slug,
+      );
+      if (response) {
+        tutorialDetaials?.is_bookmarked = false;
+        notifyListeners();
+      }
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> likeComment(String id, int index) async {
+    try {
+      bool response = await TutorialDetaialsRemoteProvider.likeComment(
+        id,
+      );
+      if (response) {
+        comments?[index].is_liked = true;
+        comments?[index].likes_count = (comments?[index].likes_count ?? 0) + 1;
+        notifyListeners();
+      }
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> unlikeComment(String id, int index) async {
+    try {
+      bool? response = await TutorialDetaialsRemoteProvider.unlikeComment(
+        id,
+      );
+      if (response) {
+        comments?[index].is_liked = false;
+        comments?[index].likes_count = (comments?[index].likes_count ?? 0) - 1;
+        notifyListeners();
+      }
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> sendComment() async {
+    try {
+      // await TutorialDetaialsRemoteProvider.sendComment(
+      //   // slug,
+      // );
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
     }

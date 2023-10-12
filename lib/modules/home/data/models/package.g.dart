@@ -7,16 +7,17 @@ part of 'package.dart';
 // **************************************************************************
 
 Package _$PackageFromJson(Map<String, dynamic> json) => Package(
-      id: json['id'] as int?,
-      duration: json['duration'] as String?,
-      icon: json['icon'] as String?,
-      date: json['date'] as String?,
-      teacher: json['teacher'] as String?,
       title: json['title'] as String?,
+      slug: json['slug'] as String?,
+      cover_url: json['cover_url'] as String?,
+      duration: json['duration'] as String?,
+      updated_at: json['updated_at'] as String?,
       price: json['price'] as int?,
-      subsets:
-          (json['subsets'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      is_bookmarked: json['is_bookmarked'] as bool?,
+      tutorials_sample: (json['tutorials_sample'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      students_count: json['students_count'] as int?,
+      tutorials_count: json['tutorials_count'] as int?,
     );
 
 Map<String, dynamic> _$PackageToJson(Package instance) {
@@ -28,14 +29,14 @@ Map<String, dynamic> _$PackageToJson(Package instance) {
     }
   }
 
-  writeNotNull('id', instance.id);
   writeNotNull('title', instance.title);
-  writeNotNull('teacher', instance.teacher);
-  writeNotNull('icon', instance.icon);
+  writeNotNull('slug', instance.slug);
+  writeNotNull('cover_url', instance.cover_url);
   writeNotNull('duration', instance.duration);
-  writeNotNull('date', instance.date);
+  writeNotNull('updated_at', instance.updated_at);
   writeNotNull('price', instance.price);
-  writeNotNull('subsets', instance.subsets);
-  writeNotNull('is_bookmarked', instance.is_bookmarked);
+  writeNotNull('tutorials_sample', instance.tutorials_sample);
+  writeNotNull('tutorials_count', instance.tutorials_count);
+  writeNotNull('students_count', instance.students_count);
   return val;
 }

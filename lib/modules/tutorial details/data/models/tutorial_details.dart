@@ -19,10 +19,10 @@ class TutorialDetaials implements BaseModel<TutorialDetaials> {
     this.duration,
     this.updated_at,
     this.description,
-    this.like_count,
+    this.likes_count,
     this.is_liked,
     this.is_bookmarked,
-    this.comment_counts,
+    this.comments_count,
     this.videos,
     this.attachments,
     this.top_comments,
@@ -37,10 +37,10 @@ class TutorialDetaials implements BaseModel<TutorialDetaials> {
   final String? duration;
   final String? updated_at;
   final String? description;
-  final int? like_count;
+  int? likes_count;
   bool? is_liked;
-  final bool? is_bookmarked;
-  final int? comment_counts;
+  bool? is_bookmarked;
+  final int? comments_count;
   final List<Video>? videos;
   final List<Attachment>? attachments;
   final List<Comment>? top_comments;

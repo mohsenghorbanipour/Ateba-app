@@ -6,16 +6,15 @@ import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/date_helper.dart';
-import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/tutorial%20details/bloc/tutorial_details_bloc.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/attachment.dart';
-import 'package:ateba_app/modules/tutorial%20details/data/models/comment.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/widgets/attachment_tile.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/widgets/comment_card.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/widgets/tutorial_details_shimmer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
@@ -36,6 +35,35 @@ class TutorialDetailsPage extends StatelessWidget {
         create: (context) => TutorialDetaialsBloc(slug),
         lazy: false,
         builder: (context, child) => Scaffold(
+          appBar: context.select<TutorialDetaialsBloc, bool>(
+                  (bloc) => bloc.showOptions)
+              ? AppBar(
+                  backgroundColor: ColorPalette.of(context).scaffoldBackground,
+                  surfaceTintColor: ColorPalette.of(context).scaffoldBackground,
+                  automaticallyImplyLeading: false,
+                  elevation: 1,
+                  shadowColor: ColorPalette.of(context).shadow,
+                  leading: IconButton(
+                    onPressed: () {
+                      Provider.of<TutorialDetaialsBloc>(context, listen: false)
+                          .showOptions = false;
+                      Provider.of<TutorialDetaialsBloc>(context, listen: false)
+                          .selectedComment = null;
+                    },
+                    icon: const Icon(
+                      CupertinoIcons.clear_thick,
+                    ),
+                  ),
+                  actions: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        CupertinoIcons.delete_simple,
+                      ),
+                    )
+                  ],
+                )
+              : null,
           backgroundColor: ColorPalette.of(context).scaffoldBackground,
           body: context.select<TutorialDetaialsBloc, bool>(
                   (bloc) => bloc.loading || bloc.commentLoading)
@@ -87,33 +115,64 @@ class TutorialDetailsPage extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  color: ColorPalette.of(context).background,
-                                  borderRadius: BorderRadius.circular(4),
-                                  border: Border.all(
-                                    width: 1,
-                                    color: ColorPalette.of(context).border,
-                                  ),
-                                ),
-                                child: Row(
-                                  children: [
-                                    SvgPicture.asset(
-                                      Assets.bookmarkIc,
-                                      width: 16,
-                                      color: ColorPalette.of(context).primary,
+                              InkWell(
+                                onTap: () {
+                                  if (Provider.of<TutorialDetaialsBloc>(context,
+                                              listen: false)
+                                          .tutorialDetaials
+                                          ?.is_bookmarked ??
+                                      false) {
+                                    Provider.of<TutorialDetaialsBloc>(context,
+                                            listen: false)
+                                        .unBookmarkTutorial(slug);
+                                  } else {
+                                    Provider.of<TutorialDetaialsBloc>(context,
+                                            listen: false)
+                                        .bookmarkTutorial(slug);
+                                  }
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    color: ColorPalette.of(context).background,
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(
+                                      width: 1,
+                                      color: ColorPalette.of(context).border,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 4),
-                                      child: Text(
-                                        'add_to_list'.tr(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelMedium,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        context.select<TutorialDetaialsBloc,
+                                                    bool>(
+                                                (bloc) =>
+                                                    bloc.tutorialDetaials
+                                                        ?.is_bookmarked ??
+                                                    false)
+                                            ? Assets.bookmarkFillIc
+                                            : Assets.bookmarkIc,
+                                        width: 16,
+                                        color: ColorPalette.of(context).primary,
                                       ),
-                                    )
-                                  ],
+                                      if (!context
+                                          .select<TutorialDetaialsBloc, bool>(
+                                              (bloc) =>
+                                                  bloc.tutorialDetaials
+                                                      ?.is_bookmarked ??
+                                                  false))
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 4),
+                                          child: Text(
+                                            'add_to_list'.tr(),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelMedium,
+                                          ),
+                                        )
+                                    ],
+                                  ),
                                 ),
                               )
                             ],
@@ -199,11 +258,26 @@ class TutorialDetailsPage extends StatelessWidget {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      Provider.of<TutorialDetaialsBloc>(context,
-                                              listen: false)
-                                          .likeTutorial(
-                                        slug,
-                                      );
+                                      if (Provider.of<TutorialDetaialsBloc>(
+                                                  context,
+                                                  listen: false)
+                                              .tutorialDetaials
+                                              ?.is_liked ??
+                                          false) {
+                                        Provider.of<TutorialDetaialsBloc>(
+                                                context,
+                                                listen: false)
+                                            .unlikeTutorial(
+                                          slug,
+                                        );
+                                      } else {
+                                        Provider.of<TutorialDetaialsBloc>(
+                                                context,
+                                                listen: false)
+                                            .likeTutorial(
+                                          slug,
+                                        );
+                                      }
                                     },
                                     child: Container(
                                       height: 24,
@@ -218,25 +292,31 @@ class TutorialDetailsPage extends StatelessWidget {
                                               TutorialDetaialsBloc, bool>(
                                             (bloc) =>
                                                 bloc.tutorialDetaials
-                                                    ?.like_count !=
-                                                null,
+                                                        ?.likes_count !=
+                                                    null &&
+                                                (bloc.tutorialDetaials
+                                                            ?.likes_count ??
+                                                        0) >
+                                                    0,
                                           ))
-                                            Text(
-                                              context.select<
-                                                  TutorialDetaialsBloc, String>(
-                                                (bloc) =>
-                                                    bloc.tutorialDetaials
-                                                        ?.like_count
-                                                        .toString() ??
-                                                    '0',
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 4),
+                                              child: Text(
+                                                context.select<
+                                                    TutorialDetaialsBloc,
+                                                    String>(
+                                                  (bloc) =>
+                                                      bloc.tutorialDetaials
+                                                          ?.likes_count
+                                                          .toString() ??
+                                                      '0',
+                                                ),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelMedium,
                                               ),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .labelMedium,
                                             ),
-                                          const SizedBox(
-                                            width: 4,
-                                          ),
                                           SvgPicture.asset(
                                             context.select<TutorialDetaialsBloc,
                                                         bool>(
@@ -397,21 +477,20 @@ class TutorialDetailsPage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              if (context.select<TutorialDetaialsBloc, bool>(
-                                  (bloc) =>
-                                      bloc.tutorialDetaials?.comment_counts !=
-                                      null))
-                                Text(
-                                  '${'comments'.tr()} (${TextInputFormatters.toPersianNumber(
-                                    context
-                                        .select<TutorialDetaialsBloc, String>(
-                                      (bloc) =>
-                                          bloc.tutorialDetaials?.comment_counts
-                                              .toString() ??
-                                          '0',
-                                    ),
-                                  )})',
-                                ),
+                              // if (context.select<TutorialDetaialsBloc, bool>(
+                              //     (bloc) =>
+                              //         bloc.tutorialDetaials?.comment_counts !=
+                              //         null))
+                              Text(
+                                '${'comments'.tr()} (${TextInputFormatters.toPersianNumber(
+                                  context.select<TutorialDetaialsBloc, String>(
+                                    (bloc) =>
+                                        bloc.tutorialDetaials?.comments_count
+                                            .toString() ??
+                                        '0',
+                                  ),
+                                )})',
+                              ),
                               const SizedBox(
                                 height: 8,
                               ),
@@ -423,19 +502,39 @@ class TutorialDetailsPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Selector<TutorialDetaialsBloc, List<Comment>>(
-                          selector: (context, bloc) => bloc.comments ?? [],
-                          builder: (context, comments, child) =>
-                              ListView.separated(
-                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+                        Consumer<TutorialDetaialsBloc>(
+                          builder: (context, bloc, child) => ListView.builder(
+                            padding: const EdgeInsets.only(top: 8, bottom: 16),
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: comments.length,
+                            itemCount: bloc.comments.length,
                             shrinkWrap: true,
-                            separatorBuilder: (_, __) => const SizedBox(
-                              height: 16,
-                            ),
                             itemBuilder: (context, index) => CommentCard(
-                              comment: comments[index],
+                              comment: bloc.comments[index],
+                              likeTap: () {
+                                if (bloc.comments[index].is_liked ?? false) {
+                                  Provider.of<TutorialDetaialsBloc>(context,
+                                          listen: false)
+                                      .unlikeComment(
+                                    bloc.comments[index].id.toString(),
+                                    index,
+                                  );
+                                } else {
+                                  Provider.of<TutorialDetaialsBloc>(context,
+                                          listen: false)
+                                      .likeComment(
+                                    bloc.comments[index].id.toString(),
+                                    index,
+                                  );
+                                }
+                              },
+                              onLongPress: () {
+                                bloc.showOptions = true;
+                                bloc.selectedComment = bloc.comments[index].id;
+                              },
+                              selected: (bloc.selectedComment != null)
+                                  ? bloc.comments[index].id ==
+                                      bloc.selectedComment
+                                  : false,
                             ),
                           ),
                         ),

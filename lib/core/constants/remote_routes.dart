@@ -21,9 +21,11 @@ class RemoteRoutes {
   static String getCourseDetails(String slug) => 'courses/$slug';
   static String getCourseComment(String slug) => 'courses/$slug/comments';
 
-  // static const String getBannerSlider = 'slider.php';
-  // static const String getPackages = 'packages.php';
-  // static const String getCourses = 'courses.php';
-  // static const String getBottomBanner = 'banner.php';
-  // static const String getPopularStations = 'workshopsgit.php';
+  // Package Api
+  static const String getPackages = 'packages';
+  static String getPackageDetials(String slug) => 'packages/$slug';
+  static String getPackageComments(String slug) => 'packages/$slug/comments';
+
+  // Comments Api
+  static String likeComment(String id) => 'comments/$id/like';
 }

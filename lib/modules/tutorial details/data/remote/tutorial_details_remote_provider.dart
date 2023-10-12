@@ -82,33 +82,78 @@ class TutorialDetaialsRemoteProvider {
     }
   }
 
-  static Future<void> unlikeTutorial(String slug) async {
+  static Future<bool> unlikeTutorial(String slug) async {
     try {
       Response response = await _networkHelper.dio.delete(
         RemoteRoutes.likeTutorial(slug),
       );
+      if(response.statusCode == 200) {
+        return true;
+      }
+      return false;
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+      return false;
     }
   }
 
-  static Future<void> bookmarkTutorial(String slug) async {
+  static Future<bool> bookmarkTutorial(String slug) async {
     try {
       Response response = await _networkHelper.dio.post(
         RemoteRoutes.bookmarkTutorial(slug),
       );
+      if(response.statusCode == 200) {
+        return true;
+      }
+      return false;
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+      return false;
     }
   }
 
-  static Future<void> unBookmarkTutorial(String slug) async {
+  static Future<bool> unBookmarkTutorial(String slug) async {
     try {
       Response response = await _networkHelper.dio.delete(
         RemoteRoutes.bookmarkTutorial(slug),
       );
+      if(response.statusCode == 200) {
+        return true;
+      }
+      return false;
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+      return false;
+    }
+  }
+
+  static Future<bool> likeComment(String id) async {
+    try {
+      Response response = await _networkHelper.dio.post(
+        RemoteRoutes.likeComment(id),
+      );
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      return false;
+    }
+  }
+
+  static Future<bool> unlikeComment(String id) async {
+    try {
+      Response response = await _networkHelper.dio.delete(
+        RemoteRoutes.likeComment(id),
+      );
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      return false;
     }
   }
 }

@@ -2,82 +2,77 @@ import 'package:ateba_app/core/components/shimmer_components.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:flutter/material.dart';
 
-class CourseShimmerCard extends StatelessWidget {
-  const CourseShimmerCard({super.key});
+class PackageShimmerCard extends StatelessWidget {
+  const PackageShimmerCard({super.key});
 
   @override
   Widget build(BuildContext context) => Container(
-        width: 270,
-        padding: const EdgeInsets.all(8),
+        height: 220,
+        width: 255,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(6),
+          borderRadius: BorderRadius.circular(5),
+          color: ColorPalette.of(context).background,
           border: Border.all(
             width: 1.5,
             color: ColorPalette.of(context).border,
           ),
-          color: ColorPalette.of(context).background,
         ),
-        child: const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Column(
               children: [
-                ShimmerContainer(
-                  width: 48,
-                  height: 48,
+                const ShimmerContainer(
+                  width: 237,
+                  height: 76,
+                  radius: 4,
+                  margin: EdgeInsets.all(8),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 6),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ShimmerContainer(
-                          height: 14,
-                          margin: EdgeInsets.symmetric(horizontal: 12),
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        ShimmerContainer(
-                          height: 10,
-                          margin: EdgeInsets.only(left: 24, right: 12),
-                        ),
-                      ],
-                    ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ShimmerContainer(
+                        width: 120,
+                        height: 20,
+                      ),
+                      ShimmerContainer(
+                        width: 40,
+                        height: 12,
+                      ),
+                    ],
                   ),
                 ),
-                ShimmerContainer(
-                  width: 24,
-                  height: 24,
+                const SizedBox(
+                  height: 10,
                 ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 9),
+                  child: Row(
+                    children: List.generate(
+                      5,
+                      (index) => const ShimmerContainer(
+                        width: 30,
+                        height: 14,
+                        radius: 70,
+                        margin: EdgeInsets.symmetric(horizontal: 3),
+                      ),
+                    ),
+                  ),
+                )
               ],
             ),
-            Wrap(
-              spacing: 6,
-              children: [
-                ShimmerContainer(
-                  width: 60,
-                  height: 30,
-                ),
-                ShimmerContainer(
-                  width: 60,
-                  height: 30,
-                ),
-                ShimmerContainer(
-                  width: 60,
-                  height: 30,
-                ),
-              ],
-            ),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: ShimmerContainer(
-                width: 80,
-                height: 14,
+            const Padding(
+              padding: EdgeInsets.fromLTRB(12, 0, 12, 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ShimmerContainer(
+                    width: 80,
+                    height: 18,
+                  ),
+                ],
               ),
             )
           ],

@@ -16,6 +16,7 @@ class Assets {
   static const String personeIc = '${_iconsBasePath}persone_ic.svg';
   static const String personeFillIc = '${_iconsBasePath}persone_fill_ic.svg';
   static const String bookmarkIc = '${_iconsBasePath}bookmark_ic.svg';
+  static const String bookmarkFillIc = '${_iconsBasePath}bookmark_fill_ic.svg';
   static const String calendarIc = '${_iconsBasePath}calendar_ic.svg';
   static const String clockIc = '${_iconsBasePath}clock_ic.svg';
   static const String checkIc = '${_iconsBasePath}check_ic.svg';
@@ -30,11 +31,13 @@ class Assets {
   static const String visibilityIc = '${_iconsBasePath}visibility_ic.svg';
   static const String personUserIc = '${_iconsBasePath}person_user_ic.svg';
   static const String likeHandIc = '${_iconsBasePath}like_hand_ic.svg';
+  static const String likeHandFillIc = '${_iconsBasePath}like_hand_fill_ic.svg';
   static const String addIc = '${_iconsBasePath}add_ic.svg';
   static const String copyIc = '${_iconsBasePath}copy_ic.svg';
   static const String likeIc = '${_iconsBasePath}like_ic.svg';
   static const String editWriteIc = '${_iconsBasePath}edit_write_ic.svg';
   static const String starIc = '${_iconsBasePath}star_ic.svg';
+  static const String pinIc = '${_iconsBasePath}pin_ic.svg';
 
   static const String testIc = '${_iconsBasePath}test_ic.png';
   static const String test2Ic = '${_iconsBasePath}test_2_ic.svg';
