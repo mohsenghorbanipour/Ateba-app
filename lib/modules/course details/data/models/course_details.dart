@@ -10,7 +10,7 @@ class CourseDetails implements BaseModel<CourseDetails> {
   CourseDetails({
     this.title,
     this.slug,
-    this.cover_path,
+    this.cover_url,
     this.cover_color,
     this.duration,
     this.created_at,
@@ -24,7 +24,7 @@ class CourseDetails implements BaseModel<CourseDetails> {
 
   final String? title;
   final String? slug;
-  final String? cover_path;
+  final String? cover_url;
   final String? cover_color;
   final String? duration;
   final String? created_at;

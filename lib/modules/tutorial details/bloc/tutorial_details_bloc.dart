@@ -29,12 +29,16 @@ class TutorialDetaialsBloc extends ChangeNotifier {
     notifyListeners();
   }
 
+  int? selectedCommentIndex;
   int? _selectedComment;
   int? get selectedComment => _selectedComment;
   set selectedComment(val) {
     _selectedComment = val;
     notifyListeners();
   }
+
+  int? commentIdForShowReplies;
+  List<Comment> replies = [];
 
   Future<void> loadToturialDetials(String slug) async {
     loading = true;
@@ -180,8 +184,8 @@ class TutorialDetaialsBloc extends ChangeNotifier {
         id,
       );
       if (response) {
-        comments?[index].is_liked = false;
-        comments?[index].likes_count = (comments?[index].likes_count ?? 0) - 1;
+        comments[index].is_liked = false;
+        comments[index].likes_count = (comments[index].likes_count ?? 0) - 1;
         notifyListeners();
       }
     } catch (e, s) {
@@ -194,6 +198,39 @@ class TutorialDetaialsBloc extends ChangeNotifier {
       // await TutorialDetaialsRemoteProvider.sendComment(
       //   // slug,
       // );
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> deleteComment() async {
+    try {
+      bool response = await TutorialDetaialsRemoteProvider.deleteComment(
+        _selectedComment.toString(),
+      );
+      if (response) {
+        comments.removeAt(selectedCommentIndex!);
+        _selectedComment = null;
+        selectedCommentIndex = null;
+        notifyListeners();
+      }
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> loadReplies(int id) async {
+    commentIdForShowReplies = id;
+    notifyListeners();
+    try {
+      ApiResponseModel<List<Comment>>? response =
+          await TutorialDetaialsRemoteProvider.getReplies(
+        id,
+      );
+      if (response != null) {
+        replies = response.data ?? [];
+      }
+      notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
     }

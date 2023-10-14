@@ -1,6 +1,4 @@
 class RemoteRoutes {
-
-
   // Banners Api
   static const String getTopBanner = 'banners/slider';
   static const String getMiddleBanner = 'banners/middle';
@@ -28,4 +26,6 @@ class RemoteRoutes {
 
   // Comments Api
   static String likeComment(String id) => 'comments/$id/like';
+  static String deleteComment(String id) => 'comments/$id';
+  static String getCommentReplies(int id) => 'comments/$id/replies';
 }

@@ -10,7 +10,7 @@ CourseDetails _$CourseDetailsFromJson(Map<String, dynamic> json) =>
     CourseDetails(
       title: json['title'] as String?,
       slug: json['slug'] as String?,
-      cover_path: json['cover_path'] as String?,
+      cover_url: json['cover_url'] as String?,
       cover_color: json['cover_color'] as String?,
       duration: json['duration'] as String?,
       created_at: json['created_at'] as String?,
@@ -37,7 +37,7 @@ Map<String, dynamic> _$CourseDetailsToJson(CourseDetails instance) {
 
   writeNotNull('title', instance.title);
   writeNotNull('slug', instance.slug);
-  writeNotNull('cover_path', instance.cover_path);
+  writeNotNull('cover_url', instance.cover_url);
   writeNotNull('cover_color', instance.cover_color);
   writeNotNull('duration', instance.duration);
   writeNotNull('created_at', instance.created_at);

@@ -93,7 +93,6 @@ class AtebaApp extends StatelessWidget {
         child: Builder(
           builder: (context) => Material(
             child: SafeArea(
-              bottom: false,
               child: child ?? Container(),
             ),
           ),

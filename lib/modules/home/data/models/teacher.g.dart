@@ -12,7 +12,7 @@ Teacher _$TeacherFromJson(Map<String, dynamic> json) => Teacher(
       slug: json['slug'] as String?,
       expertise: json['expertise'] as String?,
       description: json['description'] as String?,
-      image_path: json['image_path'] as String?,
+      picture_url: json['picture_url'] as String?,
     );
 
 Map<String, dynamic> _$TeacherToJson(Teacher instance) {
@@ -29,6 +29,6 @@ Map<String, dynamic> _$TeacherToJson(Teacher instance) {
   writeNotNull('slug', instance.slug);
   writeNotNull('expertise', instance.expertise);
   writeNotNull('description', instance.description);
-  writeNotNull('image_path', instance.image_path);
+  writeNotNull('picture_url', instance.picture_url);
   return val;
 }

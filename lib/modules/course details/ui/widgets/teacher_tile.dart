@@ -20,7 +20,7 @@ class TeacherTile extends StatelessWidget {
             child: CachedNetworkImage(
               width: 80,
               height: 80,
-              imageUrl: teacher.image_path ?? '',
+              imageUrl: teacher.picture_url ?? '',
               fit: BoxFit.cover,
               placeholder: (_, __) => const ShimmerContainer(
                 width: 80,
@@ -51,6 +51,8 @@ class TeacherTile extends StatelessWidget {
                   child: Text(
                     teacher.description ?? '',
                     style: Theme.of(context).textTheme.labelMedium,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],

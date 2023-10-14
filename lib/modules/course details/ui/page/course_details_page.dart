@@ -91,24 +91,6 @@ class CourseDetailsPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Container(
-                          width: 32,
-                          height: 32,
-                          margin: const EdgeInsets.only(left: 16),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              width: 1,
-                              color: ColorPalette.of(context).textPrimary,
-                            ),
-                          ),
-                          child: Center(
-                            child: SvgPicture.asset(
-                              Assets.bookmarkIc,
-                              width: 16,
-                            ),
-                          ),
-                        ),
                       ],
                       expandedHeight: 240,
                       floating: false,
@@ -161,7 +143,7 @@ class CourseDetailsPage extends StatelessWidget {
                                     imageUrl: context
                                         .select<CourseDetailsBloc, String>(
                                       (bloc) =>
-                                          bloc.courseDetails?.cover_path ?? '',
+                                          bloc.courseDetails?.cover_url ?? '',
                                     ),
                                   ),
                                 ),

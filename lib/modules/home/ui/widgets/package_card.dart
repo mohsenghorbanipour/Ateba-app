@@ -1,4 +1,5 @@
 import 'package:ateba_app/core/components/button_component.dart';
+import 'package:ateba_app/core/components/shimmer_components.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/date_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
@@ -41,6 +42,11 @@ class PackageCard extends StatelessWidget {
                   width: double.infinity,
                   height: 76,
                   fit: BoxFit.cover,
+                  placeholder: (_, __) => const ShimmerContainer(
+                    width: double.infinity,
+                    height: 76,
+                    radius: 4,
+                  ),
                 ),
               ),
             ),

@@ -11,7 +11,7 @@ class Teacher implements BaseModel {
     this.slug,
     this.expertise,
     this.description,
-    this.image_path,
+    this.picture_url,
   });
 
   final int? id;
@@ -19,7 +19,7 @@ class Teacher implements BaseModel {
   final String? slug;
   final String? expertise;
   final String? description;
-  final String? image_path;
+  final String? picture_url;
 
   @override
   factory Teacher.fromJson(Map<String, dynamic> json) => _$TeacherFromJson(json);
