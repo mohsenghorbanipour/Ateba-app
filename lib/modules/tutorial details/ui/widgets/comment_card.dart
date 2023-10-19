@@ -4,6 +4,7 @@ import 'package:ateba_app/core/utils/date_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/tutorial%20details/bloc/tutorial_details_bloc.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/comment.dart';
+import 'package:ateba_app/modules/tutorial%20details/ui/modals/send_comment_modals.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/widgets/reply_card.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class CommentCard extends StatelessWidget {
     required this.comment,
     required this.likeTap,
     required this.onLongPress,
+    required this.sendCommentFunction,
     this.selected = false,
     super.key,
   });
@@ -22,6 +24,7 @@ class CommentCard extends StatelessWidget {
   final Comment comment;
   final Function() likeTap;
   final Function() onLongPress;
+  final Function() sendCommentFunction;
   final bool selected;
 
   @override
@@ -113,15 +116,22 @@ class CommentCard extends StatelessWidget {
                       const SizedBox(
                         width: 12,
                       ),
-                      SvgPicture.asset(
-                        Assets.addIc,
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      Text(
-                        'your_answer'.tr(),
-                        style: Theme.of(context).textTheme.labelSmall,
+                      InkWell(
+                        onTap: sendCommentFunction,
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              Assets.addIc,
+                            ),
+                            const SizedBox(
+                              width: 4,
+                            ),
+                            Text(
+                              'your_answer'.tr(),
+                              style: Theme.of(context).textTheme.labelSmall,
+                            )
+                          ],
+                        ),
                       )
                     ],
                   ),

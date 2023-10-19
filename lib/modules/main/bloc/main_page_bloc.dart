@@ -1,3 +1,4 @@
+import 'package:ateba_app/modules/bookmarks/ui/page/bookmarks_page.dart';
 import 'package:ateba_app/modules/categories/ui/page/categories_page.dart';
 import 'package:ateba_app/modules/home/ui/page/home_page.dart';
 import 'package:ateba_app/modules/profile/ui/page/profile_page.dart';
@@ -9,9 +10,7 @@ final List<Widget> pages = <Widget>[
     'Search Page',
   ),
   const CategoriesPage(),
-  const Text(
-    'Archive Page',
-  ),
+  const BookmarksPage(),
   const ProfilePage()
 ];
 

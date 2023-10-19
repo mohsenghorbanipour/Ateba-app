@@ -41,7 +41,13 @@ class VideoCacheManager {
       String fileName = videoUrl.split('/').last;
       String savePath = '$tempPath/$fileName';
 
-      Response response = await _networkHelper.dio.download(videoUrl, savePath);
+      Response response = await _networkHelper.dio.download(
+        videoUrl,
+        savePath,
+        onReceiveProgress: (count, total) {
+          int percentage = ((count / total) * 100).floor();
+        },
+      );
 
       LoggerHelper.logger.w(response.data.toString());
       LoggerHelper.logger.w(savePath);

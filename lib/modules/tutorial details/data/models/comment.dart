@@ -26,7 +26,7 @@ class Comment implements BaseModel<Comment> {
   final String? created_at;
   final User? user;
   bool? is_liked;
-  final int? replies_count;
+  int? replies_count;
   int? likes_count;
   final bool? is_edited;
   final bool? is_pined;

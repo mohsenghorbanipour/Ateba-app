@@ -550,8 +550,54 @@ class TutorialDetailsPage extends StatelessWidget {
                                         minHeight:
                                             MediaQuery.of(context).size.height,
                                       ),
-                                      builder: (context) =>
-                                          const SendCommentModals(),
+                                      builder: (ctx) =>
+                                          ChangeNotifierProvider.value(
+                                        value:
+                                            Provider.of<TutorialDetaialsBloc>(
+                                                context,
+                                                listen: false),
+                                        builder: (context, child) =>
+                                            SendCommentModals(
+                                          sendComment: () async {
+                                            await Provider.of<
+                                                        TutorialDetaialsBloc>(
+                                                    context,
+                                                    listen: false)
+                                                .sendComment(context, slug);
+                                          },
+                                          onChange: (val) {
+                                            Provider.of<TutorialDetaialsBloc>(
+                                                    context,
+                                                    listen: false)
+                                                .comment = val;
+                                          },
+                                          onWillPop: () async {
+                                            Provider.of<TutorialDetaialsBloc>(
+                                                    context,
+                                                    listen: false)
+                                                .comment = '';
+                                            Provider.of<TutorialDetaialsBloc>(
+                                                    context,
+                                                    listen: false)
+                                                .commentController
+                                                .clear();
+
+                                            return true;
+                                          },
+                                          controller: context.select<
+                                              TutorialDetaialsBloc,
+                                              TextEditingController>(
+                                            (bloc) => bloc.commentController,
+                                          ),
+                                          commentEmpty: context.select<
+                                                  TutorialDetaialsBloc, bool>(
+                                              (bloc) => bloc.comment.isEmpty),
+                                          loading: context.select<
+                                                  TutorialDetaialsBloc, bool>(
+                                              (bloc) =>
+                                                  bloc.sendCommentLoading),
+                                        ),
+                                      ),
                                     );
                                   },
                                   child: TextFieldComponent(
@@ -601,6 +647,72 @@ class TutorialDetailsPage extends StatelessWidget {
                                     ? bloc.comments[index].id ==
                                         bloc.selectedComment
                                     : false,
+                                sendCommentFunction: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    barrierColor: Colors.transparent,
+                                    backgroundColor: Colors.transparent,
+                                    elevation: 0,
+                                    useSafeArea: true,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(0)),
+                                    isScrollControlled: true,
+                                    constraints: BoxConstraints(
+                                      maxHeight:
+                                          MediaQuery.of(context).size.height,
+                                      minHeight:
+                                          MediaQuery.of(context).size.height,
+                                    ),
+                                    builder: (ctx) =>
+                                        ChangeNotifierProvider.value(
+                                      value: Provider.of<TutorialDetaialsBloc>(
+                                          context,
+                                          listen: false),
+                                      builder: (context, child) =>
+                                          SendCommentModals(
+                                        sendComment: () async {
+                                          await Provider.of<
+                                                      TutorialDetaialsBloc>(
+                                                  context,
+                                                  listen: false)
+                                              .sendReply(
+                                                  context,
+                                                  slug,
+                                                  bloc.comments[index].id ?? 0,
+                                                  index);
+                                        },
+                                        onChange: (val) {
+                                          Provider.of<TutorialDetaialsBloc>(
+                                                  context,
+                                                  listen: false)
+                                              .comment = val;
+                                        },
+                                        onWillPop: () async {
+                                          Provider.of<TutorialDetaialsBloc>(
+                                                  context,
+                                                  listen: false)
+                                              .comment = '';
+                                          return true;
+                                        },
+                                        commentEmpty: context
+                                            .select<TutorialDetaialsBloc, bool>(
+                                                (bloc) => bloc.comment.isEmpty),
+                                        controller: context.select<
+                                            TutorialDetaialsBloc,
+                                            TextEditingController>(
+                                          (bloc) => bloc.commentController,
+                                        ),
+                                        loading: context.select<
+                                                TutorialDetaialsBloc, bool>(
+                                            (bloc) => bloc.sendCommentLoading),
+                                        replayTo:
+                                            bloc.comments[index].user?.name ??
+                                                '',
+                                        isReplay: true,
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                           ),

@@ -7,6 +7,7 @@ import 'package:ateba_app/modules/auth/ui/page/splash_page.dart';
 import 'package:ateba_app/modules/auth/ui/page/user_information_page.dart';
 import 'package:ateba_app/modules/course%20details/ui/page/course_details_page.dart';
 import 'package:ateba_app/modules/main/ui/page/main_page.dart';
+import 'package:ateba_app/modules/package%20details/ui/page/package_details_page.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/page/tutorial_details_page.dart';
 import 'package:ateba_app/modules/video%20player/ui/page/video_player_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -78,6 +79,13 @@ class AtebaRouter {
             path: Routes.courseDetails,
             name: Routes.courseDetails,
             pageBuilder: (state) => CourseDetailsPage(
+              slug: state.pathParameters['slug'] as String,
+            ),
+          ),
+          _routeFade(
+            path: Routes.packageDetails,
+            name: Routes.packageDetails,
+            pageBuilder: (state) => PackageDetailsPage(
               slug: state.pathParameters['slug'] as String,
             ),
           ),

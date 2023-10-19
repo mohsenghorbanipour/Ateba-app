@@ -31,6 +31,12 @@ class DateHelper {
       Gregorian(year, month, day),
     );
     int distance = jalali.distanceFrom(Jalali.now()) * -1;
-    return TextInputFormatters.toPersianNumber('$distance ${'day_ago'.tr()}');
+    if (distance == 0) {
+      return 'today'.tr();
+    } else if (distance == 1) {
+      return 'yesterday'.tr();
+    } else {
+      return TextInputFormatters.toPersianNumber('$distance ${'day_ago'.tr()}');
+    }
   }
 }

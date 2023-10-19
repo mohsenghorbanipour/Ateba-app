@@ -28,4 +28,7 @@ class RemoteRoutes {
   static String likeComment(String id) => 'comments/$id/like';
   static String deleteComment(String id) => 'comments/$id';
   static String getCommentReplies(int id) => 'comments/$id/replies';
+
+  // Bookmarks Api
+  static String getBookmarks = 'bookmarks';
 }

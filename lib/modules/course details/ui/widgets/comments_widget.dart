@@ -21,6 +21,7 @@ class CommentsWidget extends StatelessWidget {
               labelText: 'your_comment'.tr(),
               name: 'comment',
               maxLines: 2,
+              textAlign: TextAlign.right,
               hintText: 'comment_hint'.tr(),
             ),
           ),
@@ -44,6 +45,7 @@ class CommentsWidget extends StatelessWidget {
                 ),
                 Icon(
                   Icons.arrow_forward_rounded,
+                  size: 18,
                   color: ColorPalette.of(context).textPrimary,
                 ),
               ],
@@ -83,10 +85,10 @@ class CommentsWidget extends StatelessWidget {
                       ),
                       itemBuilder: (context, index) => CommentCard(
                         comment: comments[index],
-                        likeTap: () {
-
-                        },
+                        likeTap: () {},
                         onLongPress: () {},
+                        sendCommentFunction: () {},
+                        selected: false,
                       ),
                     ),
             ),

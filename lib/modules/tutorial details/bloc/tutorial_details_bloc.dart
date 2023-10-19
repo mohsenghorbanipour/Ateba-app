@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:ateba_app/core/network/api_response_model.dart';
 import 'package:ateba_app/core/network/pagination_response_model.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
@@ -5,6 +7,7 @@ import 'package:ateba_app/modules/tutorial%20details/data/models/comment.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/tutorial_details.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/remote/tutorial_details_remote_provider.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class TutorialDetaialsBloc extends ChangeNotifier {
   TutorialDetaialsBloc(String slug) {
@@ -14,6 +17,7 @@ class TutorialDetaialsBloc extends ChangeNotifier {
 
   bool loading = true;
   bool commentLoading = true;
+  bool sendCommentLoading = false;
 
   TutorialDetaials? tutorialDetaials;
   List<Comment> comments = [];
@@ -39,6 +43,15 @@ class TutorialDetaialsBloc extends ChangeNotifier {
 
   int? commentIdForShowReplies;
   List<Comment> replies = [];
+
+  String _comment = '';
+  String get comment => _comment;
+  set comment(val) {
+    _comment = val;
+    notifyListeners();
+  }
+
+  final TextEditingController commentController = TextEditingController();
 
   Future<void> loadToturialDetials(String slug) async {
     loading = true;
@@ -193,13 +206,54 @@ class TutorialDetaialsBloc extends ChangeNotifier {
     }
   }
 
-  Future<void> sendComment() async {
+  Future<void> sendComment(BuildContext context, String slug) async {
+    sendCommentLoading = true;
+    notifyListeners();
     try {
-      // await TutorialDetaialsRemoteProvider.sendComment(
-      //   // slug,
-      // );
+      ApiResponseModel<Comment>? response =
+          await TutorialDetaialsRemoteProvider.sendComment(
+        slug,
+        comment,
+      );
+      if (response != null && response.data != null) {
+        comments.insert(0, response.data!);
+        commentController.clear();
+        comment = '';
+        Navigator.of(context).pop();
+      }
+      sendCommentLoading = false;
+      notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+      sendCommentLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> sendReply(
+      BuildContext context, String slug, int replyTo, int commentIndex) async {
+    sendCommentLoading = true;
+    notifyListeners();
+    try {
+      ApiResponseModel<Comment>? response =
+          await TutorialDetaialsRemoteProvider.sendComment(
+        slug,
+        comment,
+        replyTo: replyTo,
+      );
+      if (response != null && response.data != null) {
+        comments[commentIndex].replies_count =
+            (comments[commentIndex].replies_count ?? 0) + 1;
+        commentController.clear();
+        comment = '';
+        Navigator.of(context).pop();
+      }
+      sendCommentLoading = false;
+      notifyListeners();
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      sendCommentLoading = false;
+      notifyListeners();
     }
   }
 

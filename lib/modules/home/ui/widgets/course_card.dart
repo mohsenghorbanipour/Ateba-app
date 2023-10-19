@@ -134,9 +134,6 @@ class CourseCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SvgPicture.asset(
-                    Assets.bookmarkIc,
-                  ),
                 ],
               ),
               Padding(

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ateba_app/core/constants/remote_routes.dart';
 import 'package:ateba_app/core/network/api_response_model.dart';
 import 'package:ateba_app/core/network/network_helper.dart';
@@ -56,13 +58,34 @@ class TutorialDetaialsRemoteProvider {
     }
   }
 
-  static Future<void> sendComment(String slug) async {
+  static Future<ApiResponseModel<Comment>?> sendComment(
+    String slug,
+    String comment, {
+    int? replyTo,
+  }) async {
+    FormData data = FormData.fromMap(
+      {
+        'content': comment,
+        'reply_to': replyTo,
+      },
+    );
     try {
       Response response = await _networkHelper.dio.post(
         RemoteRoutes.getTutorialComments(slug),
+        data: data,
       );
+      if (response.statusCode == 200) {
+        return ApiResponseModel.fromJson(
+          response.data,
+          (json) => Comment.fromJson(
+            json,
+          ),
+        );
+      }
+      return null;
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+      return null;
     }
   }
 

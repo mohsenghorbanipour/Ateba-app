@@ -43,5 +43,13 @@
     "access_by_subscription": "دسترسی با اشتراک",
     "buy_a_subscription": "خرید اشتراک",
     "training_packages": "بسته های آموزشی",
-    "show_comments": "نمایش پاسخ ها"
+    "show_comments": "نمایش پاسخ ها",
+    "today": "امروز",
+    "yesterday": "دیروز",
+    "reply_to": "پاسخ به",
+    "my_products": "محصولات من",
+    "bookmarks": "نشان شده ها",
+    "ofline_gallery": "گالری آفلاین",
+    "course_and_packages": "(دوره ها و بسته های آموزشی)",
+    "toturials": "(آموزش ها)"
 }

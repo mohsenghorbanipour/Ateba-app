@@ -1,6 +1,7 @@
 import 'package:ateba_app/core/constants/app_config.dart';
 import 'package:ateba_app/core/router/ateba_router.dart';
 import 'package:ateba_app/core/theme/bloc/theme_bloc.dart';
+import 'package:ateba_app/modules/bookmarks/bloc/bookmarks_bloc.dart';
 import 'package:ateba_app/modules/categories/bloc/categories_bloc.dart';
 import 'package:ateba_app/modules/home/bloc/home_bloc.dart';
 import 'package:ateba_app/modules/main/bloc/main_page_bloc.dart';
@@ -34,6 +35,9 @@ class AtebaApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (context) => HomeBloc()..loadDate(),
             lazy: false,
+          ),
+          ChangeNotifierProvider(
+            create: (context) => BookmarksBloc(),
           ),
         ],
         child: EasyLocalization(
