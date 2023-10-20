@@ -26,7 +26,19 @@ class CommentsWidget extends StatelessWidget {
             ),
           ),
           ButtonComponent(
-            onPressed: () {},
+            onPressed: () {
+              if (Provider.of<CourseDetailsBloc>(context, listen: false)
+                  .comment
+                  .isNotEmpty) {
+                Provider.of<CourseDetailsBloc>(context, listen: false)
+                    .sendComment(
+                  context,
+                  '',
+                );
+              }
+            },
+            loading: context.select<CourseDetailsBloc, bool>(
+                (bloc) => bloc.sendCommentLoading),
             color: Colors.transparent,
             borderSide: BorderSide(
               width: 1.5,

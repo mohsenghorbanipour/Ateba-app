@@ -21,7 +21,7 @@ class NetworkHelper {
         validateStatus: (status) => status! < 500,
         headers: {
           'Authorization':
-              'Bearer 6|ateba_token_LlO0VxGswZ3UWYXDHDmkZd3oYtsYBvwNIfMw9sgl08dad2d6',
+              'Bearer 1|ateba_token_3oWj0zoqcQYtk12z8NSJo2ehEhYAT5PJGA3i33eW10278cad',
           'Accept': 'application/json'
         }),
   );

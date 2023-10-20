@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class LessonsWidget extends StatelessWidget {
-  const LessonsWidget({super.key});
+  const LessonsWidget({
+    required this.slug,
+    super.key,
+  });
+
+  final String slug;
 
   @override
   Widget build(BuildContext context) =>
@@ -20,6 +25,7 @@ class LessonsWidget extends StatelessWidget {
           ),
           shrinkWrap: true,
           itemBuilder: (context, index) => CourseToturialsCard(
+            slug: slug,
             tutorial: tutorials[index],
           ),
         ),

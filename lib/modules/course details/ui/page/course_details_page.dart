@@ -214,7 +214,9 @@ class CourseDetailsPage extends StatelessWidget {
                         [
                           if (context.select<CourseDetailsBloc, bool>(
                               (bloc) => bloc.tabState == TabState.lessons))
-                            const LessonsWidget()
+                            LessonsWidget(
+                              slug: slug,
+                            )
                           else if (context.select<CourseDetailsBloc, bool>(
                               (bloc) => bloc.tabState == TabState.descriptions))
                             const DescriptionWidget()

@@ -51,4 +51,35 @@ class CourseDetailsRemoteProvider {
       return null;
     }
   }
+
+  static Future<ApiResponseModel<Comment>?> sendComment(
+    String slug,
+    String comment, {
+    int? replyTo,
+  }) async {
+    FormData data = FormData.fromMap(
+      {
+        'content': comment,
+        'reply_to': replyTo,
+      },
+    );
+    try {
+      Response response = await _networkHelper.dio.post(
+        RemoteRoutes.getTutorialComments(slug),
+        data: data,
+      );
+      if (response.statusCode == 200) {
+        return ApiResponseModel.fromJson(
+          response.data,
+          (json) => Comment.fromJson(
+            json,
+          ),
+        );
+      }
+      return null;
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      return null;
+    }
+  }
 }
