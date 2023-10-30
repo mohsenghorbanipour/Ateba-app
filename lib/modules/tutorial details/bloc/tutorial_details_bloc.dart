@@ -41,7 +41,7 @@ class TutorialDetaialsBloc extends ChangeNotifier {
     notifyListeners();
   }
 
-  int? commentIdForShowReplies;
+  String? commentIdForShowReplies;
   List<Comment> replies = [];
 
   String _comment = '';
@@ -230,8 +230,8 @@ class TutorialDetaialsBloc extends ChangeNotifier {
     }
   }
 
-  Future<void> sendReply(
-      BuildContext context, String slug, int replyTo, int commentIndex) async {
+  Future<void> sendReply(BuildContext context, String slug, String replyTo,
+      int commentIndex) async {
     sendCommentLoading = true;
     notifyListeners();
     try {
@@ -273,7 +273,7 @@ class TutorialDetaialsBloc extends ChangeNotifier {
     }
   }
 
-  Future<void> loadReplies(int id) async {
+  Future<void> loadReplies(String id) async {
     commentIdForShowReplies = id;
     notifyListeners();
     try {
@@ -284,6 +284,16 @@ class TutorialDetaialsBloc extends ChangeNotifier {
       if (response != null) {
         replies = response.data ?? [];
       }
+      notifyListeners();
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  void hideReplies() {
+    try {
+      commentIdForShowReplies = null;
+      replies.clear();
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);

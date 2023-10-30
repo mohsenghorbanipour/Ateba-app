@@ -4,7 +4,6 @@ import 'package:ateba_app/core/utils/date_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/tutorial%20details/bloc/tutorial_details_bloc.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/comment.dart';
-import 'package:ateba_app/modules/tutorial%20details/ui/modals/send_comment_modals.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/widgets/reply_card.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -148,10 +147,34 @@ class CommentCard extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 16),
                   child: InkWell(
                     onTap: () {
-                      Provider.of<TutorialDetaialsBloc>(context, listen: false)
-                          .loadReplies(
-                        comment.id!,
-                      );
+                      if (Provider.of<TutorialDetaialsBloc>(context,
+                                  listen: false)
+                              .replies
+                              .isNotEmpty &&
+                          (Provider.of<TutorialDetaialsBloc>(context,
+                                      listen: false)
+                                  .commentIdForShowReplies
+                                  ?.isNotEmpty ??
+                              false)) {
+                        if (Provider.of<TutorialDetaialsBloc>(context,
+                                    listen: false)
+                                .commentIdForShowReplies ==
+                            comment.id) {
+                          Provider.of<TutorialDetaialsBloc>(context,
+                                  listen: false)
+                              .hideReplies();
+                        } else {
+                          Provider.of<TutorialDetaialsBloc>(context,
+                                  listen: false)
+                              .loadReplies(comment.id ?? '');
+                        }
+                      } else {
+                        Provider.of<TutorialDetaialsBloc>(context,
+                                listen: false)
+                            .loadReplies(
+                          comment.id ?? '',
+                        );
+                      }
                     },
                     child: Row(
                       children: [
@@ -163,7 +186,16 @@ class CommentCard extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(right: 4),
                           child: Text(
-                            '${'show_comments'.tr()} (${TextInputFormatters.toPersianNumber(comment.replies_count.toString())})',
+                            (context.select<TutorialDetaialsBloc, bool>(
+                                    (bloc) =>
+                                        (bloc.commentIdForShowReplies
+                                                ?.isNotEmpty ??
+                                            false) &&
+                                        bloc.replies.isNotEmpty &&
+                                        bloc.commentIdForShowReplies ==
+                                            comment.id))
+                                ? '${'hide_answers'.tr()} (${TextInputFormatters.toPersianNumber(comment.replies_count.toString())})'
+                                : '${'show_comments'.tr()} (${TextInputFormatters.toPersianNumber(comment.replies_count.toString())})',
                             style: Theme.of(context)
                                 .textTheme
                                 .labelSmall

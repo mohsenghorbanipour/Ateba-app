@@ -20,7 +20,7 @@ class Comment implements BaseModel<Comment> {
     this.replies_count,
   });
 
-  final int? id;
+  final String? id;
   final String? content;
   final int? parent_id;
   final String? created_at;

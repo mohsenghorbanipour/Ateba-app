@@ -15,7 +15,7 @@ PackageDetails _$PackageDetailsFromJson(Map<String, dynamic> json) =>
       updated_at: json['updated_at'] as String?,
       price: json['price'] as int?,
       tutorials: (json['tutorials'] as List<dynamic>?)
-          ?.map((e) => Tutorial.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => TutorialPackage.fromJson(e as Map<String, dynamic>))
           .toList(),
       description: json['description'] as String?,
       views_count: json['views_count'] as int?,

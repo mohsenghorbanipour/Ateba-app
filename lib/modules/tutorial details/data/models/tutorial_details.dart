@@ -41,7 +41,7 @@ class TutorialDetaials implements BaseModel<TutorialDetaials> {
   bool? is_liked;
   bool? is_bookmarked;
   final int? comments_count;
-  final List<Video>? videos;
+  final dynamic videos;
   final List<Attachment>? attachments;
   final List<Comment>? top_comments;
 

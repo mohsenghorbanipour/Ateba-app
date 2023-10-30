@@ -21,7 +21,7 @@ class CourseToturialsCard extends StatelessWidget {
           context.goNamed(
             Routes.tutorialsDetails,
             pathParameters: {
-              'slug': 'slug',
+              'slug': slug,
               'link': tutorial.slug ?? '',
             },
           );

@@ -52,7 +52,9 @@ class ColorPalette {
   final Color darkWhite = const Color(0xffF5F3F3);
   final Color midGrey = const Color(0xffE7ECEF);
   final Color white = Colors.white;
+  final Color extraLightSilver = const Color(0xffFAFAFA);
   final Color black = Colors.black;
+  final Color darkGrey = const Color(0xffdddddd);
 
   static ColorPalette light = const ColorPalette(
     primary: Color(0xff12B2B2),

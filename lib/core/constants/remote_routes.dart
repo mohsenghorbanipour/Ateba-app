@@ -1,4 +1,8 @@
 class RemoteRoutes {
+
+  // Auth Api
+  static const String getUserSubscription = 'subscription';
+
   // Banners Api
   static const String getTopBanner = 'banners/slider';
   static const String getMiddleBanner = 'banners/middle';
@@ -18,6 +22,7 @@ class RemoteRoutes {
   static const String getCourses = 'courses';
   static String getCourseDetails(String slug) => 'courses/$slug';
   static String getCourseComment(String slug) => 'courses/$slug/comments';
+  static orderCourse(String slug) => 'courses/$slug/order';
 
   // Package Api
   static const String getPackages = 'packages';
@@ -27,8 +32,19 @@ class RemoteRoutes {
   // Comments Api
   static String likeComment(String id) => 'comments/$id/like';
   static String deleteComment(String id) => 'comments/$id';
-  static String getCommentReplies(int id) => 'comments/$id/replies';
+  static String getCommentReplies(String id) => 'comments/$id/replies';
 
   // Bookmarks Api
   static String getBookmarks = 'bookmarks';
+
+  // Cart Api
+  static const String getOrders = 'cart';
+  static String deleteOrder(String id) => 'order/$id';
+  static const String applyDiscount = 'cart/discount';
+  static const String payment = 'cart/pay';
+
+  // Subscription Api
+  static const String getSubscriptionPlans = 'subscription/plans';
+  static String discountPreview(int id) => 'plans/$id/order';
+
 }

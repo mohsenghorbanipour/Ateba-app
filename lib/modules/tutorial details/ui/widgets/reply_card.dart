@@ -28,15 +28,18 @@ class ReplyCard extends StatelessWidget {
                 Row(
                   children: [
                     Container(
-                      width: 36,
-                      height: 36,
+                      width: 28,
+                      height: 28,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: ColorPalette.of(context).error,
+                        color: ColorPalette.of(context).primary,
                       ),
                       child: Center(
-                        child: SvgPicture.asset(
-                          Assets.personUserIc,
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: SvgPicture.asset(
+                            Assets.personUserIc,
+                          ),
                         ),
                       ),
                     ),
@@ -49,6 +52,7 @@ class ReplyCard extends StatelessWidget {
                             children: [
                               Text(
                                 reply.user?.name ?? '',
+                                style: Theme.of(context).textTheme.labelMedium,
                               ),
                               if (reply.is_pined ?? false)
                                 Padding(
@@ -66,7 +70,9 @@ class ReplyCard extends StatelessWidget {
                             style: Theme.of(context)
                                 .textTheme
                                 .labelMedium
-                                ?.copyWith(fontSize: 10),
+                                ?.copyWith(
+                                  fontSize: 10,
+                                ),
                           )
                         ],
                       ),
@@ -92,6 +98,9 @@ class ReplyCard extends StatelessWidget {
                             (reply.is_liked ?? false)
                                 ? Assets.likeHandFillIc
                                 : Assets.likeHandIc,
+                            color: ColorPalette.of(context)
+                                .textPrimary
+                                .withOpacity(0.9),
                           ),
                         ],
                       ),
@@ -101,13 +110,17 @@ class ReplyCard extends StatelessWidget {
                     ),
                     SvgPicture.asset(
                       Assets.addIc,
+                      color:
+                          ColorPalette.of(context).textPrimary.withOpacity(0.9),
                     ),
                     const SizedBox(
                       width: 4,
                     ),
                     Text(
                       'your_answer'.tr(),
-                      style: Theme.of(context).textTheme.labelSmall,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            fontSize: 8,
+                          ),
                     )
                   ],
                 ),
@@ -117,6 +130,7 @@ class ReplyCard extends StatelessWidget {
               padding: const EdgeInsets.only(top: 8),
               child: Text(
                 reply.content ?? '',
+                style: Theme.of(context).textTheme.labelMedium,
               ),
             ),
           ],

@@ -21,6 +21,10 @@ class CommentsWidget extends StatelessWidget {
               labelText: 'your_comment'.tr(),
               name: 'comment',
               maxLines: 2,
+              onChanged: (val) {
+                Provider.of<CourseDetailsBloc>(context, listen: false).comment =
+                    val;
+              },
               textAlign: TextAlign.right,
               hintText: 'comment_hint'.tr(),
             ),
@@ -37,6 +41,7 @@ class CommentsWidget extends StatelessWidget {
                 );
               }
             },
+            loadingColor: ColorPalette.of(context).primary,
             loading: context.select<CourseDetailsBloc, bool>(
                 (bloc) => bloc.sendCommentLoading),
             color: Colors.transparent,

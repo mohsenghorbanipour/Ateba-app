@@ -38,13 +38,12 @@ class PinPutComponent extends StatelessWidget {
             onChanged: onChanged,
             focusNode: _pinPutFocusNode,
             controller: controller,
-            length: fieldCount,
+            length: 6,
 
             defaultPinTheme: PinTheme(
-              margin: const EdgeInsets.symmetric(horizontal: 8),
+              // margin: const EdgeInsets.symmetric(horizontal: 8),
               height: 45,
-              width: 50,
-              constraints: const BoxConstraints(maxWidth: 47, minWidth: 47),
+              width: 100,
               textStyle: TextStyle(
                 fontSize: 20,
                 color: ColorPalette.of(context).primary,
@@ -56,9 +55,9 @@ class PinPutComponent extends StatelessWidget {
               ),
             ),
             submittedPinTheme: PinTheme(
-              margin: const EdgeInsets.symmetric(horizontal: 8),
+              // margin: const EdgeInsets.symmetric(horizontal: 8),
               height: 45,
-              width: 50,
+              width: 100,
               textStyle: TextStyle(
                 fontSize: 20,
                 color: ColorPalette.of(context).primary,
@@ -74,9 +73,9 @@ class PinPutComponent extends StatelessWidget {
               ),
             ),
             focusedPinTheme: PinTheme(
-              margin: const EdgeInsets.symmetric(horizontal: 8),
+              // margin: const EdgeInsets.symmetric(horizontal: 8),
               height: 45,
-              width: 50,
+              width: 100,
               textStyle: TextStyle(
                 fontSize: 20,
                 color: ColorPalette.of(context).error,
@@ -92,9 +91,9 @@ class PinPutComponent extends StatelessWidget {
               ),
             ),
             followingPinTheme: PinTheme(
-              margin: const EdgeInsets.symmetric(horizontal: 8),
+              // margin: const EdgeInsets.symmetric(horizontal: 8),
               height: 45,
-              width: 50,
+              width: 100,
               textStyle: TextStyle(
                 fontSize: 20,
                 color: ColorPalette.of(context).error,
@@ -110,9 +109,9 @@ class PinPutComponent extends StatelessWidget {
               ),
             ),
             disabledPinTheme: PinTheme(
-              margin: const EdgeInsets.symmetric(horizontal: 8),
+              // margin: const EdgeInsets.symmetric(horizontal: 8),
               height: 45,
-              width: 50,
+              width: 100,
               textStyle: TextStyle(
                 fontSize: 20,
                 color: ColorPalette.of(context).error,
@@ -128,9 +127,9 @@ class PinPutComponent extends StatelessWidget {
               ),
             ),
             errorPinTheme: PinTheme(
-              margin: const EdgeInsets.symmetric(horizontal: 8),
+              // margin: const EdgeInsets.symmetric(horizontal: 8),
               height: 45,
-              width: 50,
+              width: 100,
               textStyle: TextStyle(
                 fontSize: 20,
                 color: ColorPalette.of(context).error,

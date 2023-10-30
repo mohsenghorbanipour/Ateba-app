@@ -38,6 +38,22 @@ class Assets {
   static const String editWriteIc = '${_iconsBasePath}edit_write_ic.svg';
   static const String starIc = '${_iconsBasePath}star_ic.svg';
   static const String pinIc = '${_iconsBasePath}pin_ic.svg';
+  static const String videoIc = '${_iconsBasePath}video_ic.svg';
+  static const String clockFillIc = '${_iconsBasePath}clock_fill_ic.svg';
+  static const String closeIc = '${_iconsBasePath}close_ic.svg';
+  static const String notificationIc = '${_iconsBasePath}notification_ic.svg';
+  static const String historyIc = '${_iconsBasePath}history_ic.svg';
+  static const String infoIc = '${_iconsBasePath}info_ic.svg';
+  static const String questionIc = '${_iconsBasePath}question_ic.svg';
+  static const String rulesIc = '${_iconsBasePath}rules_ic.svg';
+  static const String exitIc = '${_iconsBasePath}exit_ic.svg';
+  static const String subscriptionVideoImg =
+      '${_imagesBasePath}subscription_video_img.png';
+  static const String arrowDownIc = '${_iconsBasePath}arrow_down_ic.svg';
+  static const String arrowUpIc = '${_iconsBasePath}arrow_up_ic.svg';
+  static const String downloadedIc = '${_iconsBasePath}downloaded_ic.svg';
+  static const String noActiveSubscription =
+      '${_imagesBasePath}no_active_subscription.svg';
 
   static const String testIc = '${_iconsBasePath}test_ic.png';
   static const String test2Ic = '${_iconsBasePath}test_2_ic.svg';

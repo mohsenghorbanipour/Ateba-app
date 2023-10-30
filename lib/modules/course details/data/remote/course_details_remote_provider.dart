@@ -3,6 +3,7 @@ import 'package:ateba_app/core/network/api_response_model.dart';
 import 'package:ateba_app/core/network/network_helper.dart';
 import 'package:ateba_app/core/network/pagination_response_model.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
+import 'package:ateba_app/modules/cart/data/models/orders_response.dart';
 import 'package:ateba_app/modules/course%20details/data/models/course_details.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/comment.dart';
 import 'package:dio/dio.dart';
@@ -66,7 +67,10 @@ class CourseDetailsRemoteProvider {
     try {
       Response response = await _networkHelper.dio.post(
         RemoteRoutes.getTutorialComments(slug),
-        data: data,
+        data: {
+          'content': comment,
+          'reply_to': replyTo,
+        },
       );
       if (response.statusCode == 200) {
         return ApiResponseModel.fromJson(
@@ -74,6 +78,25 @@ class CourseDetailsRemoteProvider {
           (json) => Comment.fromJson(
             json,
           ),
+        );
+      }
+      return null;
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      return null;
+    }
+  }
+
+  static Future<ApiResponseModel<OrdersResponse>?> orderCourse(
+      String slug) async {
+    try {
+      Response response = await _networkHelper.dio.post(
+        RemoteRoutes.orderCourse(slug),
+      );
+      if (response.statusCode == 200) {
+        return ApiResponseModel.fromJson(
+          response.data,
+          (json) => OrdersResponse.fromJson(json),
         );
       }
       return null;

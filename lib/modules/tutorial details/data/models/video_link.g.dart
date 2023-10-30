@@ -9,6 +9,7 @@ part of 'video_link.dart';
 VideoLink _$VideoLinkFromJson(Map<String, dynamic> json) => VideoLink(
       url: json['url'] as String?,
       quality: json['quality'] as String?,
+      size: json['size'] as String?,
     );
 
 Map<String, dynamic> _$VideoLinkToJson(VideoLink instance) {
@@ -22,5 +23,6 @@ Map<String, dynamic> _$VideoLinkToJson(VideoLink instance) {
 
   writeNotNull('url', instance.url);
   writeNotNull('quality', instance.quality);
+  writeNotNull('size', instance.size);
   return val;
 }

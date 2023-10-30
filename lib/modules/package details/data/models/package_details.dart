@@ -1,6 +1,8 @@
 import 'package:ateba_app/core/base/base_model.dart';
 import 'package:ateba_app/modules/home/data/models/teacher.dart';
 import 'package:ateba_app/modules/home/data/models/tutorial.dart';
+import 'package:ateba_app/modules/package%20details/data/models/tutorial_package.dart';
+import 'package:ateba_app/modules/tutorial%20details/data/models/tutorial_details.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'package_details.g.dart';
@@ -29,7 +31,7 @@ class PackageDetails implements BaseModel<PackageDetails>{
   final int? tutorials_count;
   final String? updated_at;
   final int? price;
-  final List<Tutorial>? tutorials;
+  final List<TutorialPackage>? tutorials;
   final String? description;
   final int? views_count;
   final int? students_count;

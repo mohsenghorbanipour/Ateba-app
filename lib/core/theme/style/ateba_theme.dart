@@ -56,8 +56,8 @@ class AtebaTheme {
         ),
         textStyle: MaterialStateProperty.all(
           TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
             color: ColorPalette.light.white,
             fontFamily: Assets.yekanBakhFont,
           ),

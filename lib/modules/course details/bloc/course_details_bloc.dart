@@ -1,20 +1,16 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:ateba_app/core/base/enums/tab_state.dart';
 import 'package:ateba_app/core/network/api_response_model.dart';
 import 'package:ateba_app/core/network/pagination_response_model.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
+import 'package:ateba_app/modules/cart/bloc/cart_bloc.dart';
+import 'package:ateba_app/modules/cart/data/models/orders_response.dart';
 import 'package:ateba_app/modules/course%20details/data/models/course_details.dart';
 import 'package:ateba_app/modules/course%20details/data/remote/course_details_remote_provider.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/comment.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-enum TabState {
-  lessons,
-  descriptions,
-  teachers,
-  comments,
-}
 
 class CourseDetailsBloc extends ChangeNotifier {
   CourseDetailsBloc(String slug) {
@@ -32,6 +28,7 @@ class CourseDetailsBloc extends ChangeNotifier {
   bool loading = true;
   bool commentLoading = true;
   bool sendCommentLoading = false;
+  bool orderLoading = false;
 
   CourseDetails? courseDetails;
 
@@ -102,5 +99,22 @@ class CourseDetailsBloc extends ChangeNotifier {
     }
   }
 
-  
+  Future<void> orderCourse(String slug) async {
+    orderLoading = true;
+    notifyListeners();
+    try {
+      ApiResponseModel<OrdersResponse>? response =
+          await CourseDetailsRemoteProvider.orderCourse(slug);
+      if (response != null) {
+        CartBloc().ordersResponse = response.data;
+      }
+      orderLoading = false;
+      notifyListeners();
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      orderLoading = false;
+      notifyListeners();
+    }
+  }
+
 }

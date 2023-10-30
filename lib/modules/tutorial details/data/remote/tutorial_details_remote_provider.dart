@@ -61,7 +61,7 @@ class TutorialDetaialsRemoteProvider {
   static Future<ApiResponseModel<Comment>?> sendComment(
     String slug,
     String comment, {
-    int? replyTo,
+    String? replyTo,
   }) async {
     FormData data = FormData.fromMap(
       {
@@ -194,7 +194,7 @@ class TutorialDetaialsRemoteProvider {
     }
   }
 
-  static Future<ApiResponseModel<List<Comment>>?> getReplies(int id) async {
+  static Future<ApiResponseModel<List<Comment>>?> getReplies(String id) async {
     try {
       Response response = await _networkHelper.dio.get(
         RemoteRoutes.getCommentReplies(id),

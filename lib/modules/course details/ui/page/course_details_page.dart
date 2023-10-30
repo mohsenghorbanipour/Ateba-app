@@ -1,8 +1,10 @@
+import 'package:ateba_app/core/base/enums/tab_state.dart';
 import 'package:ateba_app/core/components/button_component.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/color_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
+import 'package:ateba_app/modules/cart/bloc/cart_bloc.dart';
 import 'package:ateba_app/modules/course%20details/bloc/course_details_bloc.dart';
 import 'package:ateba_app/modules/course%20details/ui/widgets/comments_widget.dart';
 import 'package:ateba_app/modules/course%20details/ui/widgets/course_details_shimmer.dart';
@@ -273,9 +275,17 @@ class CourseDetailsPage extends StatelessWidget {
                       Expanded(
                         flex: 3,
                         child: ButtonComponent(
-                          onPressed: () {},
+                          onPressed: () {
+                            if (Provider.of<CartBloc>(context, listen: false)
+                                .checkExistOrderInCart('course', slug)) {
+                            } else {
+                              Provider.of<CourseDetailsBloc>(context,
+                                      listen: false)
+                                  .orderCourse(slug);
+                            }
+                          },
                           loading: context.select<CourseDetailsBloc, bool>(
-                              (bloc) => bloc.loading),
+                              (bloc) => bloc.loading || bloc.orderLoading),
                           height: 32,
                           child: Text(
                             '${TextInputFormatters.toPersianNumber(context.select<CourseDetailsBloc, String>((bloc) => bloc.courseDetails?.price.toString() ?? '0'))}${'toman'.tr()} ${'add_to_basket'.tr()}',

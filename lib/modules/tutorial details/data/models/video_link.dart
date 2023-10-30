@@ -8,10 +8,12 @@ class VideoLink implements BaseModel<VideoLink> {
   VideoLink({
     this.url,
     this.quality,
+    this.size,
   });
 
   final String? url;
   final String? quality;
+  final String? size;
 
   @override
   factory VideoLink.fromJson(Map<String, dynamic> json) =>

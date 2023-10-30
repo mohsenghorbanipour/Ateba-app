@@ -33,15 +33,18 @@ class SendCommentModals extends StatelessWidget {
           height: MediaQuery.of(context).size.height,
           color: ColorPalette.of(context).shadow,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(
-                child: InkWell(
-                  onTap: () async {
-                    Navigator.of(context).pop();
-                    await onWillPop();
-                  },
-                  child: const SizedBox(
-                    width: double.infinity,
+                child: SingleChildScrollView(
+                  child: InkWell(
+                    onTap: () async {
+                      Navigator.of(context).pop();
+                      await onWillPop();
+                    },
+                    child: const SizedBox(
+                      width: double.infinity,
+                    ),
                   ),
                 ),
               ),

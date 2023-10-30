@@ -1,7 +1,10 @@
+import 'package:ateba_app/core/base/bloc/download_video_bloc.dart';
 import 'package:ateba_app/core/constants/app_config.dart';
 import 'package:ateba_app/core/router/ateba_router.dart';
 import 'package:ateba_app/core/theme/bloc/theme_bloc.dart';
+import 'package:ateba_app/modules/auth/bloc/auth_bloc.dart';
 import 'package:ateba_app/modules/bookmarks/bloc/bookmarks_bloc.dart';
+import 'package:ateba_app/modules/cart/bloc/cart_bloc.dart';
 import 'package:ateba_app/modules/categories/bloc/categories_bloc.dart';
 import 'package:ateba_app/modules/home/bloc/home_bloc.dart';
 import 'package:ateba_app/modules/main/bloc/main_page_bloc.dart';
@@ -23,6 +26,13 @@ class AtebaApp extends StatelessWidget {
             create: (BuildContext createContext) => AtebaRouter(),
           ),
           ChangeNotifierProvider(
+            create: (context) => DownloadVideoBloc()..init(),
+            lazy: false,
+          ),
+          ChangeNotifierProvider(
+            create: (context) => AuthBloc(),
+          ),
+          ChangeNotifierProvider(
             create: (context) => ThemeBloc(),
           ),
           ChangeNotifierProvider(
@@ -30,14 +40,15 @@ class AtebaApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (context) => CategoriesBloc(),
-            lazy: false,
           ),
           ChangeNotifierProvider(
-            create: (context) => HomeBloc()..loadDate(),
-            lazy: false,
+            create: (context) => HomeBloc(),
           ),
           ChangeNotifierProvider(
             create: (context) => BookmarksBloc(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => CartBloc(),
           ),
         ],
         child: EasyLocalization(

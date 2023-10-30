@@ -23,9 +23,7 @@ TutorialDetaials _$TutorialDetaialsFromJson(Map<String, dynamic> json) =>
       is_liked: json['is_liked'] as bool?,
       is_bookmarked: json['is_bookmarked'] as bool?,
       comments_count: json['comments_count'] as int?,
-      videos: (json['videos'] as List<dynamic>?)
-          ?.map((e) => Video.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      videos: json['videos'],
       attachments: (json['attachments'] as List<dynamic>?)
           ?.map((e) => Attachment.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -56,7 +54,7 @@ Map<String, dynamic> _$TutorialDetaialsToJson(TutorialDetaials instance) {
   writeNotNull('is_liked', instance.is_liked);
   writeNotNull('is_bookmarked', instance.is_bookmarked);
   writeNotNull('comments_count', instance.comments_count);
-  writeNotNull('videos', instance.videos?.map((e) => e.toJson()).toList());
+  writeNotNull('videos', instance.videos);
   writeNotNull(
       'attachments', instance.attachments?.map((e) => e.toJson()).toList());
   writeNotNull(

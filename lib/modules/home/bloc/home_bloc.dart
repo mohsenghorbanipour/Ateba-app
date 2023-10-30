@@ -14,7 +14,7 @@ class HomeBloc extends ChangeNotifier {
   bool coursesLoading = true;
   List<Course> courses = [];
 
-  bool toturialsLoading = false;
+  bool toturialsLoading = true;
   List<Tutorial> tutorials = [];
 
   bool topBannerLoading = true;
@@ -23,7 +23,7 @@ class HomeBloc extends ChangeNotifier {
   bool middleBannerLoading = true;
   BannerSlider? middleBanners;
 
-  bool packagesLoading = false;
+  bool packagesLoading = true;
   List<Package> packages = [];
 
   // ==== ==== //
@@ -98,7 +98,7 @@ class HomeBloc extends ChangeNotifier {
     try {
       PaginationResponseModel<List<Package>>? response =
           await HomeRemoteProvider.getPackages();
-      if(response != null) {
+      if (response != null) {
         packages = response.data ?? [];
       }
       packagesLoading = false;

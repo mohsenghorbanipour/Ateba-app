@@ -1,26 +1,30 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:ateba_app/core/resources/cache%20provider/video_cache_manager.dart';
+import 'package:ateba_app/core/base/bloc/download_video_bloc.dart';
 import 'package:ateba_app/core/components/textfiled_component.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/date_helper.dart';
-import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/tutorial%20details/bloc/tutorial_details_bloc.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/attachment.dart';
+import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';
+import 'package:ateba_app/modules/tutorial%20details/ui/dialogs/download_dialog.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/modals/send_comment_modals.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/widgets/attachment_tile.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/widgets/comment_card.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/widgets/tutorial_details_shimmer.dart';
+import 'package:ateba_app/modules/tutorial%20details/ui/widgets/tutorial_download_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
@@ -209,22 +213,22 @@ class TutorialDetailsPage extends StatelessWidget {
                           ),
                           InkWell(
                             onTap: () async {
-                              VideoPlayerController? controller =
-                                  await VideoCacheManager.getVideoController(
-                                Provider.of<TutorialDetaialsBloc>(context,
-                                            listen: false)
-                                        .tutorialDetaials
-                                        ?.videos
-                                        ?.first
-                                        .hls_url ??
-                                    '',
-                              );
                               context.goNamed(
                                 Routes.videoPalyer,
                                 pathParameters: {
                                   'slug': slug,
                                 },
-                                extra: controller,
+                                extra: {
+                                  'is_hls_link': true,
+                                  'hls_link': Provider.of<TutorialDetaialsBloc>(
+                                              context,
+                                              listen: false)
+                                          .tutorialDetaials
+                                          ?.videos
+                                          ?.first
+                                          .hls_url ??
+                                      '',
+                                },
                               );
                             },
                             child: Container(
@@ -258,7 +262,16 @@ class TutorialDetailsPage extends StatelessWidget {
                                   ),
                                   child: Center(
                                     child: Icon(
-                                      Icons.play_arrow_rounded,
+                                      context.select<TutorialDetaialsBloc,
+                                                  bool>(
+                                              (bloc) =>
+                                                  (bloc.tutorialDetaials?.videos
+                                                      is int) &&
+                                                  (bloc.tutorialDetaials
+                                                          ?.videos ==
+                                                      402))
+                                          ? Icons.lock
+                                          : Icons.play_arrow_rounded,
                                       color: ColorPalette.light.background,
                                       size: 24,
                                     ),
@@ -367,17 +380,8 @@ class TutorialDetailsPage extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    Container(
-                                      height: 24,
-                                      padding: const EdgeInsets.all(4),
-                                      margin: const EdgeInsets.only(right: 12),
-                                      decoration: BoxDecoration(
-                                        color: ColorPalette.of(context).border,
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      child: SvgPicture.asset(
-                                        Assets.downloadIc,
-                                      ),
+                                    TutorialDownloadWidget(
+                                      slug: slug,
                                     ),
                                   ],
                                 )
@@ -645,7 +649,7 @@ class TutorialDetailsPage extends StatelessWidget {
                                 },
                                 selected: (bloc.selectedComment != null)
                                     ? bloc.comments[index].id ==
-                                        bloc.selectedComment
+                                        bloc.selectedComment.toString()
                                     : false,
                                 sendCommentFunction: () {
                                   showModalBottomSheet(
@@ -678,7 +682,7 @@ class TutorialDetailsPage extends StatelessWidget {
                                               .sendReply(
                                                   context,
                                                   slug,
-                                                  bloc.comments[index].id ?? 0,
+                                                  bloc.comments[index].id ?? '',
                                                   index);
                                         },
                                         onChange: (val) {
