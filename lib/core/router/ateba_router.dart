@@ -15,6 +15,7 @@ import 'package:ateba_app/modules/subscription/ui/page/subscription_page.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/page/tutorial_details_page.dart';
 import 'package:ateba_app/modules/category%20details/ui/page/category_details_page.dart';
 import 'package:ateba_app/modules/video%20player/ui/page/video_player_page.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
@@ -24,8 +25,10 @@ class AtebaRouter {
   late GoRouter router = GoRouter(
     debugLogDiagnostics: true,
     initialLocation: Routes.splash,
+    observers: <NavigatorObserver>[
+      BotToastNavigatorObserver(),
+    ],
 
-    // observers: <NavigatorObserver>[BotToastNavigatorObserver()],
     // urlPathStrategy: UrlPathStrategy.path,
     // errorPageBuilder: (context, state) => MaterialPage<void>(
     //   key: state.pageKey,
@@ -127,14 +130,14 @@ class AtebaRouter {
             pageBuilder: (state) => const SubscriptionPage(),
           ),
           _routeFade(
-            path: Routes.categoryDetials,
-            name: Routes.categoryDetials,
-            pageBuilder: (state) => CategoryDetailsPage(
-              slug: state.pathParameters['slug'] as String,
-              category: state.extra as category.Category,
-            ),
-            routes: [
-              _routeFade(
+              path: Routes.categoryDetials,
+              name: Routes.categoryDetials,
+              pageBuilder: (state) => CategoryDetailsPage(
+                    slug: state.pathParameters['slug'] as String,
+                    category: state.extra as category.Category,
+                  ),
+              routes: [
+                _routeFade(
                   path: Routes.categoryTutorialsDetials,
                   name: Routes.categoryTutorialsDetials,
                   pageBuilder: (state) => TutorialDetailsPage(
@@ -150,8 +153,7 @@ class AtebaRouter {
                     // )
                   ],
                 ),
-            ]
-          ),
+              ]),
         ],
       )
     ],

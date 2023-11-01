@@ -1,9 +1,11 @@
 import 'package:ateba_app/core/base/enums/tab_state.dart';
+import 'package:ateba_app/core/components/button_component.dart';
 import 'package:ateba_app/core/components/shimmer_components.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/date_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
+import 'package:ateba_app/modules/cart/bloc/cart_bloc.dart';
 import 'package:ateba_app/modules/course%20details/ui/widgets/tab_item_widget.dart';
 import 'package:ateba_app/modules/package%20details/bloc/package_details_bloc.dart';
 import 'package:ateba_app/modules/package%20details/ui/widgets/comments_widget.dart';
@@ -248,51 +250,80 @@ class PackageDetailsPage extends StatelessWidget {
                       ),
                     )
                   ],
-                )
+                ),
+              Positioned(
+                left: 16,
+                right: 16,
+                bottom: 16,
+                child: Container(
+                  height: 48,
+                  width: double.infinity,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  decoration: BoxDecoration(
+                      color: ColorPalette.of(context).lightSilver,
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(
+                        width: 1,
+                        color: ColorPalette.of(context).border,
+                      )),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: ButtonComponent(
+                          onPressed: () {},
+                          height: 32,
+                          loading: context.select<PackageDetailsBloc, bool>(
+                              (bloc) => bloc.loading),
+                          color: Colors.transparent,
+                          borderSide: BorderSide(
+                            width: 1,
+                            color: ColorPalette.of(context).textPrimary,
+                          ),
+                          child: Text(
+                            'access_by_subscription'.tr(),
+                            style: Theme.of(context).textTheme.labelMedium,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: ButtonComponent(
+                          onPressed: () {
+                            if (Provider.of<CartBloc>(context, listen: false)
+                                .checkExistOrderInCart('package', slug)) {
+                            } else {
+                              Provider.of<PackageDetailsBloc>(context,
+                                      listen: false)
+                                  .orderPackage(slug);
+                            }
+                          },
+                          loading: context.select<PackageDetailsBloc, bool>(
+                              (bloc) => bloc.loading || bloc.orderLoading),
+                          height: 32,
+                          child: Text(
+                            '${TextInputFormatters.toPersianNumber(context.select<PackageDetailsBloc, String>((bloc) => bloc.packageDetails?.price.toString() ?? '0'))}${'toman'.tr()} ${'add_to_basket'.tr()}',
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium
+                                ?.copyWith(
+                                  color: ColorPalette.of(context).white,
+                                ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ),
       );
-  // ChangeNotifierProvider(
-  //       create: (context) => PackageDetailsBloc(slug),
-  //       lazy: false,
-  //       builder: (context, child) => Scaffold(
-  //         backgroundColor: ColorPalette.of(context).scaffoldBackground,
-  //         body: Column(
-  //           children: [
-  //             Align(
-  //               alignment: Alignment.topRight,
-  //               child: InkWell(
-  //                 onTap: () {
-  //                   Navigator.of(context).pop();
-  //                 },
-  //                 child: Container(
-  //                   width: 32,
-  //                   height: 32,
-  //                   margin: const EdgeInsets.only(right: 16, top: 16),
-  //                   decoration: BoxDecoration(
-  //                     shape: BoxShape.circle,
-  //                     color: ColorPalette.of(context).background,
-  //                     border: Border.all(
-  //                       width: 1,
-  //                       color: ColorPalette.of(context).border,
-  //                     ),
-  //                   ),
-  //                   child: Icon(
-  //                     Icons.arrow_back_ios_rounded,
-  //                     size: 16,
-  //                     color: ColorPalette.of(context).primary,
-  //                   ),
-  //                 ),
-  //               ),
-  //             ),
-  //             Padding(
-  //               padding:
-  //                   const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-  //               child:
-  //             )
-  //           ],
-  //         ),
-  //       ),
-  //     );
 }

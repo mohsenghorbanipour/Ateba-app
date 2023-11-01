@@ -2,10 +2,11 @@ import 'package:ateba_app/core/base/enums/tab_state.dart';
 import 'package:ateba_app/core/network/api_response_model.dart';
 import 'package:ateba_app/core/network/pagination_response_model.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
+import 'package:ateba_app/modules/cart/bloc/cart_bloc.dart';
+import 'package:ateba_app/modules/cart/data/models/orders_response.dart';
 import 'package:ateba_app/modules/package%20details/data/models/package_details.dart';
 import 'package:ateba_app/modules/package%20details/data/remote/package_details_remote_provider.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/comment.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class PackageDetailsBloc extends ChangeNotifier {
@@ -24,6 +25,7 @@ class PackageDetailsBloc extends ChangeNotifier {
   bool loading = false;
   bool commentLoading = true;
   bool sendCommentLoading = false;
+  bool orderLoading = false;
 
   PackageDetails? packageDetails;
 
@@ -93,6 +95,24 @@ class PackageDetailsBloc extends ChangeNotifier {
       LoggerHelper.errorLog(e, s);
       // sendCommentLoading = false;
       // notifyListeners();
+    }
+  }
+
+  Future<void> orderPackage(String slug) async {
+    orderLoading = true;
+    notifyListeners();
+    try {
+      ApiResponseModel<OrdersResponse>? response =
+          await PackageDetailsRemoteProvider.orderPackage(slug);
+      if (response != null) {
+        CartBloc().ordersResponse = response.data;
+      }
+      orderLoading = false;
+      notifyListeners();
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      orderLoading = false;
+      notifyListeners();
     }
   }
 }

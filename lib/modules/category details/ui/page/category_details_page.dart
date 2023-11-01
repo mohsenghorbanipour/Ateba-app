@@ -150,6 +150,8 @@ class CategoryDetailsPage extends StatelessWidget {
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) =>
                                       CategoryTutorialsTileWithSubCategory(
+                                    slug: slug,
+                                    category: category,
                                     categoryDetailsResponse:
                                         bloc.categoryTutorials[index],
                                   ),

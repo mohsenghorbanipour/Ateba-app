@@ -1,17 +1,24 @@
 import 'package:ateba_app/core/resources/assets/assets.dart';
+import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
+import 'package:ateba_app/modules/categories/data/models/category.dart';
 import 'package:ateba_app/modules/categories/data/models/category_details_response.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class CategoryTutorialsTileWithSubCategory extends StatefulWidget {
   const CategoryTutorialsTileWithSubCategory({
+    required this.slug,
+    required this.category,
     required this.categoryDetailsResponse,
     super.key,
   });
 
+  final String slug;
+  final Category category;
   final CategoryDetailsResponse categoryDetailsResponse;
 
   @override
@@ -95,88 +102,100 @@ class _CategoryTutorialsTileWithSubCategoryState
                 itemCount: widget.categoryDetailsResponse.tutorials?.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (_, index) => Container(
-                  width: double.infinity,
-                  height: 40,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            width: 16,
-                            height: 16,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                width: 0.5,
-                                color: ColorPalette.of(context).primary,
+                itemBuilder: (_, index) => InkWell(
+                  onTap: () {
+                    context.goNamed(
+                      Routes.categoryTutorialsDetials,
+                      pathParameters: {
+                        'slug': widget.slug,
+                        'path': widget.categoryDetailsResponse.tutorials?[index].slug ?? '',
+                      },
+                      extra: widget.category,
+                    );
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 40,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: 16,
+                              height: 16,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  width: 0.5,
+                                  color: ColorPalette.of(context).primary,
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  TextInputFormatters.toPersianNumber(
+                                    (index + 1).toString(),
+                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelSmall
+                                      ?.copyWith(
+                                          fontSize: 9,
+                                          color:
+                                              ColorPalette.of(context).primary),
+                                ),
                               ),
                             ),
-                            child: Center(
+                            Padding(
+                              padding: const EdgeInsets.only(right: 4),
                               child: Text(
-                                TextInputFormatters.toPersianNumber(
-                                  (index + 1).toString(),
-                                ),
+                                widget.categoryDetailsResponse.tutorials?[index]
+                                        .title ??
+                                    '',
                                 style: Theme.of(context)
                                     .textTheme
-                                    .labelSmall
+                                    .labelMedium
                                     ?.copyWith(
-                                        fontSize: 9,
-                                        color:
-                                            ColorPalette.of(context).primary),
+                                      color: ColorPalette.of(context)
+                                          .textPrimary
+                                          .withOpacity(0.85),
+                                    ),
                               ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 4),
-                            child: Text(
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
                               widget.categoryDetailsResponse.tutorials?[index]
-                                      .title ??
+                                      .duration ??
                                   '',
                               style: Theme.of(context)
                                   .textTheme
-                                  .labelMedium
+                                  .labelSmall
                                   ?.copyWith(
                                     color: ColorPalette.of(context)
                                         .textPrimary
-                                        .withOpacity(0.85),
+                                        .withOpacity(0.8),
                                   ),
                             ),
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            widget.categoryDetailsResponse.tutorials?[index]
-                                    .duration ??
-                                '',
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelSmall
-                                ?.copyWith(
-                                  color: ColorPalette.of(context)
-                                      .textPrimary
-                                      .withOpacity(0.8),
-                                ),
-                          ),
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          SvgPicture.asset(
-                            Assets.videoIc,
-                            width: 14,
-                            color: ColorPalette.of(context)
-                                .textPrimary
-                                .withOpacity(0.8),
-                          )
-                        ],
-                      )
-                    ],
+                            const SizedBox(
+                              width: 4,
+                            ),
+                            SvgPicture.asset(
+                              Assets.videoIc,
+                              width: 14,
+                              color: ColorPalette.of(context)
+                                  .textPrimary
+                                  .withOpacity(0.8),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

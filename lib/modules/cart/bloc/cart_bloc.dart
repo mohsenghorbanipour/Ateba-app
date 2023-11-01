@@ -14,7 +14,12 @@ class CartBloc extends ChangeNotifier {
   bool applyDiscountLoading = false;
   bool paymentLoading = false;
 
-  OrdersResponse? ordersResponse;
+  OrdersResponse? _ordersResponse;
+  OrdersResponse? get ordersResponse => _ordersResponse;
+  set ordersResponse(val) {
+    _ordersResponse = val;
+    notifyListeners();
+  }
 
   Future<void> loadOrders() async {
     loading = true;

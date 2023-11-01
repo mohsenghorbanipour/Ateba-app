@@ -28,6 +28,7 @@ class RemoteRoutes {
   static const String getPackages = 'packages';
   static String getPackageDetials(String slug) => 'packages/$slug';
   static String getPackageComments(String slug) => 'packages/$slug/comments';
+  static String orderPackage(String slug) => 'packages/$slug/order';
 
   // Comments Api
   static String likeComment(String id) => 'comments/$id/like';

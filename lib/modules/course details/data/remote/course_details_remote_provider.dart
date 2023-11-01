@@ -1,3 +1,4 @@
+import 'package:ateba_app/core/components/toast_component.dart';
 import 'package:ateba_app/core/constants/remote_routes.dart';
 import 'package:ateba_app/core/network/api_response_model.dart';
 import 'package:ateba_app/core/network/network_helper.dart';
@@ -7,6 +8,7 @@ import 'package:ateba_app/modules/cart/data/models/orders_response.dart';
 import 'package:ateba_app/modules/course%20details/data/models/course_details.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/comment.dart';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CourseDetailsRemoteProvider {
   static final NetworkHelper _networkHelper = NetworkHelper();
@@ -94,6 +96,10 @@ class CourseDetailsRemoteProvider {
         RemoteRoutes.orderCourse(slug),
       );
       if (response.statusCode == 200) {
+        ToastComponent.show(
+          'added_to_basket'.tr(),
+          type: ToastType.success,
+        );
         return ApiResponseModel.fromJson(
           response.data,
           (json) => OrdersResponse.fromJson(json),
