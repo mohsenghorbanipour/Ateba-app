@@ -6,7 +6,8 @@ class Routes {
   static const String main = '/';
   static const String courseDetails = 'course/:slug';
   static const String tutorialDetails = 'tutorial/:slug';
-  static const String tutorialsDetails = 'tutorial/:link';
+  static const String courseTutorialDetails = 'tutorial/:link';
+  static const String categoryTutorialsDetials = 'tutorial/:path';
   static const String packageDetails = 'package/:slug';
   static const String videoPalyer = 'player';
   static const String cart = 'cart';

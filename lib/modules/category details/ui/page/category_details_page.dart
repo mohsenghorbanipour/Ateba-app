@@ -4,6 +4,7 @@ import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/categories/data/models/category.dart';
 import 'package:ateba_app/modules/category%20details/bloc/category_details_bloc.dart';
+import 'package:ateba_app/modules/category%20details/ui/widgets/category_tutorials_tile_with_subcategory.dart';
 import 'package:ateba_app/modules/category%20details/ui/widgets/category_tutorials_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -115,31 +116,45 @@ class CategoryDetailsPage extends StatelessWidget {
                         )
                       ],
                     ),
-                    // Consumer<CategoryDetailsBloc>(
-                    //   builder: (context, bloc, child) => bloc.loading
-                    //       ? ListView.separated(
-                    //           padding: const EdgeInsets.only(
-                    //               top: 35, left: 16, right: 16),
-                    //           physics: const NeverScrollableScrollPhysics(),
-                    //           separatorBuilder: (_, __) => const SizedBox(
-                    //             height: 12,
-                    //           ),
-                    //           shrinkWrap: true,
-                    //           itemCount: 10,
-                    //           itemBuilder: (_, __) => const ShimmerContainer(
-                    //             width: double.infinity,
-                    //             height: 48,
-                    //             radius: 6,
-                    //           ),
-                    //         )
-                    //       : !bloc.withSubCategory
-                    //           ? const CategoryTutorialsWidget()
-                    //           : ListView.separated(
-                    //               itemBuilder: itemBuilder,
-                    //               separatorBuilder: separatorBuilder,
-                    //               itemCount: itemCount,
-                    //             ),
-                    // )
+                    Consumer<CategoryDetailsBloc>(
+                      builder: (context, bloc, child) => bloc.loading
+                          ? ListView.separated(
+                              padding: const EdgeInsets.only(
+                                  top: 35, left: 16, right: 16),
+                              physics: const NeverScrollableScrollPhysics(),
+                              separatorBuilder: (_, __) => const SizedBox(
+                                height: 12,
+                              ),
+                              shrinkWrap: true,
+                              itemCount: 10,
+                              itemBuilder: (_, __) => const ShimmerContainer(
+                                width: double.infinity,
+                                height: 48,
+                                radius: 6,
+                              ),
+                            )
+                          : !bloc.withSubCategory
+                              ? CategoryTutorialsWidget(
+                                  slug: slug,
+                                  category: category,
+                                  tutorials: bloc.tutorials,
+                                )
+                              : ListView.separated(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 32),
+                                  itemCount: bloc.categoryTutorials.length,
+                                  separatorBuilder: (_, __) => const SizedBox(
+                                    height: 8,
+                                  ),
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) =>
+                                      CategoryTutorialsTileWithSubCategory(
+                                    categoryDetailsResponse:
+                                        bloc.categoryTutorials[index],
+                                  ),
+                                ),
+                    )
                   ],
                 ),
               ),

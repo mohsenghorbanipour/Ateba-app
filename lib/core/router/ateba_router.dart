@@ -92,8 +92,8 @@ class AtebaRouter {
             ),
             routes: [
               _routeFade(
-                path: Routes.tutorialsDetails,
-                name: Routes.tutorialsDetails,
+                path: Routes.courseTutorialDetails,
+                name: Routes.courseTutorialDetails,
                 pageBuilder: (state) => TutorialDetailsPage(
                   slug: state.pathParameters['link'] as String,
                 ),
@@ -133,6 +133,24 @@ class AtebaRouter {
               slug: state.pathParameters['slug'] as String,
               category: state.extra as category.Category,
             ),
+            routes: [
+              _routeFade(
+                  path: Routes.categoryTutorialsDetials,
+                  name: Routes.categoryTutorialsDetials,
+                  pageBuilder: (state) => TutorialDetailsPage(
+                    slug: state.pathParameters['path'] as String,
+                  ),
+                  routes: [
+                    // _routeFade(
+                    //   path: Routes.videoPalyer,
+                    //   name: Routes.videoPalyer,
+                    //   pageBuilder: (state) => VideoPlayerPage(
+                    //     controller: state.extra as VideoPlayerController,
+                    //   ),
+                    // )
+                  ],
+                ),
+            ]
           ),
         ],
       )

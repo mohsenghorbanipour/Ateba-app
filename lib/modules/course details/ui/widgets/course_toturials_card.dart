@@ -19,7 +19,7 @@ class CourseToturialsCard extends StatelessWidget {
   Widget build(BuildContext context) => InkWell(
         onTap: () {
           context.goNamed(
-            Routes.tutorialsDetails,
+            Routes.courseTutorialDetails,
             pathParameters: {
               'slug': slug,
               'link': tutorial.slug ?? '',
