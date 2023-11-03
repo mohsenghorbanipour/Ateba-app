@@ -2,13 +2,11 @@ import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/date_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
-import 'package:ateba_app/modules/tutorial%20details/bloc/tutorial_details_bloc.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/comment.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/widgets/reply_card.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
 
 class CommentCard extends StatelessWidget {
   const CommentCard({
@@ -16,7 +14,10 @@ class CommentCard extends StatelessWidget {
     required this.likeTap,
     required this.onLongPress,
     required this.sendCommentFunction,
+    required this.showReplies,
+    this.commentIdForShowReplies,
     this.selected = false,
+    this.replies,
     super.key,
   });
 
@@ -24,7 +25,10 @@ class CommentCard extends StatelessWidget {
   final Function() likeTap;
   final Function() onLongPress;
   final Function() sendCommentFunction;
+  final Function() showReplies;
   final bool selected;
+  final String? commentIdForShowReplies;
+  final List<Comment>? replies;
 
   @override
   Widget build(BuildContext context) => InkWell(
@@ -146,36 +150,7 @@ class CommentCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 16),
                   child: InkWell(
-                    onTap: () {
-                      if (Provider.of<TutorialDetaialsBloc>(context,
-                                  listen: false)
-                              .replies
-                              .isNotEmpty &&
-                          (Provider.of<TutorialDetaialsBloc>(context,
-                                      listen: false)
-                                  .commentIdForShowReplies
-                                  ?.isNotEmpty ??
-                              false)) {
-                        if (Provider.of<TutorialDetaialsBloc>(context,
-                                    listen: false)
-                                .commentIdForShowReplies ==
-                            comment.id) {
-                          Provider.of<TutorialDetaialsBloc>(context,
-                                  listen: false)
-                              .hideReplies();
-                        } else {
-                          Provider.of<TutorialDetaialsBloc>(context,
-                                  listen: false)
-                              .loadReplies(comment.id ?? '');
-                        }
-                      } else {
-                        Provider.of<TutorialDetaialsBloc>(context,
-                                listen: false)
-                            .loadReplies(
-                          comment.id ?? '',
-                        );
-                      }
-                    },
+                    onTap: showReplies,
                     child: Row(
                       children: [
                         Container(
@@ -186,14 +161,9 @@ class CommentCard extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(right: 4),
                           child: Text(
-                            (context.select<TutorialDetaialsBloc, bool>(
-                                    (bloc) =>
-                                        (bloc.commentIdForShowReplies
-                                                ?.isNotEmpty ??
-                                            false) &&
-                                        bloc.replies.isNotEmpty &&
-                                        bloc.commentIdForShowReplies ==
-                                            comment.id))
+                            ((commentIdForShowReplies?.isNotEmpty ?? false) &&
+                                    (replies?.isNotEmpty ?? false) &&
+                                    commentIdForShowReplies == comment.id)
                                 ? '${'hide_answers'.tr()} (${TextInputFormatters.toPersianNumber(comment.replies_count.toString())})'
                                 : '${'show_comments'.tr()} (${TextInputFormatters.toPersianNumber(comment.replies_count.toString())})',
                             style: Theme.of(context)
@@ -206,20 +176,19 @@ class CommentCard extends StatelessWidget {
                     ),
                   ),
                 ),
-              if (context.select<TutorialDetaialsBloc, bool>((bloc) =>
-                  bloc.commentIdForShowReplies != null &&
-                  bloc.replies.isNotEmpty &&
-                  bloc.commentIdForShowReplies == comment.id))
-                Selector<TutorialDetaialsBloc, List<Comment>>(
-                  selector: (context, bloc) => bloc.replies,
-                  builder: (context, replies, child) => ListView.builder(
-                    itemCount: replies.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) => ReplyCard(
-                      reply: replies[index],
-                    ),
+              if ((commentIdForShowReplies?.isNotEmpty ?? false) &&
+                  (replies?.isNotEmpty ?? false) &&
+                  commentIdForShowReplies == comment.id)
+                ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: replies?.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) => ReplyCard(
+                    reply: replies?[index] ?? Comment(),
+                    likeTap: likeTap,
+                    replyTap: () {},
                   ),
-                )
+                ),
             ],
           ),
         ),

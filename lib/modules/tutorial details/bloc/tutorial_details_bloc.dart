@@ -183,8 +183,8 @@ class TutorialDetaialsBloc extends ChangeNotifier {
         id,
       );
       if (response) {
-        comments?[index].is_liked = true;
-        comments?[index].likes_count = (comments?[index].likes_count ?? 0) + 1;
+        comments[index].is_liked = true;
+        comments[index].likes_count = (comments[index].likes_count ?? 0) + 1;
         notifyListeners();
       }
     } catch (e, s) {
@@ -270,6 +270,7 @@ class TutorialDetaialsBloc extends ChangeNotifier {
         comments.removeAt(selectedCommentIndex!);
         _selectedComment = null;
         selectedCommentIndex = null;
+        showOptions = false;
         notifyListeners();
       }
     } catch (e, s) {

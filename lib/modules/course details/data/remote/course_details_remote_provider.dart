@@ -58,7 +58,7 @@ class CourseDetailsRemoteProvider {
   static Future<ApiResponseModel<Comment>?> sendComment(
     String slug,
     String comment, {
-    int? replyTo,
+    String? replyTo,
   }) async {
     FormData data = FormData.fromMap(
       {
@@ -68,11 +68,8 @@ class CourseDetailsRemoteProvider {
     );
     try {
       Response response = await _networkHelper.dio.post(
-        RemoteRoutes.getTutorialComments(slug),
-        data: {
-          'content': comment,
-          'reply_to': replyTo,
-        },
+        RemoteRoutes.getCourseComment(slug),
+        data: data,
       );
       if (response.statusCode == 200) {
         return ApiResponseModel.fromJson(
@@ -80,6 +77,73 @@ class CourseDetailsRemoteProvider {
           (json) => Comment.fromJson(
             json,
           ),
+        );
+      }
+      return null;
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      return null;
+    }
+  }
+
+  static Future<bool> likeComment(String id) async {
+    try {
+      Response response = await _networkHelper.dio.post(
+        RemoteRoutes.likeComment(id),
+      );
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      return false;
+    }
+  }
+
+  static Future<bool> unlikeComment(String id) async {
+    try {
+      Response response = await _networkHelper.dio.delete(
+        RemoteRoutes.likeComment(id),
+      );
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      return false;
+    }
+  }
+
+  static Future<bool> deleteComment(String id) async {
+    try {
+      Response response = await _networkHelper.dio.delete(
+        RemoteRoutes.deleteComment(id),
+      );
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      return false;
+    }
+  }
+
+  static Future<ApiResponseModel<List<Comment>>?> getReplies(String id) async {
+    try {
+      Response response = await _networkHelper.dio.get(
+        RemoteRoutes.getCommentReplies(id),
+      );
+      if (response.statusCode == 200) {
+        return ApiResponseModel.fromJson(
+          response.data,
+          (json) => (json as List<dynamic>)
+              .map(
+                (e) => Comment.fromJson(e),
+              )
+              .toList(),
         );
       }
       return null;

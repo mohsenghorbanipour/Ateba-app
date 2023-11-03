@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -38,8 +40,8 @@ class SendCommentModals extends StatelessWidget {
               Expanded(
                 child: InkWell(
                   onTap: () async {
-                    Navigator.of(context).pop();
                     await onWillPop();
+                    Navigator.of(context).pop();
                   },
                   child: const SizedBox(
                     width: double.infinity,

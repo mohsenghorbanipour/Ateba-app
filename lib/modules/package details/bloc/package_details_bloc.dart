@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:ateba_app/core/base/enums/tab_state.dart';
 import 'package:ateba_app/core/network/api_response_model.dart';
 import 'package:ateba_app/core/network/pagination_response_model.dart';
@@ -25,6 +27,7 @@ class PackageDetailsBloc extends ChangeNotifier {
   bool loading = false;
   bool commentLoading = true;
   bool sendCommentLoading = false;
+  bool sendReplyLoading = false;
   bool orderLoading = false;
 
   PackageDetails? packageDetails;
@@ -39,6 +42,27 @@ class PackageDetailsBloc extends ChangeNotifier {
     _comment = val;
     notifyListeners();
   }
+
+  bool _showOptions = false;
+  bool get showOptions => _showOptions;
+  set showOptions(val) {
+    _showOptions = val;
+    notifyListeners();
+  }
+
+  int? selectedCommentIndex;
+  String? _selectedComment;
+  String? get selectedComment => _selectedComment;
+  set selectedComment(val) {
+    _selectedComment = val;
+    notifyListeners();
+  }
+
+  String? commentIdForShowReplies;
+  List<Comment> replies = [];
+
+  final TextEditingController commentController = TextEditingController();
+  final TextEditingController replyController = TextEditingController();
 
   Future<void> loadPackageDetials(String slug) async {
     loading = true;
@@ -78,23 +102,116 @@ class PackageDetailsBloc extends ChangeNotifier {
     sendCommentLoading = true;
     notifyListeners();
     try {
-      // ApiResponseModel<Comment>? response =
-      //     await CourseDetailsRemoteProvider.sendComment(
-      //   slug,
-      //   comment,
-      // );
-      // if (response != null && response.data != null) {
-      //   comments.insert(0, response.data!);
-      //   commentController.clear();
-      //   comment = '';
-      //   Navigator.of(context).pop();
-      // }
-      // sendCommentLoading = false;
-      // notifyListeners();
+      ApiResponseModel<Comment>? response =
+          await PackageDetailsRemoteProvider.sendComment(
+        slug,
+        comment,
+      );
+      if (response != null && response.data != null) {
+        comments.insert(0, response.data!);
+        commentController.clear();
+        comment = '';
+      }
+      sendCommentLoading = false;
+      notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
-      // sendCommentLoading = false;
-      // notifyListeners();
+      sendCommentLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> likeComment(String id, int index) async {
+    try {
+      bool response = await PackageDetailsRemoteProvider.likeComment(
+        id,
+      );
+      if (response) {
+        comments[index].is_liked = true;
+        comments[index].likes_count = (comments[index].likes_count ?? 0) + 1;
+        notifyListeners();
+      }
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> unlikeComment(String id, int index) async {
+    try {
+      bool response = await PackageDetailsRemoteProvider.unlikeComment(
+        id,
+      );
+      if (response) {
+        comments[index].is_liked = false;
+        comments[index].likes_count = (comments[index].likes_count ?? 0) - 1;
+        notifyListeners();
+      }
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> deleteComment() async {
+    try {
+      bool response = await PackageDetailsRemoteProvider.deleteComment(
+        _selectedComment.toString(),
+      );
+      if (response) {
+        comments.removeAt(selectedCommentIndex!);
+        _selectedComment = null;
+        showOptions = false;
+        selectedCommentIndex = null;
+        notifyListeners();
+      }
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> loadReplies(String id) async {
+    commentIdForShowReplies = id;
+    notifyListeners();
+    try {
+      ApiResponseModel<List<Comment>>? response =
+          await PackageDetailsRemoteProvider.getReplies(
+        id,
+      );
+      if (response != null) {
+        replies = response.data ?? [];
+      }
+      notifyListeners();
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> sendReply(BuildContext context, String slug, String replyTo,
+      int commentIndex) async {
+    sendReplyLoading = true;
+    notifyListeners();
+    try {
+      ApiResponseModel<Comment>? response =
+          await PackageDetailsRemoteProvider.sendComment(
+        slug,
+        comment,
+        replyTo: replyTo,
+      );
+      if (response != null && response.data != null) {
+        comments[commentIndex].replies_count =
+            (comments[commentIndex].replies_count ?? 0) + 1;
+        commentController.clear();
+        comment = '';
+        Navigator.of(context).pop();
+        await loadReplies(
+          replyTo,
+        );
+      }
+      sendReplyLoading = false;
+      notifyListeners();
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      sendReplyLoading = false;
+      notifyListeners();
     }
   }
 
@@ -113,6 +230,16 @@ class PackageDetailsBloc extends ChangeNotifier {
       LoggerHelper.errorLog(e, s);
       orderLoading = false;
       notifyListeners();
+    }
+  }
+
+  void hideReplies() {
+    try {
+      commentIdForShowReplies = null;
+      replies.clear();
+      notifyListeners();
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
     }
   }
 }

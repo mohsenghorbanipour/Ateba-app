@@ -28,6 +28,7 @@ class CourseDetailsBloc extends ChangeNotifier {
   bool loading = true;
   bool commentLoading = true;
   bool sendCommentLoading = false;
+  bool sendReplyLoading = false;
   bool orderLoading = false;
 
   CourseDetails? courseDetails;
@@ -43,7 +44,26 @@ class CourseDetailsBloc extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool _showOptions = false;
+  bool get showOptions => _showOptions;
+  set showOptions(val) {
+    _showOptions = val;
+    notifyListeners();
+  }
+
+  int? selectedCommentIndex;
+  String? _selectedComment;
+  String? get selectedComment => _selectedComment;
+  set selectedComment(val) {
+    _selectedComment = val;
+    notifyListeners();
+  }
+
+  String? commentIdForShowReplies;
+  List<Comment> replies = [];
+
   final TextEditingController commentController = TextEditingController();
+  final TextEditingController replayController = TextEditingController();
 
   Future<void> loadCourseDetials(String slug) async {
     try {
@@ -75,7 +95,10 @@ class CourseDetailsBloc extends ChangeNotifier {
     }
   }
 
-  Future<void> sendComment(BuildContext context, String slug) async {
+  Future<void> sendComment(
+    BuildContext context,
+    String slug,
+  ) async {
     sendCommentLoading = true;
     notifyListeners();
     try {
@@ -88,13 +111,106 @@ class CourseDetailsBloc extends ChangeNotifier {
         comments.insert(0, response.data!);
         commentController.clear();
         comment = '';
-        Navigator.of(context).pop();
       }
       sendCommentLoading = false;
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
       sendCommentLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> likeComment(String id, int index) async {
+    try {
+      bool response = await CourseDetailsRemoteProvider.likeComment(
+        id,
+      );
+      if (response) {
+        comments[index].is_liked = true;
+        comments[index].likes_count = (comments[index].likes_count ?? 0) + 1;
+        notifyListeners();
+      }
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> unlikeComment(String id, int index) async {
+    try {
+      bool response = await CourseDetailsRemoteProvider.unlikeComment(
+        id,
+      );
+      if (response) {
+        comments[index].is_liked = false;
+        comments[index].likes_count = (comments[index].likes_count ?? 0) - 1;
+        notifyListeners();
+      }
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> deleteComment() async {
+    try {
+      bool response = await CourseDetailsRemoteProvider.deleteComment(
+        _selectedComment.toString(),
+      );
+      if (response) {
+        comments.removeAt(selectedCommentIndex!);
+        _selectedComment = null;
+        showOptions = false;
+        selectedCommentIndex = null;
+        notifyListeners();
+      }
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> loadReplies(String id) async {
+    commentIdForShowReplies = id;
+    notifyListeners();
+    try {
+      ApiResponseModel<List<Comment>>? response =
+          await CourseDetailsRemoteProvider.getReplies(
+        id,
+      );
+      if (response != null) {
+        replies = response.data ?? [];
+      }
+      notifyListeners();
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> sendReply(BuildContext context, String slug, String replyTo,
+      int commentIndex) async {
+    sendReplyLoading = true;
+    notifyListeners();
+    try {
+      ApiResponseModel<Comment>? response =
+          await CourseDetailsRemoteProvider.sendComment(
+        slug,
+        comment,
+        replyTo: replyTo,
+      );
+      if (response != null && response.data != null) {
+        comments[commentIndex].replies_count =
+            (comments[commentIndex].replies_count ?? 0) + 1;
+        replayController.clear();
+        comment = '';
+        Navigator.of(context).pop();
+        await loadReplies(
+          replyTo,
+        );
+      }
+      sendReplyLoading = false;
+      notifyListeners();
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      sendReplyLoading = false;
       notifyListeners();
     }
   }
@@ -117,4 +233,13 @@ class CourseDetailsBloc extends ChangeNotifier {
     }
   }
 
+  void hideReplies() {
+    try {
+      commentIdForShowReplies = null;
+      replies.clear();
+      notifyListeners();
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
 }

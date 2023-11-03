@@ -10,10 +10,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 class ReplyCard extends StatelessWidget {
   const ReplyCard({
     required this.reply,
+    required this.likeTap,
+    required this.replyTap,
     super.key,
   });
 
   final Comment reply;
+  final Function() likeTap;
+  final Function() replyTap;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -82,7 +86,7 @@ class ReplyCard extends StatelessWidget {
                 Row(
                   children: [
                     InkWell(
-                      onTap: () {},
+                      onTap: likeTap,
                       child: Row(
                         children: [
                           if ((reply.likes_count ?? 0) > 0)
@@ -108,19 +112,30 @@ class ReplyCard extends StatelessWidget {
                     const SizedBox(
                       width: 12,
                     ),
-                    SvgPicture.asset(
-                      Assets.addIc,
-                      color:
-                          ColorPalette.of(context).textPrimary.withOpacity(0.9),
-                    ),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    Text(
-                      'your_answer'.tr(),
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            fontSize: 8,
+                    InkWell(
+                      onTap: replyTap,
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            Assets.addIc,
+                            color: ColorPalette.of(context)
+                                .textPrimary
+                                .withOpacity(0.9),
                           ),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            'your_answer'.tr(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelSmall
+                                ?.copyWith(
+                                  fontSize: 8,
+                                ),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),

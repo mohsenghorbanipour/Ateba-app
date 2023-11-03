@@ -237,6 +237,7 @@ class TutorialDetailsPage extends StatelessWidget {
                                     'slug': slug,
                                   },
                                   extra: {
+                                    'show_with_path': false,
                                     'slug': slug,
                                     'video': Provider.of<TutorialDetaialsBloc>(
                                             context,
@@ -646,20 +647,37 @@ class TutorialDetailsPage extends StatelessWidget {
                               shrinkWrap: true,
                               itemBuilder: (context, index) => CommentCard(
                                 comment: bloc.comments[index],
+                                commentIdForShowReplies:
+                                    bloc.commentIdForShowReplies,
+                                replies: bloc.replies,
                                 likeTap: () {
                                   if (bloc.comments[index].is_liked ?? false) {
-                                    Provider.of<TutorialDetaialsBloc>(context,
-                                            listen: false)
-                                        .unlikeComment(
+                                    bloc.unlikeComment(
                                       bloc.comments[index].id.toString(),
                                       index,
                                     );
                                   } else {
-                                    Provider.of<TutorialDetaialsBloc>(context,
-                                            listen: false)
-                                        .likeComment(
+                                    bloc.likeComment(
                                       bloc.comments[index].id.toString(),
                                       index,
+                                    );
+                                  }
+                                },
+                                showReplies: () {
+                                  if (bloc.replies.isNotEmpty &&
+                                      (bloc.commentIdForShowReplies
+                                              ?.isNotEmpty ??
+                                          false)) {
+                                    if (bloc.commentIdForShowReplies ==
+                                        bloc.comments[index].id) {
+                                      bloc.hideReplies();
+                                    } else {
+                                      bloc.loadReplies(
+                                          bloc.comments[index].id ?? '');
+                                    }
+                                  } else {
+                                    bloc.loadReplies(
+                                      bloc.comments[index].id ?? '',
                                     );
                                   }
                                 },
