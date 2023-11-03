@@ -3,12 +3,16 @@ import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:flutter/material.dart';
 
 class PackageShimmerCard extends StatelessWidget {
-  const PackageShimmerCard({super.key});
+  const PackageShimmerCard({
+    this.width,
+    super.key,
+  });
+  final double? width;
 
   @override
   Widget build(BuildContext context) => Container(
         height: 220,
-        width: 255,
+        width: width ?? 255,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: ColorPalette.of(context).background,
@@ -22,11 +26,11 @@ class PackageShimmerCard extends StatelessWidget {
           children: [
             Column(
               children: [
-                const ShimmerContainer(
-                  width: 237,
+                ShimmerContainer(
+                  width: width ?? 237,
                   height: 76,
                   radius: 4,
-                  margin: EdgeInsets.all(8),
+                  margin: const EdgeInsets.all(8),
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12),

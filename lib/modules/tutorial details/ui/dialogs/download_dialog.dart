@@ -90,8 +90,7 @@ class _DownloadDialogState extends State<DownloadDialog> {
                           .cancelDownload();
                     } else {
                       Provider.of<DownloadVideoBloc>(context, listen: false)
-                              .selectedVideoHlsLinkForDownload =
-                          widget.video.hls_url ?? '';
+                          .selectedVideoIdForDownload = widget.video.id ?? -1;
                       Provider.of<DownloadVideoBloc>(context, listen: false)
                           .downloadVideoAndSave(
                         CacheVideoModel(
@@ -111,7 +110,7 @@ class _DownloadDialogState extends State<DownloadDialog> {
                                   .size ??
                               '',
                           slug: widget.slug,
-                          type: widget.type,
+                          id: widget.video.id,
                         ),
                       );
                     }

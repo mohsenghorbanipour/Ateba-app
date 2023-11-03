@@ -9,13 +9,39 @@ import 'package:dio/dio.dart';
 class BookmarksRemoteProvider {
   static final NetworkHelper _networkHelper = NetworkHelper();
 
-  static Future<PaginationResponseModel<List<Bookmark>>?> getBookmarks() async {
+  static Future<PaginationResponseModel<List<Bookmark>>?> getBookmarks(
+      {int page = 1}) async {
     try {
-      Response response = await _networkHelper.dio.get(
-        RemoteRoutes.getBookmarks,
-      );
+      Response response = await _networkHelper.dio
+          .get(RemoteRoutes.getBookmarks, queryParameters: {
+        'page': page,
+      });
       if (response.statusCode == 200) {
         return PaginationResponseModel.fromJson(
+          response.data,
+          (json) => (json as List<dynamic>)
+              .map(
+                (e) => Bookmark.fromJson(e),
+              )
+              .toList(),
+        );
+      }
+      return null;
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      return null;
+    }
+  }
+
+  static Future<ApiResponseModel<List<Bookmark>>?> getMyProducts(
+      String type) async {
+    try {
+      Response response = await _networkHelper.dio
+          .get(RemoteRoutes.getMyProducts, queryParameters: {
+        'type': type,
+      });
+      if (response.statusCode == 200) {
+        return ApiResponseModel.fromJson(
           response.data,
           (json) => (json as List<dynamic>)
               .map(

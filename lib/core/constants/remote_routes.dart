@@ -2,6 +2,8 @@ class RemoteRoutes {
 
   // Auth Api
   static const String getUserSubscription = 'subscription';
+  static const String getMyProducts = 'my-products';
+  
 
   // Banners Api
   static const String getTopBanner = 'banners/slider';

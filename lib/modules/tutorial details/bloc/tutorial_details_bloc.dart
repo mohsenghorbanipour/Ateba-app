@@ -5,6 +5,7 @@ import 'package:ateba_app/core/network/pagination_response_model.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/comment.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/tutorial_details.dart';
+import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/remote/tutorial_details_remote_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -297,6 +298,20 @@ class TutorialDetaialsBloc extends ChangeNotifier {
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Video? getVideo() {
+    try {
+      List<Video> videos = (tutorialDetaials?.videos as List<dynamic>)
+          .map(
+            (e) => Video.fromJson(e),
+          )
+          .toList();
+      return videos.first;
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      return null;
     }
   }
 }

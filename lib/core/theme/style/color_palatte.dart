@@ -55,6 +55,7 @@ class ColorPalette {
   final Color extraLightSilver = const Color(0xffFAFAFA);
   final Color black = Colors.black;
   final Color darkGrey = const Color(0xffdddddd);
+  final Color info = const Color(0xffFFA726);
 
   static ColorPalette light = const ColorPalette(
     primary: Color(0xff12B2B2),

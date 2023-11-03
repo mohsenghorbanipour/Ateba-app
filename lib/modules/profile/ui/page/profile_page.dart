@@ -72,9 +72,13 @@ class ProfilePage extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              context.goNamed(
-                Routes.subscription,
-              );
+              if (Provider.of<AuthBloc>(context, listen: false)
+                      .subscriptionExpireDate ==
+                  null) {
+                context.goNamed(
+                  Routes.subscription,
+                );
+              }
             },
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 16),

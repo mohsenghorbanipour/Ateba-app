@@ -45,31 +45,6 @@ class CategoriesRemoteProvider {
   //   }
   // }
 
-  static Future<PaginationResponseModel<List<Tutorial>>?> getToturials(
-      {int page = 1}) async {
-    try {
-      Response response = await _networkHelper.dio.get(
-        RemoteRoutes.getToturials,
-        queryParameters: {
-          'page': page,
-        },
-      );
-      if (response.statusCode == 200) {
-        return PaginationResponseModel.fromJson(
-          response.data,
-          (json) => (json as List<dynamic>)
-              .map<Tutorial>(
-                  (i) => Tutorial.fromJson(i as Map<String, dynamic>))
-              .toList(),
-        );
-      }
-      return null;
-    } catch (e, s) {
-      LoggerHelper.errorLog(e, s);
-      return null;
-    }
-  }
-
   static Future<PaginationResponseModel<List<Course>>?> getCourses(
       {int page = 1}) async {
     try {

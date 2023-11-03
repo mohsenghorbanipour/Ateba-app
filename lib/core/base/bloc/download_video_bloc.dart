@@ -26,7 +26,7 @@ class DownloadVideoBloc extends ChangeNotifier {
 
   CancelToken cancelToken = CancelToken();
 
-  String? selectedVideoHlsLinkForDownload;
+  int? selectedVideoIdForDownload;
 
   Future<void> init() async {
     try {
@@ -64,11 +64,11 @@ class DownloadVideoBloc extends ChangeNotifier {
       if (response.statusCode == 200) {
         videos.add(
           CacheVideoModel(
+            id: cacheVideoModel.id,
             slug: cacheVideoModel.slug,
             path: savePath,
             qality: cacheVideoModel.qality,
             size: cacheVideoModel.size,
-            type: cacheVideoModel.type,
             url: cacheVideoModel.url,
           ),
         );
@@ -80,7 +80,7 @@ class DownloadVideoBloc extends ChangeNotifier {
         );
       }
       downloading = false;
-      selectedVideoHlsLinkForDownload = null;
+      selectedVideoIdForDownload = null;
       notifyListeners();
       percentage = null;
     } catch (e, s) {
@@ -107,11 +107,14 @@ class DownloadVideoBloc extends ChangeNotifier {
     }
   }
 
-  bool existVideoInCache(String slug, String type) {
+  bool existVideoInCache(int id, String slug) {
     try {
+      LoggerHelper.logger.wtf(id);
+      LoggerHelper.logger.wtf(slug);
+      LoggerHelper.logger.wtf(videos.first);
       bool exist = false;
       for (var e in videos) {
-        if (e.slug == slug && e.type == type) {
+        if (e.id == id && e.slug == slug) {
           exist = true;
         }
       }

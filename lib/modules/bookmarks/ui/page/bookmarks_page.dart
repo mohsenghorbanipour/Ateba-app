@@ -1,6 +1,8 @@
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/modules/bookmarks/bloc/bookmarks_bloc.dart';
 import 'package:ateba_app/modules/bookmarks/ui/widgets/bookmarks_tile.dart';
+import 'package:ateba_app/modules/bookmarks/ui/widgets/bookmarks_widget.dart';
+import 'package:ateba_app/modules/bookmarks/ui/widgets/my_products_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -101,6 +103,10 @@ class BookmarksPage extends StatelessWidget {
                     onTap: () {
                       Provider.of<BookmarksBloc>(context, listen: false)
                           .bookmarksStates = BookmarksStates.my_products;
+                      Provider.of<BookmarksBloc>(context, listen: false)
+                          .loadMyProduct(
+                        type: 'course',
+                      );
                     },
                     selected: context.select<BookmarksBloc, bool>((bloc) =>
                         bloc.bookmarksStates == BookmarksStates.my_products),
@@ -113,6 +119,8 @@ class BookmarksPage extends StatelessWidget {
                       onTap: () {
                         Provider.of<BookmarksBloc>(context, listen: false)
                             .bookmarksStates = BookmarksStates.bookmarks;
+                        Provider.of<BookmarksBloc>(context, listen: false)
+                            .loadBookamrks();
                       },
                       selected: context.select<BookmarksBloc, bool>((bloc) =>
                           bloc.bookmarksStates == BookmarksStates.bookmarks),
@@ -129,7 +137,13 @@ class BookmarksPage extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
+          if (context.select<BookmarksBloc, bool>(
+              (bloc) => bloc.bookmarksStates == BookmarksStates.my_products))
+            const MyProductsWidget()
+          else if (context.select<BookmarksBloc, bool>(
+              (bloc) => bloc.bookmarksStates == BookmarksStates.bookmarks))
+          const BookmarksWidget(),
         ],
       );
 }

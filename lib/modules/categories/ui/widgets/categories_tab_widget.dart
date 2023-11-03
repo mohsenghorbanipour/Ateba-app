@@ -67,57 +67,6 @@ class CategoriesTabWidget extends StatelessWidget {
                           onTap: () {
                             Provider.of<CategoriesBloc>(context, listen: false)
                                     .categoriesDataType =
-                                CategoriesDataType.educationalProducts;
-                            context.pop();
-                          },
-                          child: Container(
-                            width: double.infinity,
-                            height: 35,
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: Row(
-                              children: [
-                                Container(
-                                    width: 12,
-                                    height: 12,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        width: 1,
-                                        color: ColorPalette.of(context)
-                                            .textPrimary,
-                                      ),
-                                    ),
-                                    child: Container(
-                                      width: 5,
-                                      height: 5,
-                                      margin: const EdgeInsets.all(2),
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Provider.of<CategoriesBloc>(
-                                                          context,
-                                                          listen: false)
-                                                      .categoriesDataType ==
-                                                  CategoriesDataType
-                                                      .educationalProducts
-                                              ? ColorPalette.of(context).primary
-                                              : Colors.transparent),
-                                    )),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8),
-                                  child: Text(
-                                    'educational_products'.tr(),
-                                    style:
-                                        Theme.of(context).textTheme.labelMedium,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Provider.of<CategoriesBloc>(context, listen: false)
-                                    .categoriesDataType =
                                 CategoriesDataType.medicalCourses;
                             context.pop();
                           },
@@ -224,12 +173,9 @@ class CategoriesTabWidget extends StatelessWidget {
                 child: TabItemWidget(
                   title: context.select<CategoriesBloc, String>((bloc) =>
                       bloc.categoriesDataType ==
-                              CategoriesDataType.educationalProducts
-                          ? 'educational_products'.tr()
-                          : bloc.categoriesDataType ==
-                                  CategoriesDataType.medicalCourses
-                              ? 'medical_courses'.tr()
-                              : 'educational_packages'.tr()),
+                              CategoriesDataType.medicalCourses
+                          ? 'medical_courses'.tr()
+                          : 'educational_packages'.tr()),
                   selected: context.select<CategoriesBloc, bool>(
                       (bloc) => bloc.tabState == TabState.clinicalPackages),
                   onTap: () {

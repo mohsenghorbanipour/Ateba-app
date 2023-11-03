@@ -1,16 +1,15 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:ateba_app/core/base/bloc/download_video_bloc.dart';
 import 'package:ateba_app/core/components/textfiled_component.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/date_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
+import 'package:ateba_app/core/widgets/no_active_subscription_dialog.dart';
 import 'package:ateba_app/modules/tutorial%20details/bloc/tutorial_details_bloc.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/attachment.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';
-import 'package:ateba_app/modules/tutorial%20details/ui/dialogs/download_dialog.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/modals/send_comment_modals.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/widgets/attachment_tile.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/widgets/comment_card.dart';
@@ -24,9 +23,7 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:video_player/video_player.dart';
 
 class TutorialDetailsPage extends StatelessWidget {
   const TutorialDetailsPage({
@@ -116,6 +113,7 @@ class TutorialDetailsPage extends StatelessWidget {
                             .loadTuturialComments(slug);
                       },
                       child: ListView(
+                        physics: const BouncingScrollPhysics(),
                         children: [
                           Padding(
                             padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
@@ -213,23 +211,40 @@ class TutorialDetailsPage extends StatelessWidget {
                           ),
                           InkWell(
                             onTap: () async {
-                              context.goNamed(
-                                Routes.videoPalyer,
-                                pathParameters: {
-                                  'slug': slug,
-                                },
-                                extra: {
-                                  'is_hls_link': true,
-                                  'hls_link': Provider.of<TutorialDetaialsBloc>(
-                                              context,
+                              if ((Provider.of<TutorialDetaialsBloc>(context,
+                                          listen: false)
+                                      .tutorialDetaials
+                                      ?.videos is int) &&
+                                  (Provider.of<TutorialDetaialsBloc>(context,
                                               listen: false)
                                           .tutorialDetaials
-                                          ?.videos
-                                          ?.first
-                                          .hls_url ??
-                                      '',
-                                },
-                              );
+                                          ?.videos ==
+                                      402)) {
+                                showAnimatedDialog(
+                                  context: context,
+                                  curve: Curves.easeIn,
+                                  animationType: DialogTransitionType.fade,
+                                  duration: const Duration(milliseconds: 300),
+                                  builder: (context) =>
+                                      NoActiveSubscriptionDialog(
+                                    slug: slug,
+                                  ),
+                                );
+                              } else {
+                                context.goNamed(
+                                  Routes.videoPalyer,
+                                  pathParameters: {
+                                    'slug': slug,
+                                  },
+                                  extra: {
+                                    'slug': slug,
+                                    'video': Provider.of<TutorialDetaialsBloc>(
+                                            context,
+                                            listen: false)
+                                        .getVideo(),
+                                  },
+                                );
+                              }
                             },
                             child: Container(
                               width: double.infinity,
@@ -382,6 +397,11 @@ class TutorialDetailsPage extends StatelessWidget {
                                     ),
                                     TutorialDownloadWidget(
                                       slug: slug,
+                                      video: Provider.of<TutorialDetaialsBloc>(
+                                                  context,
+                                                  listen: false)
+                                              .getVideo() ??
+                                          Video(),
                                     ),
                                   ],
                                 )

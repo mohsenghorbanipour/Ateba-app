@@ -17,10 +17,10 @@ class CacheVideoModelAdapter extends TypeAdapter<CacheVideoModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CacheVideoModel(
-      path: fields[0] as String?,
-      slug: fields[1] as String?,
-      url: fields[2] as String?,
-      type: fields[3] as String?,
+      id: fields[0] as int?,
+      path: fields[1] as String?,
+      slug: fields[2] as String?,
+      url: fields[3] as String?,
       size: fields[4] as String?,
       qality: fields[5] as String?,
       title: fields[6] as String?,
@@ -33,13 +33,13 @@ class CacheVideoModelAdapter extends TypeAdapter<CacheVideoModel> {
     writer
       ..writeByte(8)
       ..writeByte(0)
-      ..write(obj.path)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.slug)
+      ..write(obj.path)
       ..writeByte(2)
-      ..write(obj.url)
+      ..write(obj.slug)
       ..writeByte(3)
-      ..write(obj.type)
+      ..write(obj.url)
       ..writeByte(4)
       ..write(obj.size)
       ..writeByte(5)

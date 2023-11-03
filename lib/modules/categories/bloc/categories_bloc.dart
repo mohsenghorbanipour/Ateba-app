@@ -14,7 +14,6 @@ enum TabState {
 }
 
 enum CategoriesDataType {
-  educationalProducts,
   medicalCourses,
   educationalPackages,
 }
@@ -29,13 +28,13 @@ class CategoriesBloc extends ChangeNotifier {
     notifyListeners();
   }
 
-  CategoriesDataType _categoriesDataType =
-      CategoriesDataType.educationalProducts;
+  CategoriesDataType _categoriesDataType = CategoriesDataType.medicalCourses;
   CategoriesDataType get categoriesDataType => _categoriesDataType;
   set categoriesDataType(val) {
     if (_categoriesDataType != val) {
       _categoriesDataType = val;
       notifyListeners();
+      loadCategoryData();
     }
   }
 
@@ -47,19 +46,14 @@ class CategoriesBloc extends ChangeNotifier {
   }
 
   bool loading = false;
+  bool loadingMore = false;
 
   List<Category> categories = [];
 
-  int? currentPageTutorial;
-  bool canLoadMoreTutorial = true;
-  List<Tutorial> tutorials = [];
+  int? currentPage;
+  bool canLoadMore = true;
 
-  int? currentPageCourse;
-  bool canLoadMoreCourse = true;
   List<Course> courses = [];
-
-  int? currentPagePackage;
-  bool canLoadMorePackage = true;
   List<Package> packages = [];
 
   // ==== ==== //
@@ -81,9 +75,7 @@ class CategoriesBloc extends ChangeNotifier {
   }
 
   void loadCategoryData() {
-    if (_categoriesDataType == CategoriesDataType.educationalProducts) {
-      loadTutorials();
-    } else if (_categoriesDataType == CategoriesDataType.medicalCourses) {
+    if (_categoriesDataType == CategoriesDataType.medicalCourses) {
       loadCourses();
     } else {
       loadPackages();
@@ -91,34 +83,12 @@ class CategoriesBloc extends ChangeNotifier {
   }
 
   void loadMoreCategoryData() {
-    if (_categoriesDataType == CategoriesDataType.educationalProducts) {
-      loadMoreTutorial();
-    } else if (_categoriesDataType == CategoriesDataType.medicalCourses) {
+    if (_categoriesDataType == CategoriesDataType.medicalCourses) {
       loadMoreCourses();
     } else {
       loadMorePackages();
     }
   }
-
-  Future<void> loadTutorials() async {
-    loading = true;
-    notifyListeners();
-    try {
-      PaginationResponseModel<List<Tutorial>>? response =
-          await CategoriesRemoteProvider.getToturials();
-      if (response != null) {
-        tutorials = response.data ?? [];
-        currentPageTutorial = response.meta?.current_page;
-        canLoadMoreTutorial = response.links?.next?.isNotEmpty ?? false;
-      }
-      loading = false;
-      notifyListeners();
-    } catch (e, s) {
-      LoggerHelper.errorLog(e, s);
-    }
-  }
-
-  Future<void> loadMoreTutorial() async {}
 
   Future<void> loadCourses() async {
     loading = true;
@@ -128,8 +98,8 @@ class CategoriesBloc extends ChangeNotifier {
           await CategoriesRemoteProvider.getCourses();
       if (response != null) {
         courses = response.data ?? [];
-        currentPageCourse = response.meta?.current_page;
-        canLoadMoreCourse = response.links?.next?.isNotEmpty ?? false;
+        currentPage = response.meta?.current_page;
+        canLoadMore = response.links?.next?.isNotEmpty ?? false;
       }
       loading = false;
       notifyListeners();
@@ -139,7 +109,21 @@ class CategoriesBloc extends ChangeNotifier {
   }
 
   Future<void> loadMoreCourses() async {
-    try {} catch (e, s) {
+    loadingMore = true;
+    notifyListeners();
+    try {
+      PaginationResponseModel<List<Course>>? response =
+          await CategoriesRemoteProvider.getCourses(
+        page: (currentPage! + 1),
+      );
+      if (response != null) {
+        courses.addAll(response.data ?? []);
+        currentPage = response.meta?.current_page;
+        canLoadMore = response.links?.next?.isNotEmpty ?? false;
+      }
+      loadingMore = false;
+      notifyListeners();
+    } catch (e, s) {
       LoggerHelper.errorLog(e, s);
     }
   }
@@ -152,8 +136,8 @@ class CategoriesBloc extends ChangeNotifier {
           await CategoriesRemoteProvider.getPackages();
       if (response != null) {
         packages = response.data ?? [];
-        currentPagePackage = response.meta?.current_page;
-        canLoadMorePackage = response.links?.next?.isNotEmpty ?? false;
+        currentPage = response.meta?.current_page;
+        canLoadMore = response.links?.next?.isNotEmpty ?? false;
       }
       loading = false;
       notifyListeners();
@@ -163,7 +147,25 @@ class CategoriesBloc extends ChangeNotifier {
   }
 
   Future<void> loadMorePackages() async {
-    try {} catch (e, s) {
+    try {
+      loadingMore = true;
+      notifyListeners();
+      try {
+        PaginationResponseModel<List<Package>>? response =
+            await CategoriesRemoteProvider.getPackages(
+          page: (currentPage! + 1),
+        );
+        if (response != null) {
+          packages.addAll(response.data ?? []);
+          currentPage = response.meta?.current_page;
+          canLoadMore = response.links?.next?.isNotEmpty ?? false;
+        }
+        loadingMore = false;
+        notifyListeners();
+      } catch (e, s) {
+        LoggerHelper.errorLog(e, s);
+      }
+    } catch (e, s) {
       LoggerHelper.errorLog(e, s);
     }
   }

@@ -4,7 +4,7 @@ import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
-enum ToastType { error, success }
+enum ToastType { error, success, info }
 
 class ToastComponent {
   static CancelFunc? cancelFunc;
@@ -27,6 +27,10 @@ class ToastComponent {
           case ToastType.success:
             background = ColorPalette.light.primary;
             icon = Icons.check_circle_rounded;
+            break;
+          case ToastType.info:
+            background = ColorPalette.light.info;
+            icon = Icons.info_rounded;
             break;
         }
 

@@ -48,7 +48,10 @@ class AtebaApp extends StatelessWidget {
           create: (context) => HomeBloc(),
         ),
         ChangeNotifierProvider(
-          create: (context) => BookmarksBloc(),
+          create: (context) => BookmarksBloc()
+            ..loadMyProduct(
+              type: 'course',
+            ),
         ),
         ChangeNotifierProvider(
           create: (context) => CartBloc(),
@@ -89,7 +92,6 @@ class AtebaApp extends StatelessWidget {
                     child = botToastBuilder(context, child);
                     return child;
                   },
-
                   routeInformationParser: router.routeInformationParser,
                   routerDelegate: router.routerDelegate,
                   routeInformationProvider: router.routeInformationProvider,

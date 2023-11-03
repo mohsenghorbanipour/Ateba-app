@@ -6,10 +6,10 @@ part 'cache_video_model.g.dart';
 @HiveType(typeId: HiveTypes.cacheVideoModel)
 class CacheVideoModel extends HiveObject {
   CacheVideoModel({
+    this.id,
     this.path,
     this.slug,
     this.url,
-    this.type,
     this.size,
     this.qality,
     this.title,
@@ -17,13 +17,13 @@ class CacheVideoModel extends HiveObject {
   });
 
   @HiveField(0)
-  String? path;
+  final int? id;
   @HiveField(1)
-  final String? slug;
+  String? path;
   @HiveField(2)
-  final String? url;
+  final String? slug;
   @HiveField(3)
-  final String? type;
+  final String? url;
   @HiveField(4)
   final String? size;
   @HiveField(5)

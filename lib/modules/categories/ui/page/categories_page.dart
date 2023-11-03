@@ -1,3 +1,5 @@
+import 'package:ateba_app/core/components/load_more_component.dart';
+import 'package:ateba_app/core/components/loading_component.dart';
 import 'package:ateba_app/modules/categories/bloc/categories_bloc.dart';
 import 'package:ateba_app/modules/categories/ui/widgets/categories_tab_widget.dart';
 import 'package:ateba_app/modules/categories/ui/widgets/categories_widget.dart';
@@ -19,8 +21,10 @@ class CategoriesPage extends StatelessWidget {
           if (context.select<CategoriesBloc, bool>(
               (bloc) => bloc.tabState == TabState.educationalVideos))
             const CategoriesWidget()
-          else 
+          else
             const CategoryDataWidget(),
+          if (context.select<CategoriesBloc, bool>((bloc) => bloc.loadingMore))
+            const LoadMoreComponent()
         ],
       );
 }

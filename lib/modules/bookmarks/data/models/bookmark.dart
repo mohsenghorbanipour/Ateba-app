@@ -1,4 +1,5 @@
 import 'package:ateba_app/core/base/base_model.dart';
+import 'package:ateba_app/modules/cart/data/models/link_to.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'bookmark.g.dart';
@@ -12,17 +13,17 @@ class Bookmark implements BaseModel<Bookmark>{
     this.thumbnail,
     this.duration,
     this.updated_at,
-    this.type,
-    this.slug,
+    this.video,
+    this.link_to,
   });
 
   final String? title;
   final String? subtitle;
   final String? thumbnail;
-  final int? duration;
+  final String? duration;
   final String? updated_at;
-  final String? type;
-  final String? slug;
+  final String? video;
+  final LinkTo? link_to;
 
   @override
   factory Bookmark.fromJson(Map<String, dynamic> json) =>

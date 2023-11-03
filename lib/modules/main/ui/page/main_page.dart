@@ -46,32 +46,38 @@ class MainPage extends StatelessWidget {
                       Assets.basketIc,
                     ),
                   ),
-                  Positioned(
-                    child: Container(
-                      width: 14,
-                      height: 14,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: ColorPalette.of(context).error,
-                      ),
-                      child: Center(
-                        child: Text(
-                          TextInputFormatters.toPersianNumber(
-                              context.select<CartBloc, String>((bloc) =>
-                                  (bloc.ordersResponse?.orders?.length ?? 0) >=
-                                          10
-                                      ? '9+'
-                                      : (bloc.ordersResponse?.orders?.length ??
-                                              0)
-                                          .toString())),
-                          style:
-                              Theme.of(context).textTheme.labelSmall?.copyWith(
-                                    color: ColorPalette.of(context).white,
-                                  ),
+                  if (context.select<CartBloc, bool>(
+                      (bloc) => (bloc.ordersResponse?.orders?.length ?? 0) > 0))
+                    Positioned(
+                      child: Container(
+                        width: 14,
+                        height: 14,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: ColorPalette.of(context).error,
+                        ),
+                        child: Center(
+                          child: Text(
+                            TextInputFormatters.toPersianNumber(
+                                context.select<CartBloc, String>((bloc) => (bloc
+                                                .ordersResponse
+                                                ?.orders
+                                                ?.length ??
+                                            0) >=
+                                        10
+                                    ? '9+'
+                                    : (bloc.ordersResponse?.orders?.length ?? 0)
+                                        .toString())),
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelSmall
+                                ?.copyWith(
+                                  color: ColorPalette.of(context).white,
+                                ),
+                          ),
                         ),
                       ),
-                    ),
-                  )
+                    )
                 ],
               ),
             ),

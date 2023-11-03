@@ -7,6 +7,7 @@ part of 'video.dart';
 // **************************************************************************
 
 Video _$VideoFromJson(Map<String, dynamic> json) => Video(
+      id: json['id'] as int?,
       title: json['title'] as String?,
       hls_url: json['hls_url'] as String?,
       description: json['description'] as String?,
@@ -28,6 +29,7 @@ Map<String, dynamic> _$VideoToJson(Video instance) {
     }
   }
 
+  writeNotNull('id', instance.id);
   writeNotNull('title', instance.title);
   writeNotNull('hls_url', instance.hls_url);
   writeNotNull('description', instance.description);

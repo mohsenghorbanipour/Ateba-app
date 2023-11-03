@@ -1,108 +1,242 @@
-// import 'package:ateba_app/core/theme/style/color_palatte.dart';
-// import 'package:ateba_app/core/utils/logger_helper.dart';
-// import 'package:ateba_app/modules/video%20player/ui/widgets/video_player_widget.dart';
-// import 'package:flutter/material.dart';
-// import 'package:lecle_yoyo_player/lecle_yoyo_player.dart';
-// import 'package:video_player/video_player.dart';
+import 'package:ateba_app/core/theme/style/color_palatte.dart';
+import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';
+import 'package:chewie/chewie.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:video_player/video_player.dart';
 
-// class VideoPlayerPage extends StatefulWidget {
-//   const VideoPlayerPage({
-//     required this.data,
-//     super.key,
-//   });
+class VideoPlayerPage extends StatefulWidget {
+  const VideoPlayerPage({
+    required this.data,
+    super.key,
+  });
 
-//   final Map<String, dynamic> data;
+  final Map<String, dynamic> data;
 
-//   @override
-//   State<VideoPlayerPage> createState() => _VideoPlayerPageState();
-// }
+  @override
+  State<VideoPlayerPage> createState() => _VideoPlayerPageState();
+}
 
-// class _VideoPlayerPageState extends State<VideoPlayerPage> {
-//   bool fullscreen = false;
+class _VideoPlayerPageState extends State<VideoPlayerPage> {
+  bool fullscreen = false;
+  VideoPlayerController? controller;
+  ChewieController? chewieController;
 
-//   @override
-//   Widget build(BuildContext context) => Scaffold(
-//         // appBar: (widget.data['is_hls_link'] && fullscreen == false)
-//         //     ? AppBar(
-//         //         backgroundColor: Colors.blue,
-//         //         title: const Image(
-//         //           image: AssetImage('image/yoyo_logo.png'),
-//         //           fit: BoxFit.fitHeight,
-//         //           height: 50,
-//         //         ),
-//         //         centerTitle: true,
-//         //         leading: IconButton(
-//         //           icon: const Icon(Icons.arrow_back),
-//         //           onPressed: () {
-//         //             Navigator.pop(context);
-//         //           },
-//         //         ),
-//         //       )
-//         //     : null,
-//         body: widget.data['is_hls_link']
-//             ? Column(
-//                 mainAxisAlignment: MainAxisAlignment.center,
-//                 children: [
-//                   YoYoPlayer(
-//                     url: widget.data['hls_link'],
-//                     aspectRatio: 16 / 9,
-//                     allowCacheFile: true,
-//                     videoStyle: VideoStyle(
-//                       qualityStyle: TextStyle(
-//                         fontSize: 16.0,
-//                         fontWeight: FontWeight.w600,
-//                         color: ColorPalette.of(context).white,
-//                       ),
-//                       forwardAndBackwardBtSize: 30.0,
-//                       playButtonIconSize: 40.0,
-//                       playIcon: Icon(
-//                         Icons.play_arrow_rounded,
-//                         size: 40.0,
-//                         color: ColorPalette.of(context).white,
-//                       ),
-//                       pauseIcon: Icon(
-//                         Icons.pause,
-//                         size: 40.0,
-//                         color: ColorPalette.of(context).white,
-//                       ),
-//                       videoQualityPadding: const EdgeInsets.all(5.0),
-//                       enableSystemOrientationsOverride: false,
-//                     ),
-//                     videoLoadingStyle: const VideoLoadingStyle(
-//                       loading: Center(
-//                         child: Column(
-//                           mainAxisAlignment: MainAxisAlignment.center,
-//                           crossAxisAlignment: CrossAxisAlignment.center,
-//                           children: [
-//                             Image(
-//                               image: AssetImage('image/yoyo_logo.png'),
-//                               fit: BoxFit.fitHeight,
-//                               height: 50,
-//                             ),
-//                             SizedBox(height: 16.0),
-//                             Text("Loading video..."),
-//                           ],
-//                         ),
-//                       ),
-//                     ),
-//                     autoPlayVideoAfterInit: true,
-                    
-//                     // onRewind: (val) {
-//                     //   LoggerHelper.logger.i('kirrr');
-//                     // },
-//                     onFullScreen: (value) {
-//                       // setState(() {
-//                       //   if (fullscreen != value) {
-//                       //     fullscreen = value;
-//                       //   }
-//                       // });
-//                     },
-//                   ),
-//                 ],
-//               )
-//             : VideoPlayerWidget(
-//                 controller: widget.data['controller'],
-//                 videoTitle: widget.data['title'],
-//               ),
-//       );
-// }
+  String selectedQuality = 'auto';
+
+  @override
+  void initState() {
+    controller = VideoPlayerController.networkUrl(
+      Uri.parse(
+        (widget.data['video'] as Video).hls_url ?? '',
+      ),
+    );
+    chewieController = ChewieController(
+      videoPlayerController: controller!,
+      aspectRatio: 3 / 2,
+      autoInitialize: true,
+      autoPlay: true,
+      deviceOrientationsAfterFullScreen: [DeviceOrientation.portraitUp],
+      materialProgressColors: ChewieProgressColors(
+        playedColor: Colors.purple,
+        handleColor: Colors.purple,
+        backgroundColor: Colors.grey,
+        bufferedColor: Colors.purple,
+      ),
+      placeholder: Container(
+        color: Colors.grey,
+      ),
+    );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        body: Stack(
+          children: [
+            Chewie(
+              controller: chewieController!,
+            ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: InkWell(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    builder: (context) => Container(
+                      margin: const EdgeInsets.all(12),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: ColorPalette.of(context).background,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: List.generate(
+                          (((widget.data['video'] as Video)
+                                      .download_links
+                                      ?.length ??
+                                  0) +
+                              1),
+                          (index) => InkWell(
+                            onTap: () {
+                              controller?.pause();
+                              if ((((widget.data['video'] as Video)
+                                          .download_links
+                                          ?.length ??
+                                      0)) ==
+                                  index) {
+                                setState(() {
+                                  selectedQuality = 'auto';
+                                  controller = VideoPlayerController.networkUrl(
+                                      Uri.parse((widget.data['video'] as Video)
+                                              .hls_url ??
+                                          ''));
+                                  chewieController = ChewieController(
+                                    videoPlayerController: controller!,
+                                    aspectRatio: 3 / 2,
+                                    autoInitialize: true,
+                                    autoPlay: true,
+                                    deviceOrientationsAfterFullScreen: [
+                                      DeviceOrientation.portraitUp
+                                    ],
+                                    materialProgressColors:
+                                        ChewieProgressColors(
+                                      playedColor: Colors.purple,
+                                      handleColor: Colors.purple,
+                                      backgroundColor: Colors.grey,
+                                      bufferedColor: Colors.purple,
+                                    ),
+                                    placeholder: Container(
+                                      color: Colors.grey,
+                                    ),
+                                  );
+                                });
+                              } else {
+                                setState(
+                                  () {
+                                    controller =
+                                        VideoPlayerController.networkUrl(
+                                            Uri.parse(
+                                                (widget.data['video'] as Video)
+                                                        .download_links?[index]
+                                                        .url ??
+                                                    ''));
+                                    chewieController = ChewieController(
+                                      videoPlayerController: controller!,
+                                      aspectRatio: 3 / 2,
+                                      autoInitialize: true,
+                                      autoPlay: true,
+                                      deviceOrientationsAfterFullScreen: [
+                                        DeviceOrientation.portraitUp
+                                      ],
+                                      materialProgressColors:
+                                          ChewieProgressColors(
+                                        playedColor: Colors.purple,
+                                        handleColor: Colors.purple,
+                                        backgroundColor: Colors.grey,
+                                        bufferedColor: Colors.purple,
+                                      ),
+                                      placeholder: Container(
+                                        color: Colors.grey,
+                                      ),
+                                    );
+                                    selectedQuality =
+                                        (widget.data['video'] as Video)
+                                                .download_links?[index]
+                                                .quality ??
+                                            '';
+                                  },
+                                );
+                              }
+                              Navigator.of(context).pop();
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: index ==
+                                          (((widget.data['video'] as Video)
+                                                  .download_links
+                                                  ?.length ??
+                                              0))
+                                      ? selectedQuality == 'auto'
+                                          ? ColorPalette.of(context)
+                                              .primary
+                                              .withOpacity(0.5)
+                                          : Colors.transparent
+                                      : selectedQuality ==
+                                              (widget.data['video'] as Video)
+                                                  .download_links?[index]
+                                                  .quality
+                                          ? ColorPalette.of(context)
+                                              .primary
+                                              .withOpacity(0.5)
+                                          : Colors.transparent,
+                                  borderRadius: index == 0
+                                      ? const BorderRadius.only(
+                                          topLeft: Radius.circular(12),
+                                          topRight: Radius.circular(12))
+                                      : index ==
+                                              (((widget.data['video'] as Video)
+                                                      .download_links
+                                                      ?.length ??
+                                                  0))
+                                          ? const BorderRadius.only(
+                                              bottomLeft: Radius.circular(12),
+                                              bottomRight: Radius.circular(12),
+                                            )
+                                          : null),
+                              width: double.infinity,
+                              height: 40,
+                              child: Center(
+                                child: Text(
+                                  index ==
+                                          (((widget.data['video'] as Video)
+                                                  .download_links
+                                                  ?.length ??
+                                              0))
+                                      ? 'auto'
+                                      : (widget.data['video'] as Video)
+                                              .download_links?[index]
+                                              .quality ??
+                                          '',
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: 80,
+                  height: 30,
+                  margin: const EdgeInsets.only(top: 4),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color:
+                        ColorPalette.of(context).textPrimary.withOpacity(0.6),
+                  ),
+                  child: Center(
+                    child: Text(
+                      selectedQuality,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            color: ColorPalette.of(context).white,
+                          ),
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+  
+  @override
+  void dispose() {
+    controller?.dispose();
+    chewieController?.dispose();
+    super.dispose();
+  }
+}

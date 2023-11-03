@@ -1,5 +1,6 @@
 {
     "ateba_courses": "دوره های اموزشی اطبا",
+    "loading": "در حال بارگزاری ...",
     "includes_training": "شامل آموزش های :",
     "toman": "تومان",
     "latest_tutorials": "جدیدترین آموزش ها",
@@ -73,7 +74,6 @@
     "download_with": "دانلود با : ",
     "quality": "کیفیت",
     "cancel_download": "لغو دانلود",
-    "educational_products": "محصولات آموزشی",
     "medical_courses": "دوره های پزشکی",
     "educational_packages": "بسته های آموزشی",
     "ateba_needs": "ضروریات اطبا",
@@ -83,6 +83,10 @@
     "for_see_videos_just_have_subscription": "برای تماشای ویدئو لازمه اشتراک داشته باشید",
     "recive_subscription": "دریافت اشتراک",
     "video": "ویدئو",
-    "added_to_basket": "به سبد خرید افزوده شد"
+    "added_to_basket": "به سبد خرید افزوده شد",
+    "courses": "دوره ها",
+    "packages": "بسته ها",
+    "see_tutorials": "مشاهده آموزش ها",
+    "view_all": "نمایش همه"
     
 }

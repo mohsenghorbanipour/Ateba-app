@@ -15,10 +15,12 @@ import 'package:go_router/go_router.dart';
 class PackageCard extends StatelessWidget {
   const PackageCard({
     required this.package,
+    this.width,
     super.key,
   });
 
   final Package package;
+  final double? width;
 
   @override
   Widget build(BuildContext context) => InkWell(
@@ -32,7 +34,7 @@ class PackageCard extends StatelessWidget {
         },
         child: Container(
           height: 220,
-          width: 255,
+          width: width ?? 255,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: ColorPalette.of(context).background,

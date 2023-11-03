@@ -78,13 +78,13 @@ class AtebaRouter {
                 name: Routes.subscriptions,
                 pageBuilder: (state) => const SubscriptionPage(),
               ),
-              // _routeFade(
-              //   path: Routes.videoPalyer,
-              //   name: Routes.videoPalyer,
-              //   pageBuilder: (state) => VideoPlayerPage(
-              //     data: state.extra as Map<String, dynamic>,
-              //   ),
-              // )
+              _routeFade(
+                path: Routes.videoPalyer,
+                name: Routes.videoPalyer,
+                pageBuilder: (state) => VideoPlayerPage(
+                  data: state.extra as Map<String, dynamic>,
+                ),
+              )
             ],
           ),
           _routeFade(

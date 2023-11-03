@@ -3,11 +3,19 @@ import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:flutter/material.dart';
 
 class CourseShimmerCard extends StatelessWidget {
-  const CourseShimmerCard({super.key});
+  const CourseShimmerCard({
+    this.width,
+    this.height,
+    super.key,
+  });
+
+  final double? width;
+  final double? height;
 
   @override
   Widget build(BuildContext context) => Container(
-        width: 270,
+        width: width ??  270,
+        height: height,
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6),

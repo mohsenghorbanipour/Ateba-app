@@ -7,6 +7,7 @@ part 'video.g.dart';
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
 class Video implements BaseModel<Video> {
   Video({
+    this.id,
     this.title,
     this.hls_url,
     this.description,
@@ -17,6 +18,7 @@ class Video implements BaseModel<Video> {
     this.download_links,
   });
 
+  final int? id;
   final String? title;
   final String? hls_url;
   final String? description;
