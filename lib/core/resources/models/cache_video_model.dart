@@ -14,6 +14,8 @@ class CacheVideoModel extends HiveObject {
     this.qality,
     this.title,
     this.thumbnail_url,
+    this.duration,
+    this.updated_at,
   });
 
   @HiveField(0)
@@ -32,4 +34,8 @@ class CacheVideoModel extends HiveObject {
   final String? title;
   @HiveField(7)
   final String? thumbnail_url;
+  @HiveField(8)
+  final String? duration;
+  @HiveField(9)
+  final String? updated_at;
 }

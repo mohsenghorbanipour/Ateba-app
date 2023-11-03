@@ -1,6 +1,7 @@
 import 'package:ateba_app/core/base/enums/tab_state.dart';
 import 'package:ateba_app/core/components/button_component.dart';
 import 'package:ateba_app/core/components/shimmer_components.dart';
+import 'package:ateba_app/core/components/toast_component.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/date_helper.dart';
@@ -297,6 +298,10 @@ class PackageDetailsPage extends StatelessWidget {
                           onPressed: () {
                             if (Provider.of<CartBloc>(context, listen: false)
                                 .checkExistOrderInCart('package', slug)) {
+                              ToastComponent.show(
+                                'package_exist_in_cart'.tr(),
+                                type: ToastType.info,
+                              );
                             } else {
                               Provider.of<PackageDetailsBloc>(context,
                                       listen: false)

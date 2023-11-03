@@ -58,51 +58,61 @@ class BookmarkCard extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            SvgPicture.asset(
-                              Assets.calendarIc,
-                              color: ColorPalette.of(context).error,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 2),
-                              child: Text(
-                                DateHelper.getDistanceWithToday(
-                                  bookmark.updated_at ?? '',
-                                ),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelSmall
-                                    ?.copyWith(
-                                      color: ColorPalette.of(context)
-                                          .textPrimary
-                                          .withOpacity(0.8),
-                                      fontSize: 8,
+                            if (bookmark.updated_at?.isNotEmpty ?? false)
+                              Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    Assets.calendarIc,
+                                    color: ColorPalette.of(context).error,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 2),
+                                    child: Text(
+                                      DateHelper.getDistanceWithToday(
+                                        bookmark.updated_at ?? '',
+                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelSmall
+                                          ?.copyWith(
+                                            color: ColorPalette.of(context)
+                                                .textPrimary
+                                                .withOpacity(0.8),
+                                            fontSize: 8,
+                                          ),
                                     ),
+                                  ),
+                                ],
                               ),
-                            ),
                             const SizedBox(
                               width: 12,
                             ),
-                            SvgPicture.asset(
-                              Assets.clockIc,
-                              color: ColorPalette.of(context).error,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 2),
-                              child: Text(
-                                TextInputFormatters.toPersianNumber(
-                                  bookmark.duration ?? '',
-                                ),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelSmall
-                                    ?.copyWith(
-                                      color: ColorPalette.of(context)
-                                          .textPrimary
-                                          .withOpacity(0.8),
-                                      fontSize: 8,
+                            if (bookmark.duration?.isNotEmpty ?? false)
+                              Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    Assets.clockIc,
+                                    color: ColorPalette.of(context).error,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 2),
+                                    child: Text(
+                                      TextInputFormatters.toPersianNumber(
+                                        bookmark.duration ?? '',
+                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelSmall
+                                          ?.copyWith(
+                                            color: ColorPalette.of(context)
+                                                .textPrimary
+                                                .withOpacity(0.8),
+                                            fontSize: 8,
+                                          ),
                                     ),
-                              ),
-                            )
+                                  )
+                                ],
+                              )
                           ],
                         )
                       ],

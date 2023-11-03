@@ -1,6 +1,7 @@
 import 'package:ateba_app/core/base/bloc/download_video_bloc.dart';
 import 'package:ateba_app/core/components/toast_component.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
+import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/core/widgets/no_active_subscription_dialog.dart';
@@ -11,6 +12,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
@@ -52,6 +54,26 @@ class TutorialDownloadWidget extends StatelessWidget {
         : InkWell(
             onTap: () {
               if (Provider.of<DownloadVideoBloc>(context, listen: false)
+                  .existVideoInCache(video.id ?? -1, slug)) {
+                context.goNamed(
+                  Routes.videoPalyer,
+                  pathParameters: {
+                    'slug': slug,
+                  },
+                  extra: {
+                    'slug': slug,
+                    'video': Provider.of<TutorialDetaialsBloc>(context,
+                            listen: false)
+                        .getVideo(),
+                    'show_with_path': true,
+                    'path':
+                        Provider.of<DownloadVideoBloc>(context, listen: false)
+                            .getPath(video.id ?? -1, slug),
+                  },
+                );
+                return;
+              }
+              if (Provider.of<DownloadVideoBloc>(context, listen: false)
                       .downloading &&
                   Provider.of<DownloadVideoBloc>(context, listen: false)
                           .selectedVideoIdForDownload !=
@@ -82,8 +104,6 @@ class TutorialDownloadWidget extends StatelessWidget {
                   .existVideoInCache(video.id ?? -1, slug)) {
                 return;
               } else {
-                Provider.of<DownloadVideoBloc>(context, listen: false)
-                    .selectedVideoIdForDownload = video.id ?? -1;
                 showAnimatedDialog(
                   context: context,
                   curve: Curves.easeIn,
@@ -96,6 +116,16 @@ class TutorialDownloadWidget extends StatelessWidget {
                       video: video,
                       slug: slug,
                       type: 'tutorial',
+                      title: Provider.of<TutorialDetaialsBloc>(context,
+                                  listen: false)
+                              .tutorialDetaials
+                              ?.title ??
+                          '',
+                      updated_at: Provider.of<TutorialDetaialsBloc>(context,
+                                  listen: false)
+                              .tutorialDetaials
+                              ?.updated_at ??
+                          '',
                     ),
                   ),
                 );

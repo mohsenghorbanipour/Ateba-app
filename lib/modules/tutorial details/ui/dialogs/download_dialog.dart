@@ -17,12 +17,16 @@ class DownloadDialog extends StatefulWidget {
     required this.video,
     required this.slug,
     required this.type,
+    required this.title,
+    required this.updated_at,
     super.key,
   });
 
   final Video video;
   final String slug;
   final String type;
+  final String title;
+  final String updated_at;
 
   @override
   State<DownloadDialog> createState() => _DownloadDialogState();
@@ -32,106 +36,127 @@ class _DownloadDialogState extends State<DownloadDialog> {
   int? selectedIndexForDownload;
 
   @override
-  Widget build(BuildContext context) => Dialog(
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        backgroundColor: ColorPalette.of(context).scaffoldBackground,
-        child: AnimatedSize(
-          duration: const Duration(milliseconds: 300),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 16),
-                    child: Text(
-                      'download_with'.tr(),
-                      style: Theme.of(context).textTheme.titleMedium,
+  Widget build(BuildContext context) => WillPopScope(
+        onWillPop: () async {
+          if (!Provider.of<DownloadVideoBloc>(context, listen: false)
+              .downloading) {
+            Provider.of<DownloadVideoBloc>(context, listen: false)
+                .selectedVideoIdForDownload = null;
+          }
+          return true;
+        },
+        child: Dialog(
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          backgroundColor: ColorPalette.of(context).scaffoldBackground,
+          child: AnimatedSize(
+            duration: const Duration(milliseconds: 300),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16),
+                      child: Text(
+                        'download_with'.tr(),
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
                     ),
+                    IconButton(
+                      onPressed: () {
+                        if (!Provider.of<DownloadVideoBloc>(context,
+                                listen: false)
+                            .downloading) {
+                          Provider.of<DownloadVideoBloc>(context, listen: false)
+                              .selectedVideoIdForDownload = null;
+                        }
+                        context.pop();
+                      },
+                      icon: SvgPicture.asset(
+                        Assets.closeIc,
+                      ),
+                    ),
+                  ],
+                ),
+                ListView.separated(
+                  itemCount: widget.video.download_links?.length ?? 0,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  shrinkWrap: true,
+                  separatorBuilder: (_, __) => const SizedBox(
+                    height: 16,
                   ),
-                  IconButton(
-                    onPressed: () {
-                      context.pop();
+                  itemBuilder: (_, index) => DownloadVideoTile(
+                    videoLink:
+                        widget.video.download_links?[index] ?? VideoLink(),
+                    onTap: () {
+                      setState(() {
+                        selectedIndexForDownload = index;
+                      });
                     },
-                    icon: SvgPicture.asset(
-                      Assets.closeIc,
-                    ),
+                    selected: selectedIndexForDownload == index,
                   ),
-                ],
-              ),
-              ListView.separated(
-                itemCount: widget.video.download_links?.length ?? 0,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                shrinkWrap: true,
-                separatorBuilder: (_, __) => const SizedBox(
-                  height: 16,
                 ),
-                itemBuilder: (_, index) => DownloadVideoTile(
-                  videoLink: widget.video.download_links?[index] ?? VideoLink(),
-                  onTap: () {
-                    setState(() {
-                      selectedIndexForDownload = index;
-                    });
-                  },
-                  selected: selectedIndexForDownload == index,
-                ),
-              ),
-              if (selectedIndexForDownload != null)
-                ButtonComponent(
-                  onPressed: () {
-                    if (Provider.of<DownloadVideoBloc>(context, listen: false)
-                        .downloading) {
-                      Provider.of<DownloadVideoBloc>(context, listen: false)
-                          .cancelDownload();
-                    } else {
-                      Provider.of<DownloadVideoBloc>(context, listen: false)
-                          .selectedVideoIdForDownload = widget.video.id ?? -1;
-                      Provider.of<DownloadVideoBloc>(context, listen: false)
-                          .downloadVideoAndSave(
-                        CacheVideoModel(
-                          url: widget
-                                  .video
-                                  .download_links?[selectedIndexForDownload!]
-                                  .url ??
-                              '',
-                          qality: widget
-                                  .video
-                                  .download_links?[selectedIndexForDownload!]
-                                  .quality ??
-                              '',
-                          size: widget
-                                  .video
-                                  .download_links?[selectedIndexForDownload!]
-                                  .size ??
-                              '',
-                          slug: widget.slug,
-                          id: widget.video.id,
-                        ),
-                      );
-                    }
-                  },
-                  height: 36,
-                  margin: const EdgeInsets.all(16),
-                  color: Colors.transparent,
-                  borderSide: BorderSide(
-                      width: 1,
-                      color: context.select<DownloadVideoBloc, bool>(
-                              (bloc) => bloc.downloading)
-                          ? ColorPalette.of(context).error
-                          : ColorPalette.of(context).primary),
-                  child: Text(
-                      context.select<DownloadVideoBloc, bool>(
-                              (bloc) => bloc.downloading)
-                          ? 'cancel_download'.tr()
-                          : 'add_to_gallery_offline'.tr(),
-                      style: Theme.of(context).textTheme.labelLarge),
-                )
-            ],
+                if (selectedIndexForDownload != null)
+                  ButtonComponent(
+                    onPressed: () {
+                      if (Provider.of<DownloadVideoBloc>(context, listen: false)
+                          .downloading) {
+                        Provider.of<DownloadVideoBloc>(context, listen: false)
+                            .cancelDownload();
+                      } else {
+                        Provider.of<DownloadVideoBloc>(context, listen: false)
+                            .selectedVideoIdForDownload = widget.video.id ?? -1;
+                        Provider.of<DownloadVideoBloc>(context, listen: false)
+                            .downloadVideoAndSave(
+                          CacheVideoModel(
+                            url: widget
+                                    .video
+                                    .download_links?[selectedIndexForDownload!]
+                                    .url ??
+                                '',
+                            qality: widget
+                                    .video
+                                    .download_links?[selectedIndexForDownload!]
+                                    .quality ??
+                                '',
+                            size: widget
+                                    .video
+                                    .download_links?[selectedIndexForDownload!]
+                                    .size ??
+                                '',
+                            slug: widget.slug,
+                            id: widget.video.id,
+                            duration: widget.video.duration ?? '',
+                            title: widget.title,
+                            updated_at: widget.updated_at,
+                            thumbnail_url: widget.video.thumbnail_url,
+                          ),
+                        );
+                      }
+                    },
+                    height: 36,
+                    margin: const EdgeInsets.all(16),
+                    color: Colors.transparent,
+                    borderSide: BorderSide(
+                        width: 1,
+                        color: context.select<DownloadVideoBloc, bool>(
+                                (bloc) => bloc.downloading)
+                            ? ColorPalette.of(context).error
+                            : ColorPalette.of(context).primary),
+                    child: Text(
+                        context.select<DownloadVideoBloc, bool>(
+                                (bloc) => bloc.downloading)
+                            ? 'cancel_download'.tr()
+                            : 'add_to_gallery_offline'.tr(),
+                        style: Theme.of(context).textTheme.labelLarge),
+                  )
+              ],
+            ),
           ),
         ),
       );

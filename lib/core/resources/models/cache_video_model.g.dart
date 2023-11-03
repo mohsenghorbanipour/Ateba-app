@@ -25,13 +25,15 @@ class CacheVideoModelAdapter extends TypeAdapter<CacheVideoModel> {
       qality: fields[5] as String?,
       title: fields[6] as String?,
       thumbnail_url: fields[7] as String?,
+      duration: fields[8] as String?,
+      updated_at: fields[9] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, CacheVideoModel obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -47,7 +49,11 @@ class CacheVideoModelAdapter extends TypeAdapter<CacheVideoModel> {
       ..writeByte(6)
       ..write(obj.title)
       ..writeByte(7)
-      ..write(obj.thumbnail_url);
+      ..write(obj.thumbnail_url)
+      ..writeByte(8)
+      ..write(obj.duration)
+      ..writeByte(9)
+      ..write(obj.updated_at);
   }
 
   @override

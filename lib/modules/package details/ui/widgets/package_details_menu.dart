@@ -54,25 +54,25 @@ class PackageDetailsMenu extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Container(
-                      height: 35,
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            Assets.bookmarkIc,
-                            color: ColorPalette.of(context).textPrimary,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 4),
-                            child: Text(
-                              'bookmarking'.tr(),
-                              style: Theme.of(context).textTheme.labelSmall,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   height: 35,
+                    //   padding: const EdgeInsets.symmetric(horizontal: 12),
+                    //   child: Row(
+                    //     children: [
+                    //       SvgPicture.asset(
+                    //         Assets.bookmarkIc,
+                    //         color: ColorPalette.of(context).textPrimary,
+                    //       ),
+                    //       Padding(
+                    //         padding: const EdgeInsets.only(right: 4),
+                    //         child: Text(
+                    //           'bookmarking'.tr(),
+                    //           style: Theme.of(context).textTheme.labelSmall,
+                    //         ),
+                    //       )
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 )
               ],

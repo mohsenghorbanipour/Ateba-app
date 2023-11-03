@@ -35,8 +35,8 @@ class TutorialDetaialsBloc extends ChangeNotifier {
   }
 
   int? selectedCommentIndex;
-  int? _selectedComment;
-  int? get selectedComment => _selectedComment;
+  String? _selectedComment;
+  String? get selectedComment => _selectedComment;
   set selectedComment(val) {
     _selectedComment = val;
     notifyListeners();
@@ -248,6 +248,9 @@ class TutorialDetaialsBloc extends ChangeNotifier {
         commentController.clear();
         comment = '';
         Navigator.of(context).pop();
+        await loadReplies(
+          replyTo,
+        );
       }
       sendCommentLoading = false;
       notifyListeners();

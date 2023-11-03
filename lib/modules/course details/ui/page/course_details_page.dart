@@ -1,5 +1,6 @@
 import 'package:ateba_app/core/base/enums/tab_state.dart';
 import 'package:ateba_app/core/components/button_component.dart';
+import 'package:ateba_app/core/components/toast_component.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/color_helper.dart';
@@ -278,6 +279,10 @@ class CourseDetailsPage extends StatelessWidget {
                           onPressed: () {
                             if (Provider.of<CartBloc>(context, listen: false)
                                 .checkExistOrderInCart('course', slug)) {
+                              ToastComponent.show(
+                                'course_exist_in_cart'.tr(),
+                                type: ToastType.info,
+                              );
                             } else {
                               Provider.of<CourseDetailsBloc>(context,
                                       listen: false)

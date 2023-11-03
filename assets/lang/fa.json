@@ -87,6 +87,9 @@
     "courses": "دوره ها",
     "packages": "بسته ها",
     "see_tutorials": "مشاهده آموزش ها",
-    "view_all": "نمایش همه"
+    "view_all": "نمایش همه",
+    "course_exist_in_cart": "دوره آموزشی در سبد خرید شما وجود دارد",
+    "package_exist_in_cart": "بسته آموزشی در سبد خرید شما وجود دارد",
+    "anuther_video_is_downloading": "ویدئو دیگری در حال دانلود میباشد لطفا صبر کنید"
     
 }

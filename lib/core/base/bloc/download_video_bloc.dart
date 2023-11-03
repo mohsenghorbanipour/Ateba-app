@@ -26,7 +26,12 @@ class DownloadVideoBloc extends ChangeNotifier {
 
   CancelToken cancelToken = CancelToken();
 
-  int? selectedVideoIdForDownload;
+  int? _selectedVideoIdForDownload;
+  int? get selectedVideoIdForDownload => _selectedVideoIdForDownload;
+  set selectedVideoIdForDownload(val) {
+    _selectedVideoIdForDownload = val;
+    notifyListeners();
+  }
 
   Future<void> init() async {
     try {
@@ -37,6 +42,7 @@ class DownloadVideoBloc extends ChangeNotifier {
           videos.add(e);
         }
       }
+      LoggerHelper.logger.wtf(videos.first.title);
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
@@ -44,6 +50,7 @@ class DownloadVideoBloc extends ChangeNotifier {
   }
 
   Future<void> downloadVideoAndSave(CacheVideoModel cacheVideoModel) async {
+    LoggerHelper.logger.wtf(cacheVideoModel.title);
     downloading = true;
     notifyListeners();
     try {
@@ -70,6 +77,10 @@ class DownloadVideoBloc extends ChangeNotifier {
             qality: cacheVideoModel.qality,
             size: cacheVideoModel.size,
             url: cacheVideoModel.url,
+            duration: cacheVideoModel.duration,
+            thumbnail_url: cacheVideoModel.thumbnail_url,
+            title: cacheVideoModel.title,
+            updated_at: cacheVideoModel.updated_at,
           ),
         );
         saveData();
@@ -109,9 +120,6 @@ class DownloadVideoBloc extends ChangeNotifier {
 
   bool existVideoInCache(int id, String slug) {
     try {
-      LoggerHelper.logger.wtf(id);
-      LoggerHelper.logger.wtf(slug);
-      LoggerHelper.logger.wtf(videos.first);
       bool exist = false;
       for (var e in videos) {
         if (e.id == id && e.slug == slug) {
@@ -122,6 +130,22 @@ class DownloadVideoBloc extends ChangeNotifier {
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
       return false;
+    }
+  }
+
+  String getPath(int id, slug) {
+    try {
+      String path = '';
+      for (var e in videos) {
+        if (e.id == id && e.slug == slug) {
+          path = e.path ?? '';
+        }
+      }
+      LoggerHelper.logger.wtf(path);
+      return path;
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      return '';
     }
   }
 }

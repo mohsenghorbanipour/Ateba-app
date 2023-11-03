@@ -564,16 +564,18 @@ class TutorialDetailsPage extends StatelessWidget {
                                       backgroundColor: Colors.transparent,
                                       elevation: 0,
                                       useSafeArea: true,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(0)),
-                                      isScrollControlled: true,
                                       constraints: BoxConstraints(
                                         maxHeight:
                                             MediaQuery.of(context).size.height,
                                         minHeight:
                                             MediaQuery.of(context).size.height,
                                       ),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(0)),
+                                      isScrollControlled: true,
+                                      enableDrag: false,
+                                      useRootNavigator: true,
                                       builder: (ctx) =>
                                           ChangeNotifierProvider.value(
                                         value:
@@ -669,7 +671,7 @@ class TutorialDetailsPage extends StatelessWidget {
                                 },
                                 selected: (bloc.selectedComment != null)
                                     ? bloc.comments[index].id ==
-                                        bloc.selectedComment.toString()
+                                        bloc.selectedComment
                                     : false,
                                 sendCommentFunction: () {
                                   showModalBottomSheet(
@@ -678,15 +680,17 @@ class TutorialDetailsPage extends StatelessWidget {
                                     backgroundColor: Colors.transparent,
                                     elevation: 0,
                                     useSafeArea: true,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(0)),
-                                    isScrollControlled: true,
                                     constraints: BoxConstraints(
                                       maxHeight:
                                           MediaQuery.of(context).size.height,
                                       minHeight:
                                           MediaQuery.of(context).size.height,
                                     ),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(0)),
+                                    isScrollControlled: true,
+                                    enableDrag: false,
+                                    useRootNavigator: true,
                                     builder: (ctx) =>
                                         ChangeNotifierProvider.value(
                                       value: Provider.of<TutorialDetaialsBloc>(
