@@ -157,6 +157,36 @@ class PackageDetailsRemoteProvider {
     }
   }
 
+  static Future<bool> bookmarkTutorial(String slug) async {
+    try {
+      Response response = await _networkHelper.dio.post(
+        RemoteRoutes.bookmarkTutorial(slug),
+      );
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      return false;
+    }
+  }
+
+  static Future<bool> unBookmarkTutorial(String slug) async {
+    try {
+      Response response = await _networkHelper.dio.delete(
+        RemoteRoutes.bookmarkTutorial(slug),
+      );
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      return false;
+    }
+  }
+
   static Future<ApiResponseModel<OrdersResponse>?> orderPackage(
       String slug) async {
     try {

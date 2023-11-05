@@ -19,6 +19,7 @@ class TutorialDetaialsBloc extends ChangeNotifier {
   bool loading = true;
   bool commentLoading = true;
   bool sendCommentLoading = false;
+  bool repliesLoading = false;
 
   TutorialDetaials? tutorialDetaials;
   List<Comment> comments = [];
@@ -177,14 +178,20 @@ class TutorialDetaialsBloc extends ChangeNotifier {
     }
   }
 
-  Future<void> likeComment(String id, int index) async {
+  Future<void> likeComment(String id, int index,
+      {bool likeReply = false}) async {
     try {
       bool response = await TutorialDetaialsRemoteProvider.likeComment(
         id,
       );
       if (response) {
-        comments[index].is_liked = true;
-        comments[index].likes_count = (comments[index].likes_count ?? 0) + 1;
+        if (likeReply) {
+          replies[index].is_liked = true;
+          replies[index].likes_count = (replies[index].likes_count ?? 0) + 1;
+        } else {
+          comments[index].is_liked = true;
+          comments[index].likes_count = (comments[index].likes_count ?? 0) + 1;
+        }
         notifyListeners();
       }
     } catch (e, s) {
@@ -192,14 +199,20 @@ class TutorialDetaialsBloc extends ChangeNotifier {
     }
   }
 
-  Future<void> unlikeComment(String id, int index) async {
+  Future<void> unlikeComment(String id, int index,
+      {bool likeReply = false}) async {
     try {
       bool? response = await TutorialDetaialsRemoteProvider.unlikeComment(
         id,
       );
       if (response) {
-        comments[index].is_liked = false;
-        comments[index].likes_count = (comments[index].likes_count ?? 0) - 1;
+        if (likeReply) {
+          replies[index].is_liked = false;
+          replies[index].likes_count = (replies[index].likes_count ?? 0) - 1;
+        } else {
+          comments[index].is_liked = false;
+          comments[index].likes_count = (comments[index].likes_count ?? 0) - 1;
+        }
         notifyListeners();
       }
     } catch (e, s) {
@@ -231,8 +244,9 @@ class TutorialDetaialsBloc extends ChangeNotifier {
     }
   }
 
-  Future<void> sendReply(BuildContext context, String slug, String replyTo,
-      int commentIndex) async {
+  Future<void> sendReply(
+      BuildContext context, String slug, String replyTo, int commentIndex,
+      {bool replyToReply = false}) async {
     sendCommentLoading = true;
     notifyListeners();
     try {
@@ -243,14 +257,27 @@ class TutorialDetaialsBloc extends ChangeNotifier {
         replyTo: replyTo,
       );
       if (response != null && response.data != null) {
-        comments[commentIndex].replies_count =
-            (comments[commentIndex].replies_count ?? 0) + 1;
-        commentController.clear();
-        comment = '';
-        Navigator.of(context).pop();
-        await loadReplies(
-          replyTo,
-        );
+        if (replyToReply) {
+          replies.add(response.data ?? Comment());
+          commentController.clear();
+          comment = '';
+          int tempIndex =
+              comments.indexWhere((e) => e.id == commentIdForShowReplies);
+          if (tempIndex != -1) {
+            comments[tempIndex].replies_count =
+                (comments[tempIndex].replies_count ?? 0) + 1;
+          }
+          Navigator.of(context).pop();
+        } else {
+          comments[commentIndex].replies_count =
+              (comments[commentIndex].replies_count ?? 0) + 1;
+          commentController.clear();
+          comment = '';
+          Navigator.of(context).pop();
+          await loadReplies(
+            replyTo,
+          );
+        }
       }
       sendCommentLoading = false;
       notifyListeners();
@@ -280,6 +307,7 @@ class TutorialDetaialsBloc extends ChangeNotifier {
 
   Future<void> loadReplies(String id) async {
     commentIdForShowReplies = id;
+    repliesLoading = true;
     notifyListeners();
     try {
       ApiResponseModel<List<Comment>>? response =
@@ -289,6 +317,7 @@ class TutorialDetaialsBloc extends ChangeNotifier {
       if (response != null) {
         replies = response.data ?? [];
       }
+      repliesLoading = false;
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);

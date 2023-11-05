@@ -68,7 +68,7 @@ class ReplyCard extends StatelessWidget {
                             ],
                           ),
                           Text(
-                            DateHelper.getDistanceWithToday(
+                            DateHelper.getRealDate(
                               reply.created_at ?? '',
                             ),
                             style: Theme.of(context)
@@ -102,9 +102,6 @@ class ReplyCard extends StatelessWidget {
                             (reply.is_liked ?? false)
                                 ? Assets.likeHandFillIc
                                 : Assets.likeHandIc,
-                            color: ColorPalette.of(context)
-                                .textPrimary
-                                .withOpacity(0.9),
                           ),
                         ],
                       ),
@@ -143,9 +140,20 @@ class ReplyCard extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8),
-              child: Text(
-                reply.content ?? '',
-                style: Theme.of(context).textTheme.labelMedium,
+              child: RichText(
+                text: TextSpan(
+                  text: '${reply.reply_to ?? ''} ',
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelMedium
+                      ?.copyWith(color: ColorPalette.of(context).primary),
+                  children: [
+                    TextSpan(
+                      text: reply.content ?? '',
+                      style: Theme.of(context).textTheme.labelMedium,
+                    )
+                  ],
+                ),
               ),
             ),
           ],

@@ -1,11 +1,21 @@
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
+import 'package:ateba_app/modules/package%20details/bloc/package_details_bloc.dart';
+import 'package:ateba_app/modules/package%20details/data/models/tutorial_package.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class PackageDetailsMenu extends StatelessWidget {
-  const PackageDetailsMenu({super.key});
+  const PackageDetailsMenu({
+    required this.index,
+    required this.tutorialPackage,
+    super.key,
+  });
+
+  final int index;
+  final TutorialPackage tutorialPackage;
 
   @override
   Widget build(BuildContext context) => PopupMenuButton(
@@ -54,25 +64,51 @@ class PackageDetailsMenu extends StatelessWidget {
                         ],
                       ),
                     ),
-                    // Container(
-                    //   height: 35,
-                    //   padding: const EdgeInsets.symmetric(horizontal: 12),
-                    //   child: Row(
-                    //     children: [
-                    //       SvgPicture.asset(
-                    //         Assets.bookmarkIc,
-                    //         color: ColorPalette.of(context).textPrimary,
-                    //       ),
-                    //       Padding(
-                    //         padding: const EdgeInsets.only(right: 4),
-                    //         child: Text(
-                    //           'bookmarking'.tr(),
-                    //           style: Theme.of(context).textTheme.labelSmall,
-                    //         ),
-                    //       )
-                    //     ],
-                    //   ),
-                    // ),
+                    InkWell(
+                      onTap: () {
+                        if (tutorialPackage.is_bookmarked ?? false) {
+                          Provider.of<PackageDetailsBloc>(context,
+                                  listen: false)
+                              .unBookmarkTutorial(
+                            tutorialPackage.slug ?? '',
+                            index,
+                          );
+                        } else {
+                          Provider.of<PackageDetailsBloc>(context,
+                                  listen: false)
+                              .bookmarkTutorial(
+                            tutorialPackage.slug ?? '',
+                            index,
+                          );
+                        }
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        height: 35,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              (tutorialPackage.is_bookmarked ?? false)
+                                  ? Assets.bookmarkFillIc
+                                  : Assets.bookmarkIc,
+                              color: (tutorialPackage.is_bookmarked ?? false)
+                                  ? null
+                                  : ColorPalette.of(context).textPrimary,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: Text(
+                                (tutorialPackage.is_bookmarked ?? false)
+                                    ? 'delete_from_bookmarking'.tr()
+                                    : 'bookmarking'.tr(),
+                                style: Theme.of(context).textTheme.labelSmall,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 )
               ],

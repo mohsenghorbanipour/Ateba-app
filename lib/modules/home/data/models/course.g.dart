@@ -13,9 +13,10 @@ Course _$CourseFromJson(Map<String, dynamic> json) => Course(
       duration: json['duration'] as String?,
       created_at: json['created_at'] as String?,
       price: json['price'] as int?,
-      tutorials_sample: (json['tutorials_sample'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
+      tutorials_sample: json['tutorials_sample'] == null
+          ? null
+          : TutorialsSample.fromJson(
+              json['tutorials_sample'] as Map<String, dynamic>),
       tutorials_count: json['tutorials_count'] as int?,
     );
 
@@ -34,7 +35,7 @@ Map<String, dynamic> _$CourseToJson(Course instance) {
   writeNotNull('duration', instance.duration);
   writeNotNull('created_at', instance.created_at);
   writeNotNull('price', instance.price);
-  writeNotNull('tutorials_sample', instance.tutorials_sample);
+  writeNotNull('tutorials_sample', instance.tutorials_sample?.toJson());
   writeNotNull('tutorials_count', instance.tutorials_count);
   return val;
 }

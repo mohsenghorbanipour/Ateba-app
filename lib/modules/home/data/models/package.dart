@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:ateba_app/core/base/base_model.dart';
+import 'package:ateba_app/modules/home/data/models/tutorials_sample.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'package.g.dart';
@@ -27,7 +28,7 @@ class Package implements BaseModel<Package> {
   final String? duration;
   final String? updated_at;
   final int? price;
-  final List<String>? tutorials_sample;
+  final TutorialsSample? tutorials_sample;
   final int? tutorials_count;
   // final String? students_thumbnail;
   final int? students_count;

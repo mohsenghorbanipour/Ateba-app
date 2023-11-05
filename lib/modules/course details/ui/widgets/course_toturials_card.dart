@@ -1,8 +1,10 @@
+import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/home/data/models/tutorial.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class CourseToturialsCard extends StatelessWidget {
@@ -46,14 +48,25 @@ class CourseToturialsCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              Text(
-                TextInputFormatters.toPersianNumber(
-                  tutorial.duration ?? '',
-                ),
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color:
-                          ColorPalette.of(context).textPrimary.withOpacity(0.8),
+              Row(
+                children: [
+                  Text(
+                    TextInputFormatters.toPersianNumber(
+                      tutorial.duration ?? '',
                     ),
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          color: ColorPalette.of(context)
+                              .textPrimary
+                              .withOpacity(0.8),
+                        ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 4),
+                    child: SvgPicture.asset(
+                      Assets.videoIc,
+                    ),
+                  )
+                ],
               )
             ],
           ),

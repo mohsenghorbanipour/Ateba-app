@@ -1,12 +1,17 @@
+import 'package:ateba_app/core/base/base_comment_page.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/date_helper.dart';
+import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
+import 'package:ateba_app/modules/tutorial%20details/bloc/tutorial_details_bloc.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/comment.dart';
+import 'package:ateba_app/modules/tutorial%20details/ui/modals/send_comment_modals.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/widgets/reply_card.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 class CommentCard extends StatelessWidget {
   const CommentCard({
@@ -15,8 +20,10 @@ class CommentCard extends StatelessWidget {
     required this.onLongPress,
     required this.sendCommentFunction,
     required this.showReplies,
+    required this.baseCommentPage,
     this.commentIdForShowReplies,
     this.selected = false,
+    this.repliesLoading = false,
     this.replies,
     super.key,
   });
@@ -26,9 +33,11 @@ class CommentCard extends StatelessWidget {
   final Function() onLongPress;
   final Function() sendCommentFunction;
   final Function() showReplies;
+  final BaseCommentPage baseCommentPage;
   final bool selected;
   final String? commentIdForShowReplies;
   final List<Comment>? replies;
+  final bool repliesLoading;
 
   @override
   Widget build(BuildContext context) => InkWell(
@@ -80,7 +89,7 @@ class CommentCard extends StatelessWidget {
                               ],
                             ),
                             Text(
-                              DateHelper.getDistanceWithToday(
+                              DateHelper.getRealDate(
                                 comment.created_at ?? '',
                               ),
                               style: Theme.of(context)
@@ -160,16 +169,33 @@ class CommentCard extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(right: 4),
-                          child: Text(
-                            ((commentIdForShowReplies?.isNotEmpty ?? false) &&
-                                    (replies?.isNotEmpty ?? false) &&
-                                    commentIdForShowReplies == comment.id)
-                                ? '${'hide_answers'.tr()} (${TextInputFormatters.toPersianNumber(comment.replies_count.toString())})'
-                                : '${'show_comments'.tr()} (${TextInputFormatters.toPersianNumber(comment.replies_count.toString())})',
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelSmall
-                                ?.copyWith(fontSize: 8),
+                          child: Row(
+                            children: [
+                              Text(
+                                ((commentIdForShowReplies?.isNotEmpty ??
+                                            false) &&
+                                        (replies?.isNotEmpty ?? false) &&
+                                        commentIdForShowReplies == comment.id)
+                                    ? '${'hide_answers'.tr()} (${TextInputFormatters.toPersianNumber(comment.replies_count.toString())})'
+                                    : '${'show_comments'.tr()} (${TextInputFormatters.toPersianNumber(comment.replies_count.toString())})',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelSmall
+                                    ?.copyWith(fontSize: 8),
+                              ),
+                              if (repliesLoading)
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 6),
+                                  child: SizedBox(
+                                    width: 8,
+                                    height: 8,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 1,
+                                      color: ColorPalette.of(context).primary,
+                                    ),
+                                  ),
+                                )
+                            ],
                           ),
                         )
                       ],
@@ -185,8 +211,105 @@ class CommentCard extends StatelessWidget {
                   shrinkWrap: true,
                   itemBuilder: (context, index) => ReplyCard(
                     reply: replies?[index] ?? Comment(),
-                    likeTap: likeTap,
-                    replyTap: () {},
+                    replyTap: () {
+                      switch (baseCommentPage) {
+                        case BaseCommentPage.tutorialDetaialsPage:
+                          showModalBottomSheet(
+                            context: context,
+                            barrierColor: Colors.transparent,
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                            useSafeArea: true,
+                            constraints: BoxConstraints(
+                              maxHeight: MediaQuery.of(context).size.height,
+                              minHeight: MediaQuery.of(context).size.height,
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0)),
+                            isScrollControlled: true,
+                            enableDrag: false,
+                            useRootNavigator: true,
+                            builder: (ctx) => ChangeNotifierProvider.value(
+                              value: Provider.of<TutorialDetaialsBloc>(context,
+                                  listen: false),
+                              builder: (context, child) => SendCommentModals(
+                                sendComment: () async {
+                                  await Provider.of<TutorialDetaialsBloc>(
+                                          context,
+                                          listen: false)
+                                      .sendReply(
+                                    context,
+                                    Provider.of<TutorialDetaialsBloc>(context,
+                                                listen: false)
+                                            .tutorialDetaials
+                                            ?.slug ??
+                                        '',
+                                    replies?[index].id ?? '',
+                                    index,
+                                    replyToReply: true,
+                                  );
+                                },
+                                onChange: (val) {
+                                  Provider.of<TutorialDetaialsBloc>(context,
+                                          listen: false)
+                                      .comment = val;
+                                },
+                                onWillPop: () async {
+                                  Provider.of<TutorialDetaialsBloc>(context,
+                                          listen: false)
+                                      .comment = '';
+                                  return true;
+                                },
+                                commentEmpty:
+                                    context.select<TutorialDetaialsBloc, bool>(
+                                        (bloc) => bloc.comment.isEmpty),
+                                controller: context.select<TutorialDetaialsBloc,
+                                    TextEditingController>(
+                                  (bloc) => bloc.commentController,
+                                ),
+                                loading:
+                                    context.select<TutorialDetaialsBloc, bool>(
+                                        (bloc) => bloc.sendCommentLoading),
+                                replayTo: replies?[index].user?.name ?? '',
+                                isReplay: true,
+                              ),
+                            ),
+                          );
+
+                          break;
+                        case BaseCommentPage.courseDetailsPage:
+                          break;
+                        case BaseCommentPage.packageDetailsPage:
+                          break;
+                      }
+                    },
+                    likeTap: () {
+                      switch (baseCommentPage) {
+                        case BaseCommentPage.tutorialDetaialsPage:
+                          if (replies?[index].is_liked ?? false) {
+                            Provider.of<TutorialDetaialsBloc>(context,
+                                    listen: false)
+                                .unlikeComment(
+                              replies?[index].id ?? '',
+                              index,
+                              likeReply: true,
+                            );
+                          } else {
+                            Provider.of<TutorialDetaialsBloc>(context,
+                                    listen: false)
+                                .likeComment(
+                              replies?[index].id ?? '',
+                              index,
+                              likeReply: true,
+                            );
+                          }
+                          break;
+                        case BaseCommentPage.courseDetailsPage:
+                          break;
+                        case BaseCommentPage.packageDetailsPage:
+                          break;
+                      }
+                    },
                   ),
                 ),
             ],

@@ -54,6 +54,7 @@ class Assets {
   static const String downloadedIc = '${_iconsBasePath}downloaded_ic.svg';
   static const String noActiveSubscription =
       '${_imagesBasePath}no_active_subscription.svg';
+  static const String refreshIc = '${_iconsBasePath}refresh_ic.svg';
 
   static const String testIc = '${_iconsBasePath}test_ic.png';
   static const String test2Ic = '${_iconsBasePath}test_2_ic.svg';

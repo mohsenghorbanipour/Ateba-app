@@ -215,6 +215,34 @@ class PackageDetailsBloc extends ChangeNotifier {
     }
   }
 
+  Future<void> bookmarkTutorial(String slug, int tutorialIndex) async {
+    try {
+      bool response = await PackageDetailsRemoteProvider.bookmarkTutorial(
+        slug,
+      );
+      if (response) {
+        packageDetails?.tutorials?[tutorialIndex].is_bookmarked = true;
+        notifyListeners();
+      }
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> unBookmarkTutorial(String slug, int tutorialIndex) async {
+    try {
+      bool? response = await PackageDetailsRemoteProvider.unBookmarkTutorial(
+        slug,
+      );
+      if (response) {
+        packageDetails?.tutorials?[tutorialIndex].is_bookmarked = false;
+        notifyListeners();
+      }
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
   Future<void> orderPackage(String slug) async {
     orderLoading = true;
     notifyListeners();

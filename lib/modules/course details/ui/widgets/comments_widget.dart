@@ -1,3 +1,4 @@
+import 'package:ateba_app/core/base/base_comment_page.dart';
 import 'package:ateba_app/core/components/button_component.dart';
 import 'package:ateba_app/core/components/textfiled_component.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
@@ -101,7 +102,8 @@ class CommentsWidget extends StatelessWidget {
                       ],
                     )
                   : ListView.separated(
-                      padding: const EdgeInsets.fromLTRB(0, 16, 0, 24),
+                      padding: EdgeInsets.fromLTRB(
+                          0, 16, 0, bloc.canLoadMore ? 0 : 100),
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: bloc.comments.length,
                       shrinkWrap: true,
@@ -112,6 +114,7 @@ class CommentsWidget extends StatelessWidget {
                         comment: bloc.comments[index],
                         commentIdForShowReplies: bloc.commentIdForShowReplies,
                         replies: bloc.replies,
+                        baseCommentPage: BaseCommentPage.courseDetailsPage,
                         likeTap: () {
                           if (bloc.comments[index].is_liked ?? false) {
                             bloc.unlikeComment(

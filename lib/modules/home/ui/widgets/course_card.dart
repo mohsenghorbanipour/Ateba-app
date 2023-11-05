@@ -11,6 +11,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ateba_app/core/utils/price_ext.dart';
 
 class CourseCard extends StatelessWidget {
   const CourseCard({
@@ -90,7 +91,7 @@ class CourseCard extends StatelessWidget {
                             padding: const EdgeInsets.only(top: 6),
                             child: Row(
                               children: [
-                                SvgPicture.asset(Assets.calendarIc),
+                                SvgPicture.asset(Assets.refreshIc),
                                 Padding(
                                   padding: const EdgeInsets.only(right: 2),
                                   child: Text(
@@ -150,18 +151,26 @@ class CourseCard extends StatelessWidget {
                 runAlignment: WrapAlignment.start,
                 alignment: WrapAlignment.start,
                 children: List.generate(
-                  (course.tutorials_sample?.length ?? 0) > 4
-                      ? 5
-                      : (course.tutorials_sample?.length ?? 0),
-                  (index) => ((course.tutorials_sample?.length ?? 0) > 4 &&
-                          index == 4)
+                  (course.tutorials_sample?.tutorials_titles?.length ?? 0),
+                  (index) => (index ==
+                              ((course.tutorials_sample?.tutorials_titles
+                                          ?.length ??
+                                      0) -
+                                  1) &&
+                          (course.tutorials_sample?.tutorials_titles?.length ??
+                                  0) >
+                              4)
                       ? TechingNameChip(
                           teachingName:
-                              '${(course.tutorials_sample?.length ?? 0) - 4 + (course.tutorials_count ?? 0)}+',
+                              '${TextInputFormatters.toPersianNumber(((course.tutorials_sample?.tutorials_count ?? 0) - ((course.tutorials_sample?.tutorials_titles?.length ?? 0) - 1)).toString())}+',
                           isCircle: true,
+                          isPackages: true,
                         )
                       : TechingNameChip(
-                          teachingName: course.tutorials_sample?[index] ?? '',
+                          teachingName: course
+                                  .tutorials_sample?.tutorials_titles?[index] ??
+                              '',
+                          isPackages: true,
                         ),
                 ),
               ),
@@ -171,8 +180,7 @@ class CourseCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      TextInputFormatters.toPersianNumber(
-                          course.price.toString()),
+                      course.price?.withPriceLable ?? '',
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
                             fontWeight: FontWeight.w600,
                           ),

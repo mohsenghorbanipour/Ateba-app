@@ -11,6 +11,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ateba_app/core/utils/price_ext.dart';
 
 class PackageCard extends StatelessWidget {
   const PackageCard({
@@ -112,20 +113,26 @@ class PackageCard extends StatelessWidget {
                   runAlignment: WrapAlignment.start,
                   alignment: WrapAlignment.start,
                   children: List.generate(
-                    (package.tutorials_sample?.length ?? 0) > 4
-                        ? 5
-                        : (package.tutorials_sample?.length ?? 0),
-                    (index) => ((package.tutorials_sample?.length ?? 0) > 4 &&
-                            index == 4)
+                    (package.tutorials_sample?.tutorials_titles?.length ?? 0),
+                    (index) => (index ==
+                                ((package.tutorials_sample?.tutorials_titles
+                                            ?.length ??
+                                        0) -
+                                    1) &&
+                            (package.tutorials_sample?.tutorials_titles
+                                        ?.length ??
+                                    0) >
+                                4)
                         ? TechingNameChip(
                             teachingName:
-                                '${(package.tutorials_sample?.length ?? 0) - 4 + (package.tutorials_count ?? 0)}+',
+                                '${TextInputFormatters.toPersianNumber(((package.tutorials_sample?.tutorials_count ?? 0) - ((package.tutorials_sample?.tutorials_titles?.length ?? 0) - 1)).toString())}+',
                             isCircle: true,
                             isPackages: true,
                           )
                         : TechingNameChip(
-                            teachingName:
-                                package.tutorials_sample?[index] ?? '',
+                            teachingName: package.tutorials_sample
+                                    ?.tutorials_titles?[index] ??
+                                '',
                             isPackages: true,
                           ),
                   ),
@@ -144,7 +151,7 @@ class PackageCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(4),
                       child: Text(
                         TextInputFormatters.toPersianNumber(
-                          '${package.price} ${'toman'.tr()}',
+                          '${package.price?.withPriceLable ?? ''} ${'toman'.tr()}',
                         ),
                         style:
                             Theme.of(context).textTheme.labelMedium?.copyWith(

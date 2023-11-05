@@ -18,6 +18,7 @@ class Comment implements BaseModel<Comment> {
     this.is_pined,
     this.likes_count,
     this.replies_count,
+    this.reply_to,
   });
 
   final String? id;
@@ -30,6 +31,7 @@ class Comment implements BaseModel<Comment> {
   int? likes_count;
   final bool? is_edited;
   final bool? is_pined;
+  final String? reply_to;
 
 
   @override

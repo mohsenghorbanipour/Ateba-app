@@ -6,7 +6,6 @@ import 'package:ateba_app/modules/tutorial%20details/data/models/tutorial_detail
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 class LessonsWidget extends StatelessWidget {
   const LessonsWidget({
     required this.slug,
@@ -16,20 +15,20 @@ class LessonsWidget extends StatelessWidget {
   final String slug;
 
   @override
-  Widget build(BuildContext context) =>
-      Selector<PackageDetailsBloc, List<TutorialPackage>>(
-        selector: (context, bloc) => bloc.packageDetails?.tutorials ?? [],
-        builder: (context, tutorials, child) => ListView.separated(
+  Widget build(BuildContext context) => Consumer<PackageDetailsBloc>(
+        builder: (context, bloc, child) => ListView.separated(
           physics: const NeverScrollableScrollPhysics(),
           padding: const EdgeInsets.fromLTRB(16, 24, 16, 100),
-          itemCount: tutorials.length,
+          itemCount: bloc.packageDetails?.tutorials?.length ?? 0,
           separatorBuilder: (_, __) => const SizedBox(
             height: 12,
           ),
           shrinkWrap: true,
           itemBuilder: (context, index) => TutorialPackageCard(
             slug: slug,
-            tutorialPackage: tutorials[index],
+            index: index,
+            tutorialPackage:
+                bloc.packageDetails?.tutorials?[index] ?? TutorialPackage(),
           ),
         ),
       );

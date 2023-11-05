@@ -1,3 +1,4 @@
+import 'package:ateba_app/core/base/base_comment_page.dart';
 import 'package:ateba_app/core/components/button_component.dart';
 import 'package:ateba_app/core/components/textfiled_component.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
@@ -111,6 +112,7 @@ class CommentsWidget extends StatelessWidget {
                       itemBuilder: (context, index) => CommentCard(
                         comment: bloc.comments[index],
                         commentIdForShowReplies: bloc.commentIdForShowReplies,
+                        baseCommentPage: BaseCommentPage.packageDetailsPage,
                         replies: bloc.replies,
                         likeTap: () {
                           if (bloc.comments[index].is_liked ?? false) {

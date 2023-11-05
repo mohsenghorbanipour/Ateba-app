@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:ateba_app/core/base/base_box.dart';
 import 'package:ateba_app/core/components/toast_component.dart';
@@ -50,15 +51,20 @@ class DownloadVideoBloc extends ChangeNotifier {
   }
 
   Future<void> downloadVideoAndSave(CacheVideoModel cacheVideoModel) async {
-    LoggerHelper.logger.wtf(cacheVideoModel.title);
     downloading = true;
     notifyListeners();
     try {
-      Directory tempDir = await getTemporaryDirectory();
+      Directory tempDir = await getApplicationDocumentsDirectory();
       String tempPath = tempDir.path;
 
+      String number = '';
+      Random random = Random();
+      for (var i = 0; i < 16; i++) {
+        number = number + random.nextInt(9).toString();
+      }
+
       String fileName = cacheVideoModel.url?.split('/').last ?? '';
-      String savePath = '$tempPath/$fileName';
+      String savePath = '$tempPath/$number$fileName';
       Response response = await _networkHelper.dio.download(
         cacheVideoModel.url ?? '',
         savePath,
@@ -141,7 +147,6 @@ class DownloadVideoBloc extends ChangeNotifier {
           path = e.path ?? '';
         }
       }
-      LoggerHelper.logger.wtf(path);
       return path;
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);

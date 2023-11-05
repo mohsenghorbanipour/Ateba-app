@@ -1,4 +1,6 @@
 import 'package:ateba_app/core/components/shimmer_components.dart';
+import 'package:ateba_app/core/router/routes.dart';
+import 'package:ateba_app/modules/categories/data/models/category.dart';
 import 'package:ateba_app/modules/home/bloc/home_bloc.dart';
 import 'package:ateba_app/modules/home/data/models/course.dart';
 import 'package:ateba_app/modules/home/data/models/package.dart';
@@ -11,6 +13,7 @@ import 'package:ateba_app/modules/home/ui/widgets/package_shimmer_card.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
@@ -77,15 +80,69 @@ class HomePage extends StatelessWidget {
                   width: double.infinity,
                 )
               else
-                CachedNetworkImage(
-                  width: double.infinity,
-                  imageUrl: context.select<HomeBloc, String>(
-                      (bloc) => bloc.middleBanners?.image_url ?? ''),
-                  fit: BoxFit.cover,
-                  placeholder: (_, __) => const ShimmerContainer(
-                    radius: 0,
-                    height: 160,
+                InkWell(
+                  onTap: () {
+                    switch (Provider.of<HomeBloc>(context, listen: false)
+                            .middleBanners
+                            ?.type ??
+                        '') {
+                      case 'Tutorial':
+                        context.goNamed(
+                          Routes.tutorialDetails,
+                          pathParameters: {
+                            'slug':
+                                Provider.of<HomeBloc>(context, listen: false)
+                                        .middleBanners
+                                        ?.slug ??
+                                    '',
+                          },
+                        );
+                      case 'Course':
+                        context.goNamed(
+                          Routes.courseDetails,
+                          pathParameters: {
+                            'slug':
+                                Provider.of<HomeBloc>(context, listen: false)
+                                        .middleBanners
+                                        ?.slug ??
+                                    '',
+                          },
+                        );
+                      case 'Package':
+                        context.goNamed(
+                          Routes.packageDetails,
+                          pathParameters: {
+                            'slug':
+                                Provider.of<HomeBloc>(context, listen: false)
+                                        .middleBanners
+                                        ?.slug ??
+                                    '',
+                          },
+                        );
+                      case 'Category':
+                        context.goNamed(
+                          Routes.categoryDetials,
+                          pathParameters: {
+                            'slug':
+                                Provider.of<HomeBloc>(context, listen: false)
+                                        .middleBanners
+                                        ?.slug ??
+                                    '',
+                          },
+                          extra: Category(),
+                        );
+                    }
+                  },
+                  child: CachedNetworkImage(
                     width: double.infinity,
+                    imageUrl: context.select<HomeBloc, String>(
+                        (bloc) => bloc.middleBanners?.image_url ?? ''),
+                    fit: BoxFit.cover,
+                    placeholder: (_, __) => const ShimmerContainer(
+                      radius: 0,
+                      height: 160,
+                      width: double.infinity,
+                    ),
                   ),
                 ),
               Padding(

@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:ateba_app/core/base/base_comment_page.dart';
 import 'package:ateba_app/core/components/textfiled_component.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/router/routes.dart';
@@ -647,6 +648,11 @@ class TutorialDetailsPage extends StatelessWidget {
                               shrinkWrap: true,
                               itemBuilder: (context, index) => CommentCard(
                                 comment: bloc.comments[index],
+                                baseCommentPage:
+                                    BaseCommentPage.tutorialDetaialsPage,
+                                repliesLoading: bloc.repliesLoading &&
+                                    bloc.commentIdForShowReplies ==
+                                        bloc.comments[index].id,
                                 commentIdForShowReplies:
                                     bloc.commentIdForShowReplies,
                                 replies: bloc.replies,

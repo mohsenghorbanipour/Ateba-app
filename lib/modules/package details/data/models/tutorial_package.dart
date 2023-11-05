@@ -12,7 +12,7 @@ class TutorialPackage implements BaseModel<TutorialPackage> {
     this.slug,
     this.views_count,
     this.description,
-    this.video,
+    this.videos,
     this.attachments,
     this.is_bookmarked,
   });
@@ -21,9 +21,9 @@ class TutorialPackage implements BaseModel<TutorialPackage> {
   final String? slug;
   final int? views_count;
   final String? description;
-  final Video? video;
+  final List<Video>? videos;
   final List<Attachment>? attachments;
-  final bool? is_bookmarked;
+  bool? is_bookmarked;
 
   @override
   factory TutorialPackage.fromJson(Map<String, dynamic> json) =>

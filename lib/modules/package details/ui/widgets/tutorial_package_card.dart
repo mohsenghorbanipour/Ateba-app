@@ -1,3 +1,4 @@
+import 'package:ateba_app/core/components/shimmer_components.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/router/ateba_router.dart';
 import 'package:ateba_app/core/router/routes.dart';
@@ -7,19 +8,29 @@ import 'package:ateba_app/modules/home/data/models/tutorial.dart';
 import 'package:ateba_app/modules/package%20details/data/models/tutorial_package.dart';
 import 'package:ateba_app/modules/package%20details/ui/widgets/package_details_menu.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-class TutorialPackageCard extends StatelessWidget {
+class TutorialPackageCard extends StatefulWidget {
   const TutorialPackageCard({
     required this.slug,
+    required this.index,
     required this.tutorialPackage,
     super.key,
   });
 
   final String slug;
+  final int index;
   final TutorialPackage tutorialPackage;
+
+  @override
+  State<TutorialPackageCard> createState() => _TutorialPackageCardState();
+}
+
+class _TutorialPackageCardState extends State<TutorialPackageCard> {
+  bool showMore = false;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -50,8 +61,14 @@ class TutorialPackageCard extends StatelessWidget {
                               width: 94,
                               height: 56,
                               fit: BoxFit.cover,
-                              imageUrl:
-                                  tutorialPackage.video?.thumbnail_url ?? '',
+                              placeholder: (_, __) => const ShimmerContainer(
+                                width: 94,
+                                height: 56,
+                                radius: 4,
+                              ),
+                              imageUrl: widget.tutorialPackage.videos?.first
+                                      .thumbnail_url ??
+                                  '',
                             ),
                           ),
                           Positioned(
@@ -88,7 +105,7 @@ class TutorialPackageCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          tutorialPackage.title ?? '',
+                          widget.tutorialPackage.title ?? '',
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 8),
@@ -102,7 +119,9 @@ class TutorialPackageCard extends StatelessWidget {
                                 padding: const EdgeInsets.only(right: 4),
                                 child: Text(
                                   TextInputFormatters.toPersianNumber(
-                                    tutorialPackage.video?.duration ?? '',
+                                    widget.tutorialPackage.videos?.first
+                                            .duration ??
+                                        '',
                                   ),
                                   style: Theme.of(context)
                                       .textTheme
@@ -123,7 +142,7 @@ class TutorialPackageCard extends StatelessWidget {
                                 padding: const EdgeInsets.only(right: 4),
                                 child: Text(
                                   TextInputFormatters.toPersianNumber(
-                                      (tutorialPackage.views_count ?? 0)
+                                      (widget.tutorialPackage.views_count ?? 0)
                                           .toString()),
                                   style: Theme.of(context)
                                       .textTheme
@@ -140,15 +159,36 @@ class TutorialPackageCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                const PackageDetailsMenu(),
+                PackageDetailsMenu(
+                  index: widget.index,
+                  tutorialPackage: widget.tutorialPackage,
+                ),
               ],
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+              padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
               child: Text(
-                tutorialPackage.description ?? '',
+                widget.tutorialPackage.description ?? '',
+                maxLines: showMore ? 1000 : 3,
+                overflow: TextOverflow.ellipsis,
               ),
-            )
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 12, bottom: 12, top: 4),
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    showMore = !showMore;
+                  });
+                },
+                child: Text(
+                  showMore ? 'close'.tr() : 'show_more'.tr(),
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: ColorPalette.of(context).primary,
+                      ),
+                ),
+              ),
+            ),
           ],
         ),
       );

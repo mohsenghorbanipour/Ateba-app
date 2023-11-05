@@ -2,9 +2,11 @@ import 'package:ateba_app/core/base/enums/tab_state.dart';
 import 'package:ateba_app/core/components/button_component.dart';
 import 'package:ateba_app/core/components/toast_component.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
+import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/color_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
+import 'package:ateba_app/modules/auth/bloc/auth_bloc.dart';
 import 'package:ateba_app/modules/cart/bloc/cart_bloc.dart';
 import 'package:ateba_app/modules/course%20details/bloc/course_details_bloc.dart';
 import 'package:ateba_app/modules/course%20details/ui/widgets/comments_widget.dart';
@@ -18,7 +20,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:ateba_app/core/utils/price_ext.dart';
 
 class CourseDetailsPage extends StatelessWidget {
   const CourseDetailsPage({
@@ -306,10 +310,13 @@ class CourseDetailsPage extends StatelessWidget {
                         )),
                     child: Row(
                       children: [
+                        // if (context.select<AuthBloc, bool>(
+                        //     (bloc) => bloc.subscriptionExpireDate == null))
                         Expanded(
-                          flex: 2,
+                          flex: 4,
                           child: ButtonComponent(
                             onPressed: () {},
+                            margin: const EdgeInsets.only(left: 12),
                             height: 32,
                             loading: context.select<CourseDetailsBloc, bool>(
                                 (bloc) => bloc.loading),
@@ -325,18 +332,14 @@ class CourseDetailsPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          width: 16,
-                        ),
                         Expanded(
-                          flex: 3,
+                          flex: 5,
                           child: ButtonComponent(
                             onPressed: () {
                               if (Provider.of<CartBloc>(context, listen: false)
                                   .checkExistOrderInCart('course', slug)) {
-                                ToastComponent.show(
-                                  'course_exist_in_cart'.tr(),
-                                  type: ToastType.info,
+                                context.goNamed(
+                                  Routes.cart,
                                 );
                               } else {
                                 Provider.of<CourseDetailsBloc>(context,
@@ -347,16 +350,51 @@ class CourseDetailsPage extends StatelessWidget {
                             loading: context.select<CourseDetailsBloc, bool>(
                                 (bloc) => bloc.loading || bloc.orderLoading),
                             height: 32,
-                            child: Text(
-                              '${TextInputFormatters.toPersianNumber(context.select<CourseDetailsBloc, String>((bloc) => bloc.courseDetails?.price.toString() ?? '0'))}${'toman'.tr()} ${'add_to_basket'.tr()}',
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelMedium
-                                  ?.copyWith(
-                                    color: ColorPalette.of(context).white,
+                            child: context.select<CartBloc, bool>((bloc) =>
+                                    bloc.checkExistOrderInCart('course', slug))
+                                ? Text(
+                                    'complete_buying'.tr(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium
+                                        ?.copyWith(
+                                          color: ColorPalette.of(context).white,
+                                        ),
+                                  )
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        '${context.select<CourseDetailsBloc, String>((bloc) => bloc.courseDetails?.price?.withPriceLable ?? '')}${'toman'.tr()}',
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall
+                                            ?.copyWith(
+                                              color: ColorPalette.of(context)
+                                                  .white,
+                                            ),
+                                      ),
+                                      Expanded(
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 4),
+                                          child: Text(
+                                            'add_to_basket'.tr(),
+                                            overflow: TextOverflow.ellipsis,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelMedium
+                                                ?.copyWith(
+                                                  color:
+                                                      ColorPalette.of(context)
+                                                          .white,
+                                                ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
                                   ),
-                            ),
                           ),
                         ),
                       ],

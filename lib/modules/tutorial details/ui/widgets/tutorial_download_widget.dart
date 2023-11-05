@@ -68,7 +68,7 @@ class TutorialDownloadWidget extends StatelessWidget {
                     'show_with_path': true,
                     'path':
                         Provider.of<DownloadVideoBloc>(context, listen: false)
-                            .getPath(video.id ?? -1, slug),
+                            .getPath((video.id ?? -1), slug),
                   },
                 );
                 return;
