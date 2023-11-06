@@ -365,7 +365,9 @@ class CourseDetailsPage extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        '${context.select<CourseDetailsBloc, String>((bloc) => bloc.courseDetails?.price?.withPriceLable ?? '')}${'toman'.tr()}',
+                                        TextInputFormatters.toPersianNumber(
+                                          '${context.select<CourseDetailsBloc, String>((bloc) => bloc.courseDetails?.price?.withPriceLable ?? '')}${'toman'.tr()}',
+                                        ),
                                         overflow: TextOverflow.ellipsis,
                                         style: Theme.of(context)
                                             .textTheme

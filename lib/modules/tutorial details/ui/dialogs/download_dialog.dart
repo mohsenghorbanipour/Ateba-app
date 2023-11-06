@@ -19,6 +19,7 @@ class DownloadDialog extends StatefulWidget {
     required this.type,
     required this.title,
     required this.updated_at,
+    this.currentIndex,
     super.key,
   });
 
@@ -27,12 +28,19 @@ class DownloadDialog extends StatefulWidget {
   final String type;
   final String title;
   final String updated_at;
+  final int? currentIndex;
 
   @override
   State<DownloadDialog> createState() => _DownloadDialogState();
 }
 
 class _DownloadDialogState extends State<DownloadDialog> {
+  @override
+  void initState() {
+    selectedIndexForDownload = widget.currentIndex;
+    super.initState();
+  }
+
   int? selectedIndexForDownload;
 
   @override
@@ -101,14 +109,18 @@ class _DownloadDialogState extends State<DownloadDialog> {
                     selected: selectedIndexForDownload == index,
                   ),
                 ),
-                if (selectedIndexForDownload != null)
-                  ButtonComponent(
-                    onPressed: () {
+                // if (selectedIndexForDownload != null)
+                ButtonComponent(
+                  onPressed: () {
+                    if (selectedIndexForDownload != null) {
                       if (Provider.of<DownloadVideoBloc>(context, listen: false)
                           .downloading) {
                         Provider.of<DownloadVideoBloc>(context, listen: false)
                             .cancelDownload();
                       } else {
+                        Provider.of<DownloadVideoBloc>(context, listen: false)
+                                .selectedVideoIndexForDownload =
+                            selectedIndexForDownload;
                         Provider.of<DownloadVideoBloc>(context, listen: false)
                             .selectedVideoIdForDownload = widget.video.id ?? -1;
                         Provider.of<DownloadVideoBloc>(context, listen: false)
@@ -138,23 +150,34 @@ class _DownloadDialogState extends State<DownloadDialog> {
                           ),
                         );
                       }
-                    },
-                    height: 36,
-                    margin: const EdgeInsets.all(16),
-                    color: Colors.transparent,
-                    borderSide: BorderSide(
-                        width: 1,
-                        color: context.select<DownloadVideoBloc, bool>(
-                                (bloc) => bloc.downloading)
-                            ? ColorPalette.of(context).error
-                            : ColorPalette.of(context).primary),
-                    child: Text(
-                        context.select<DownloadVideoBloc, bool>(
-                                (bloc) => bloc.downloading)
-                            ? 'cancel_download'.tr()
-                            : 'add_to_gallery_offline'.tr(),
-                        style: Theme.of(context).textTheme.labelLarge),
-                  )
+                    }
+                  },
+                  height: 36,
+                  margin: const EdgeInsets.all(16),
+                  color: Colors.transparent,
+                  borderSide: BorderSide(
+                      width: 1,
+                      color: selectedIndexForDownload == null
+                          ? ColorPalette.of(context)
+                              .textPrimary
+                              .withOpacity(0.4)
+                          : context.select<DownloadVideoBloc, bool>(
+                                  (bloc) => bloc.downloading)
+                              ? ColorPalette.of(context).error
+                              : ColorPalette.of(context).primary),
+                  child: Text(
+                    context.select<DownloadVideoBloc, bool>(
+                            (bloc) => bloc.downloading)
+                        ? 'cancel_download'.tr()
+                        : 'add_to_gallery_offline'.tr(),
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: selectedIndexForDownload == null
+                            ? ColorPalette.of(context)
+                                .textPrimary
+                                .withOpacity(0.6)
+                            : null),
+                  ),
+                )
               ],
             ),
           ),

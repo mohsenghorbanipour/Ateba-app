@@ -180,7 +180,9 @@ class CourseCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      course.price?.withPriceLable ?? '',
+                      TextInputFormatters.toPersianNumber(
+                        course.price?.withPriceLable ?? '',
+                      ),
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
                             fontWeight: FontWeight.w600,
                           ),

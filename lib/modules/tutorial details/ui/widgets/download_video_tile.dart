@@ -83,29 +83,42 @@ class DownloadVideoTile extends StatelessWidget {
             if (selected &&
                 context.select<DownloadVideoBloc, bool>(
                     (bloc) => bloc.downloading))
-              Container(
-                height: 2,
-                width: 50,
-                decoration: BoxDecoration(
-                  color: ColorPalette.of(context).darkGrey,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-                child: Directionality(
-                  textDirection: ui.TextDirection.ltr,
-                  child: Row(
-                    children: [
-                      Container(
-                        height: 2,
-                        width: context.select<DownloadVideoBloc, double>(
-                            (bloc) => ((bloc.percentage ?? 0) / 100) * 50),
-                        decoration: BoxDecoration(
-                          color: ColorPalette.of(context).primary,
-                          borderRadius: BorderRadius.circular(2),
-                        ),
+              Row(
+                children: [
+                  Container(
+                    height: 2,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      color: ColorPalette.of(context).darkGrey,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                    child: Directionality(
+                      textDirection: ui.TextDirection.ltr,
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 2,
+                            width: context.select<DownloadVideoBloc, double>(
+                                (bloc) => ((bloc.percentage) / 100) * 50),
+                            decoration: BoxDecoration(
+                              color: ColorPalette.of(context).primary,
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 4),
+                    child: Text(
+                      '${context.select<DownloadVideoBloc, String>(
+                        (bloc) => bloc.percentage.toString(),
+                      )}%',
+                      style: Theme.of(context).textTheme.labelSmall,
+                    ),
+                  )
+                ],
               )
           ],
         ),

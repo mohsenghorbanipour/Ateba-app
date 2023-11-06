@@ -22,7 +22,7 @@ class DownloadVideoBloc extends ChangeNotifier {
 
   List<CacheVideoModel> videos = [];
 
-  int? percentage;
+  int percentage = 0;
   bool downloading = false;
 
   CancelToken cancelToken = CancelToken();
@@ -34,6 +34,8 @@ class DownloadVideoBloc extends ChangeNotifier {
     notifyListeners();
   }
 
+  int? selectedVideoIndexForDownload;
+
   Future<void> init() async {
     try {
       await _cacheVideoBox.open();
@@ -43,7 +45,6 @@ class DownloadVideoBloc extends ChangeNotifier {
           videos.add(e);
         }
       }
-      LoggerHelper.logger.wtf(videos.first.title);
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
@@ -97,9 +98,10 @@ class DownloadVideoBloc extends ChangeNotifier {
         );
       }
       downloading = false;
+      selectedVideoIndexForDownload = null;
       selectedVideoIdForDownload = null;
       notifyListeners();
-      percentage = null;
+      percentage = 0;
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
     }
@@ -118,6 +120,8 @@ class DownloadVideoBloc extends ChangeNotifier {
       cancelToken.cancel();
       downloading = false;
       percentage = 0;
+      selectedVideoIdForDownload = null;
+      selectedVideoIndexForDownload = null;
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);

@@ -31,23 +31,63 @@ class TutorialDownloadWidget extends StatelessWidget {
     return context.select<DownloadVideoBloc, int>(
                 (bloc) => bloc.selectedVideoIdForDownload ?? -1) ==
             video.id
-        ? Container(
-            height: 24,
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            margin: const EdgeInsets.only(right: 12),
-            decoration: BoxDecoration(
-              color: ColorPalette.of(context).border,
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularPercentIndicator(
-                radius: 8.0,
-                lineWidth: 1.5,
-                percent: context.select<DownloadVideoBloc, double>(
-                    (bloc) => (bloc.percentage ?? 0) / 100),
-                progressColor: ColorPalette.of(context).primary,
+        ? InkWell(
+            onTap: () {
+              if (Provider.of<DownloadVideoBloc>(context, listen: false)
+                      .selectedVideoIdForDownload ==
+                  video.id) {
+                LoggerHelper.logger.wtf(
+                  Provider.of<DownloadVideoBloc>(context, listen: false)
+                      .selectedVideoIndexForDownload,
+                );
+                showAnimatedDialog(
+                  context: context,
+                  curve: Curves.easeIn,
+                  animationType: DialogTransitionType.fade,
+                  duration: const Duration(milliseconds: 300),
+                  builder: (ctx) => ChangeNotifierProvider.value(
+                    value: Provider.of<TutorialDetaialsBloc>(context,
+                        listen: false),
+                    child: DownloadDialog(
+                      video: video,
+                      slug: slug,
+                      type: 'tutorial',
+                      title: Provider.of<TutorialDetaialsBloc>(context,
+                                  listen: false)
+                              .tutorialDetaials
+                              ?.title ??
+                          '',
+                      updated_at: Provider.of<TutorialDetaialsBloc>(context,
+                                  listen: false)
+                              .tutorialDetaials
+                              ?.updated_at ??
+                          '',
+                      currentIndex:
+                          Provider.of<DownloadVideoBloc>(context, listen: false)
+                              .selectedVideoIndexForDownload,
+                    ),
+                  ),
+                );
+              }
+            },
+            child: Container(
+              height: 24,
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              margin: const EdgeInsets.only(right: 12),
+              decoration: BoxDecoration(
+                color: ColorPalette.of(context).border,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularPercentIndicator(
+                  radius: 8.0,
+                  lineWidth: 1.5,
+                  percent: context.select<DownloadVideoBloc, double>(
+                      (bloc) => (bloc.percentage) / 100),
+                  progressColor: ColorPalette.of(context).primary,
+                ),
               ),
             ),
           )
