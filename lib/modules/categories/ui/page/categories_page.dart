@@ -1,9 +1,7 @@
 import 'package:ateba_app/core/components/load_more_component.dart';
-import 'package:ateba_app/core/components/loading_component.dart';
 import 'package:ateba_app/modules/categories/bloc/categories_bloc.dart';
 import 'package:ateba_app/modules/categories/ui/widgets/categories_tab_widget.dart';
 import 'package:ateba_app/modules/categories/ui/widgets/categories_widget.dart';
-import 'package:ateba_app/modules/categories/ui/widgets/category_card.dart';
 import 'package:ateba_app/modules/categories/ui/widgets/category_data_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

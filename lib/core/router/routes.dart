@@ -16,4 +16,5 @@ class Routes {
   static const String subscription = 'subscription';
   static const String subscriptions = 'subscriptions';
   static const String categoryDetials = 'category/:slug';
+  static const String transactions = 'transactions';
 }

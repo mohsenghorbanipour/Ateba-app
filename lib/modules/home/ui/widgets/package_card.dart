@@ -37,8 +37,8 @@ class PackageCard extends StatelessWidget {
           );
         },
         child: Container(
-          height: 220,
-          width: width ?? 255,
+          height: 228,
+          width: width ?? 270,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: ColorPalette.of(context).background,
@@ -75,7 +75,7 @@ class PackageCard extends StatelessWidget {
                   children: [
                     Text(
                       package.title ?? '',
-                      style: Theme.of(context).textTheme.labelMedium,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     Row(
                       children: [
@@ -87,7 +87,6 @@ class PackageCard extends StatelessWidget {
                           ),
                           style:
                               Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    fontSize: 8,
                                     color: ColorPalette.of(context)
                                         .textPrimary
                                         .withOpacity(0.8),
@@ -97,10 +96,7 @@ class PackageCard extends StatelessWidget {
                           TextInputFormatters.toPersianNumber(
                             ' - ${package.duration ?? ''}',
                           ),
-                          style:
-                              Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    fontSize: 8,
-                                  ),
+                          style: Theme.of(context).textTheme.labelMedium,
                         )
                       ],
                     ),
@@ -143,7 +139,7 @@ class PackageCard extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                    top: 10, left: 12, right: 12, bottom: 8),
+                    top: 12, left: 12, right: 12, bottom: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -152,17 +148,17 @@ class PackageCard extends StatelessWidget {
                     ),
                     ButtonComponent(
                       onPressed: () {},
-                      width: 125,
-                      height: 22,
+                      width: 140,
+                      height: 24,
                       borderRadius: BorderRadius.circular(4),
                       child: Text(
                         TextInputFormatters.toPersianNumber(
                           '${package.price?.withPriceLable ?? ''} ${'toman'.tr()}',
                         ),
-                        style:
-                            Theme.of(context).textTheme.labelMedium?.copyWith(
-                                  color: ColorPalette.of(context).white,
-                                ),
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                              color: ColorPalette.of(context).white,
+                            ),
                       ),
                     ),
                   ],

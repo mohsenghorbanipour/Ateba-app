@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 
 class DateHelper {
-  static String getShamsiData(String date) {
+  static String getShamsiData(String date, {bool withDay = false}) {
     try {
       int year = int.parse(date.substring(0, date.indexOf('-')));
       int month = int.parse(
@@ -15,7 +15,7 @@ class DateHelper {
       Jalali jalali = Jalali.fromGregorian(
         Gregorian(year, month, day),
       );
-      return '${jalali.formatter.mN} - ${jalali.formatter.yyyy}';
+      return withDay ? '${jalali.formatter.dd} - ${jalali.formatter.mN} - ${jalali.formatter.yyyy}' : '${jalali.formatter.mN} - ${jalali.formatter.yyyy}';
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
       return '';

@@ -122,7 +122,8 @@ class _TextFieldComponentState extends State<TextFieldComponent> {
   Widget build(BuildContext context) {
     widget.errorStyle ??= TextStyle(
       color: ColorPalette.of(context).error,
-      fontSize: 10,
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
     );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,7 +138,7 @@ class _TextFieldComponentState extends State<TextFieldComponent> {
                 child: Text(
                   '${widget.labelText} ${widget.requiredField ? '*' : ''}',
                   style: widget.lableStyle ??
-                      Theme.of(context).textTheme.labelLarge,
+                      Theme.of(context).textTheme.bodyMedium,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -145,141 +146,142 @@ class _TextFieldComponentState extends State<TextFieldComponent> {
               if (widget.endLableText != null) widget.endLableText!,
             ],
           ),
-        FormBuilderTextField(
-          scrollPadding: EdgeInsets.zero,
-          controller: widget.controller,
-          name: widget.name,
-          focusNode: widget.focusNode,
-          maxLength: widget.maxLength,
-          initialValue: widget.initialValue,
-          inputFormatters: [
-            ...(widget.inputFormatters ?? []),
-            TextInputFormatters.persianNumberFormatter(context),
-          ],
-          onSubmitted: widget.onFieldSubmitted,
-          onChanged: (value) {
-            setState(() {
-              text = value;
-            });
-            widget.onChanged?.call(value);
-          },
-          cursorColor: ColorPalette.light.primary,
-          enabled: widget.enabled,
-          onSaved: widget.onSaved,
-          onEditingComplete: widget.onEditingComplete as void Function()?,
-          onTap: () {
-            if (widget.controller != null) {
-              if (widget.controller?.selection ==
-                  TextSelection.fromPosition(TextPosition(
-                      offset: (widget.controller?.text.length ?? 0) - 1))) {
-                setState(() {
-                  widget.controller?.selection = TextSelection.fromPosition(
-                      TextPosition(
-                          offset: widget.controller?.text.length ?? 0));
-                });
+        SizedBox(
+          child: FormBuilderTextField(
+            scrollPadding: EdgeInsets.zero,
+            controller: widget.controller,
+            name: widget.name,
+            focusNode: widget.focusNode,
+            maxLength: widget.maxLength,
+            initialValue: widget.initialValue,
+            inputFormatters: [
+              ...(widget.inputFormatters ?? []),
+              TextInputFormatters.persianNumberFormatter(context),
+            ],
+            onSubmitted: widget.onFieldSubmitted,
+            onChanged: (value) {
+              setState(() {
+                text = value;
+              });
+              widget.onChanged?.call(value);
+            },
+            cursorColor: ColorPalette.light.primary,
+            enabled: widget.enabled,
+            onSaved: widget.onSaved,
+            onEditingComplete: widget.onEditingComplete as void Function()?,
+            onTap: () {
+              if (widget.controller != null) {
+                if (widget.controller?.selection ==
+                    TextSelection.fromPosition(TextPosition(
+                        offset: (widget.controller?.text.length ?? 0) - 1))) {
+                  setState(() {
+                    widget.controller?.selection = TextSelection.fromPosition(
+                        TextPosition(
+                            offset: widget.controller?.text.length ?? 0));
+                  });
+                }
               }
-            }
-            widget.onTap;
-          },
-          autofocus: widget.autofocus,
-          textAlign: widget.textAlign,
-          textInputAction: widget.textInputAction,
-          expands: widget.expands,
-          keyboardType: widget.keyboardType,
-          obscureText: widget.obscure ? showText : false,
-          maxLines: widget.maxLines,
-          enableInteractiveSelection: true,
-          style: widget.style ??
-              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: ColorPalette.of(context).textPrimary,
+              widget.onTap;
+            },
+            autofocus: widget.autofocus,
+            textAlign: widget.textAlign,
+            textInputAction: widget.textInputAction,
+            expands: widget.expands,
+            keyboardType: widget.keyboardType,
+            obscureText: widget.obscure ? showText : false,
+            maxLines: widget.maxLines,
+            enableInteractiveSelection: true,
+            style: widget.style ?? Theme.of(context).textTheme.headlineSmall,
+            readOnly: widget.readOnly,
+            textDirection: widget.textDirection ??
+                (intl.Bidi.detectRtlDirectionality(text ?? '')
+                    ? TextDirection.ltr
+                    : TextDirection.rtl),
+            autofillHints: widget.autofillHints,
+            textAlignVertical: TextAlignVertical.center,
+            decoration: InputDecoration(
+              counter: widget.showCounter ?? false
+                  ? Text(TextInputFormatters.toPersianNumber(
+                      '${widget.startLength}/${widget.maxLength}'))
+                  : null,
+              counterStyle: Theme.of(context).textTheme.bodySmall,
+              suffixIcon: widget.suffixIcon,
+              prefixIcon: (widget.dynamicPrefix || widget.prefixIcon != null)
+                  ? (widget.dynamicPrefix && widget.prefixIcon == null)
+                      ? SizedBox(
+                          width: widget.dynamicPrefix ? null : 0,
+                          child: Text(
+                            '${widget.labelText} ${widget.requiredField ? '*' : ''}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: ColorPalette.of(context).textPrimary,
+                                ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      : widget.prefixIcon
+                  : null,
+              fillColor: widget.readOnly
+                  ? ColorPalette.light.background
+                  : widget.fillColor ?? ColorPalette.of(context).background,
+              filled: true,
+              counterText: '',
+              hintText: widget.hintText,
+              hintTextDirection: widget.hintDirection,
+              hintStyle: Theme.of(context).textTheme.labelLarge!.copyWith(
+                    color:
+                        ColorPalette.of(context).textPrimary.withOpacity(0.5),
                   ),
-          readOnly: widget.readOnly,
-          textDirection: widget.textDirection ??
-              (intl.Bidi.detectRtlDirectionality(text ?? '')
-                  ? TextDirection.ltr
-                  : TextDirection.rtl),
-          autofillHints: widget.autofillHints,
-          textAlignVertical: TextAlignVertical.center,
-          decoration: InputDecoration(
-            counter: widget.showCounter ?? false
-                ? Text(TextInputFormatters.toPersianNumber(
-                    '${widget.startLength}/${widget.maxLength}'))
-                : null,
-            counterStyle: Theme.of(context).textTheme.bodySmall,
-            suffixIcon: widget.suffixIcon,
-            prefixIcon: (widget.dynamicPrefix || widget.prefixIcon != null)
-                ? (widget.dynamicPrefix && widget.prefixIcon == null)
-                    ? SizedBox(
-                        width: widget.dynamicPrefix ? null : 0,
-                        child: Text(
-                          '${widget.labelText} ${widget.requiredField ? '*' : ''}',
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: ColorPalette.of(context).textPrimary,
-                                  ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      )
-                    : widget.prefixIcon
-                : null,
-            fillColor: widget.readOnly
-                ? ColorPalette.light.background
-                : widget.fillColor ?? ColorPalette.of(context).background,
-            filled: true,
-            counterText: '',
-            hintText: widget.hintText,
-            hintTextDirection: widget.hintDirection,
-            hintStyle: Theme.of(context).textTheme.labelMedium!.copyWith(
-                  color: ColorPalette.of(context).textPrimary.withOpacity(0.5),
-                ),
-            contentPadding: widget.contentPadding ?? const EdgeInsets.all(12),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(widget.borderRadius),
-              borderSide:
-                  BorderSide(color: ColorPalette.of(context).border, width: 1),
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(widget.borderRadius),
-              borderSide:
-                  BorderSide(color: ColorPalette.of(context).border, width: 1),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: widget.readOnly
-                  ? BorderSide.none
-                  : BorderSide(
-                      color: ColorPalette.of(context).error,
-                      width: 1,
-                    ),
-              borderRadius: BorderRadius.circular(widget.borderRadius),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: ColorPalette.of(context).error,
-                width: 1,
+              contentPadding: widget.contentPadding ?? const EdgeInsets.all(12),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(widget.borderRadius),
+                borderSide: BorderSide(
+                    color: ColorPalette.of(context).border, width: 1),
               ),
-              borderRadius: BorderRadius.circular(widget.borderRadius),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(widget.borderRadius),
+                borderSide: BorderSide(
+                    color: ColorPalette.of(context).border, width: 1),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: widget.readOnly
+                    ? BorderSide.none
+                    : BorderSide(
+                        color: ColorPalette.of(context).error,
+                        width: 1,
+                      ),
+                borderRadius: BorderRadius.circular(widget.borderRadius),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: ColorPalette.of(context).error,
+                  width: 1,
+                ),
+                borderRadius: BorderRadius.circular(widget.borderRadius),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: widget.readOnly
+                    ? BorderSide(
+                        color: ColorPalette.of(context).primary,
+                        width: 1,
+                      )
+                    : BorderSide(
+                        color: ColorPalette.of(context).primary,
+                        width: 1,
+                      ),
+                borderRadius: BorderRadius.circular(widget.borderRadius),
+              ),
+              errorStyle: Theme.of(context)
+                  .textTheme
+                  .labelMedium!
+                  .copyWith(color: ColorPalette.of(context).error),
+              floatingLabelBehavior: FloatingLabelBehavior.never,
             ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: widget.readOnly
-                  ? BorderSide(
-                      color: ColorPalette.of(context).primary,
-                      width: 1,
-                    )
-                  : BorderSide(
-                      color: ColorPalette.of(context).primary,
-                      width: 1,
-                    ),
-              borderRadius: BorderRadius.circular(widget.borderRadius),
-            ),
-            errorStyle: Theme.of(context)
-                .textTheme
-                .labelMedium!
-                .copyWith(color: ColorPalette.of(context).error),
-            floatingLabelBehavior: FloatingLabelBehavior.never,
+            validator: FormBuilderValidators.compose(widget.validators),
           ),
-          validator: FormBuilderValidators.compose(widget.validators),
         ),
       ],
     );

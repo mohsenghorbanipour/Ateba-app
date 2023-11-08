@@ -31,7 +31,7 @@ class _SplashPageState extends State<SplashPage> {
     try {
       await Future.delayed(const Duration(seconds: 2));
       Provider.of<HomeBloc>(context, listen: false).loadDate();
-      Provider.of<AuthBloc>(context, listen: false).getUserSubscription();
+      Provider.of<AuthBloc>(context, listen: false).loadDate();
       Provider.of<CategoriesBloc>(context, listen: false).loadCategories();
       Provider.of<CartBloc>(context, listen: false).loadOrders();
       GoRouter.of(context).goNamed(Routes.login);

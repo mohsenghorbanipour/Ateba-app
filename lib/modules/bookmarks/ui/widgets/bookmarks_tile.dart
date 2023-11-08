@@ -17,8 +17,8 @@ class BookmarksTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => InkWell(
-    onTap: onTap,
-    child: Row(
+        onTap: onTap,
+        child: Row(
           children: [
             Container(
               width: 12,
@@ -43,17 +43,19 @@ class BookmarksTile extends StatelessWidget {
             ),
             Text(
               title,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(
               width: 2,
             ),
             Text(
               subTitle ?? '',
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: ColorPalette.of(context).textPrimary.withOpacity(0.85),
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color:
+                        ColorPalette.of(context).textPrimary.withOpacity(0.85),
                   ),
             )
           ],
         ),
-  );
+      );
 }

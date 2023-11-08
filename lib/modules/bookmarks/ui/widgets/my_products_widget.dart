@@ -19,7 +19,7 @@ class MyProductsWidget extends StatelessWidget {
             children: [
               Container(
                 width: double.infinity,
-                height: 40,
+                height: 45,
                 margin: const EdgeInsets.only(top: 20),
                 padding: const EdgeInsets.only(bottom: 8, top: 8),
                 color: ColorPalette.of(context).darkSilver,
@@ -39,6 +39,10 @@ class MyProductsWidget extends StatelessWidget {
                         );
                       }
                     },
+                    labelColor: ColorPalette.of(context).textPrimary,
+                    labelStyle: Theme.of(context).textTheme.bodyMedium,
+                    unselectedLabelStyle:
+                        Theme.of(context).textTheme.labelLarge,
                     indicatorSize: TabBarIndicatorSize.label,
                     indicatorColor: ColorPalette.of(context).primary,
                     tabs: [
@@ -48,7 +52,7 @@ class MyProductsWidget extends StatelessWidget {
                           children: [
                             Text(
                               'courses'.tr(),
-                              style: Theme.of(context).textTheme.labelMedium,
+                              // style: Theme.of(context).textTheme.bodyMedium,
                             ),
                             const SizedBox(
                               height: 4,
@@ -62,7 +66,7 @@ class MyProductsWidget extends StatelessWidget {
                           children: [
                             Text(
                               'packages'.tr(),
-                              style: Theme.of(context).textTheme.labelMedium,
+                              // style: Theme.of(context).textTheme.bodyMedium,
                             ),
                             const SizedBox(
                               height: 4,

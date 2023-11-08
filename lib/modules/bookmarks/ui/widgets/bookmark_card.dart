@@ -112,7 +112,7 @@ class BookmarkCard extends StatelessWidget {
                       children: [
                         Text(
                           bookmark.title ?? '',
-                          style: Theme.of(context).textTheme.labelMedium,
+                          style: Theme.of(context).textTheme.bodyMedium,
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(
@@ -135,12 +135,11 @@ class BookmarkCard extends StatelessWidget {
                                       ),
                                       style: Theme.of(context)
                                           .textTheme
-                                          .labelSmall
+                                          .labelMedium
                                           ?.copyWith(
                                             color: ColorPalette.of(context)
                                                 .textPrimary
                                                 .withOpacity(0.8),
-                                            fontSize: 8,
                                           ),
                                     ),
                                   ),
@@ -164,12 +163,11 @@ class BookmarkCard extends StatelessWidget {
                                       ),
                                       style: Theme.of(context)
                                           .textTheme
-                                          .labelSmall
+                                          .labelMedium
                                           ?.copyWith(
                                             color: ColorPalette.of(context)
                                                 .textPrimary
                                                 .withOpacity(0.8),
-                                            fontSize: 8,
                                           ),
                                     ),
                                   )
@@ -236,7 +234,7 @@ class BookmarkCard extends StatelessWidget {
                                   bookmark.subtitle ?? '',
                                   style: Theme.of(context)
                                       .textTheme
-                                      .labelSmall
+                                      .labelMedium
                                       ?.copyWith(
                                         color: ColorPalette.of(context)
                                             .textPrimary
@@ -251,8 +249,8 @@ class BookmarkCard extends StatelessWidget {
                   ),
                 ),
                 ButtonComponent(
-                  width: 140,
-                  height: 24,
+                  width: 170,
+                  height: 28,
                   borderRadius: BorderRadius.circular(4),
                   color: Colors.transparent,
                   borderSide: BorderSide(
@@ -282,7 +280,7 @@ class BookmarkCard extends StatelessWidget {
                     (isBookmark || isGalleryOffline)
                         ? 'see_details'.tr()
                         : 'see_tutorials'.tr(),
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           color: ColorPalette.of(context).primary,
                         ),
                   ),

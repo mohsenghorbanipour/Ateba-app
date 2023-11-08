@@ -15,7 +15,7 @@ class StudentsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SizedBox(
         height: 18,
-        width: 100,
+        width: 80,
         child: Stack(
           children: List.generate(
             (students.pictures_sample?.length ?? 0) >= 3

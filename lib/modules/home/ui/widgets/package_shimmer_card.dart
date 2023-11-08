@@ -11,8 +11,8 @@ class PackageShimmerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        height: 220,
-        width: width ?? 255,
+        height: 228,
+        width: width ?? 270,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: ColorPalette.of(context).background,

@@ -34,7 +34,7 @@ class CourseCard extends StatelessWidget {
           );
         },
         child: Container(
-          width: width ?? 280,
+          width: width ?? 300,
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6),
@@ -85,7 +85,7 @@ class CourseCard extends StatelessWidget {
                         children: [
                           Text(
                             course.title ?? '',
-                            style: Theme.of(context).textTheme.labelMedium,
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 6),
@@ -95,14 +95,15 @@ class CourseCard extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(right: 2),
                                   child: Text(
-                                    DateHelper.getShamsiData(
-                                      course.created_at ?? '',
+                                    TextInputFormatters.toPersianNumber(
+                                      DateHelper.getShamsiData(
+                                        course.created_at ?? '',
+                                      ),
                                     ),
                                     style: Theme.of(context)
                                         .textTheme
                                         .labelMedium
                                         ?.copyWith(
-                                          fontSize: 8,
                                           color: ColorPalette.of(context)
                                               .textPrimary
                                               .withOpacity(0.8),
@@ -116,12 +117,13 @@ class CourseCard extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(right: 2),
                                   child: Text(
-                                    course.duration ?? '',
+                                    TextInputFormatters.toPersianNumber(
+                                      course.duration ?? '',
+                                    ),
                                     style: Theme.of(context)
                                         .textTheme
                                         .labelMedium
                                         ?.copyWith(
-                                          fontSize: 8,
                                           color: ColorPalette.of(context)
                                               .textPrimary
                                               .withOpacity(0.8),
@@ -141,7 +143,7 @@ class CourseCard extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 12),
                 child: Text(
                   'includes_training'.tr(),
-                  style: Theme.of(context).textTheme.labelSmall,
+                  style: Theme.of(context).textTheme.labelMedium,
                 ),
               ),
               Wrap(
@@ -183,13 +185,11 @@ class CourseCard extends StatelessWidget {
                       TextInputFormatters.toPersianNumber(
                         course.price?.withPriceLable ?? '',
                       ),
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     Text(
                       ' ${'toman'.tr()}',
-                      style: Theme.of(context).textTheme.labelSmall,
+                      style: Theme.of(context).textTheme.labelMedium,
                     )
                   ],
                 ),

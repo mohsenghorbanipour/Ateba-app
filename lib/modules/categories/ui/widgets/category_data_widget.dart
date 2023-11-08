@@ -19,6 +19,7 @@ class CategoryDataWidget extends StatelessWidget {
               bloc.categoriesDataType == CategoriesDataType.educationalPackages)
           ? Expanded(
               child: ListView.separated(
+                physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.all(16),
                 itemCount: 10,
                 separatorBuilder: (_, __) => const SizedBox(
@@ -31,6 +32,7 @@ class CategoryDataWidget extends StatelessWidget {
             )
           : Expanded(
               child: ListView.separated(
+                physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.all(16),
                 itemCount: 10,
                 separatorBuilder: (_, __) => const SizedBox(
@@ -57,6 +59,7 @@ class CategoryDataWidget extends StatelessWidget {
               builder: (context, bloc, child) =>
                   bloc.categoriesDataType == CategoriesDataType.medicalCourses
                       ? ListView.separated(
+                          physics: const BouncingScrollPhysics(),
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 24),
                           itemCount: bloc.courses.length,
@@ -69,6 +72,7 @@ class CategoryDataWidget extends StatelessWidget {
                           ),
                         )
                       : ListView.separated(
+                          physics: const BouncingScrollPhysics(),
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 24),
                           itemCount: bloc.packages.length,

@@ -36,7 +36,7 @@ class HomePage extends StatelessWidget {
               if (!context
                   .select<HomeBloc, bool>((bloc) => bloc.coursesLoading))
                 SizedBox(
-                  height: 180,
+                  height: 190,
                   width: double.infinity,
                   child: Selector<HomeBloc, List<Course>>(
                     selector: (context, bloc) => bloc.courses,
@@ -57,7 +57,7 @@ class HomePage extends StatelessWidget {
                 )
               else
                 SizedBox(
-                  height: 180,
+                  height: 190,
                   width: double.infinity,
                   child: ListView.separated(
                     physics: const BouncingScrollPhysics(),
@@ -170,7 +170,7 @@ class HomePage extends StatelessWidget {
                 Selector<HomeBloc, List<Package>>(
                   selector: (context, bloc) => bloc.packages,
                   builder: (context, packages, child) => SizedBox(
-                    height: 220,
+                    height: 228,
                     width: double.infinity,
                     child: ListView.separated(
                       physics: const BouncingScrollPhysics(),
@@ -189,7 +189,7 @@ class HomePage extends StatelessWidget {
                 )
               else
                 SizedBox(
-                  height: 220,
+                  height: 228,
                   width: double.infinity,
                   child: ListView.separated(
                     physics: const BouncingScrollPhysics(),

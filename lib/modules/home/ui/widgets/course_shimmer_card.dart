@@ -14,7 +14,7 @@ class CourseShimmerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        width: width ??  270,
+        width: width ?? 300,
         height: height,
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(

@@ -37,7 +37,7 @@ class TabItemWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 4),
                 child: Text(
                   title,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         color: selected ? ColorPalette.of(context).white : null,
                       ),
                 ),

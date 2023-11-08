@@ -1,8 +1,10 @@
 class RemoteRoutes {
 
-  // Auth Api
+  // Auth ans User Api
   static const String getUserSubscription = 'subscription';
   static const String getMyProducts = 'my-products';
+  static const String getProfile = 'profile';
+  static const String getTransactions = 'transactions';
   
 
   // Banners Api

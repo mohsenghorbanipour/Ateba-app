@@ -109,7 +109,7 @@ class CategoriesTabWidget extends StatelessWidget {
                                   child: Text(
                                     'medical_courses'.tr(),
                                     style:
-                                        Theme.of(context).textTheme.labelMedium,
+                                        Theme.of(context).textTheme.labelLarge,
                                   ),
                                 )
                               ],
@@ -166,7 +166,7 @@ class CategoriesTabWidget extends StatelessWidget {
                                         'educational_packages'.tr(),
                                         style: Theme.of(context)
                                             .textTheme
-                                            .labelMedium,
+                                            .labelLarge,
                                       ),
                                     ),
                                   ],

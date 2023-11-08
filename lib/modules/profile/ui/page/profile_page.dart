@@ -1,6 +1,7 @@
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
+import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/auth/bloc/auth_bloc.dart';
 import 'package:ateba_app/modules/profile/ui/widgets/profile_tile.dart';
@@ -9,6 +10,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -48,17 +50,27 @@ class ProfilePage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'محسن قربانی پور',
+                        Text(
+                          context.select<AuthBloc, String>(
+                              (bloc) => bloc.userProfile?.name ?? ''),
+                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
                         const SizedBox(
                           height: 2,
                         ),
                         Text(
                           TextInputFormatters.toPersianNumber(
-                            '989135023614+',
+                            context.select<AuthBloc, String>(
+                              (bloc) =>
+                                  bloc.userProfile?.phone?.startsWith('0098') ??
+                                          false
+                                      ? bloc.userProfile?.phone
+                                              ?.replaceFirst('0098', '0') ??
+                                          ''
+                                      : bloc.userProfile?.phone ?? '',
+                            ),
                           ),
-                          style: Theme.of(context).textTheme.labelSmall,
+                          style: Theme.of(context).textTheme.labelMedium,
                         )
                       ],
                     ),
@@ -155,7 +167,11 @@ class ProfilePage extends StatelessWidget {
                 ),
                 ProfileTile(
                   title: 'purchase_history',
-                  onTap: () {},
+                  onTap: () {
+                    context.goNamed(
+                      Routes.transactions,
+                    );
+                  },
                   icon: Assets.historyIc,
                 ),
                 Divider(

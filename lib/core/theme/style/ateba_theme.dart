@@ -56,8 +56,8 @@ class AtebaTheme {
         ),
         textStyle: MaterialStateProperty.all(
           TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
             color: ColorPalette.light.white,
             fontFamily: Assets.yekanBakhFont,
           ),
@@ -71,7 +71,7 @@ class AtebaTheme {
         color: ColorPalette.light.textPrimary,
         fontSize: 10,
         fontFamily: Assets.yekanBakhFont,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w400,
       ),
       labelMedium: Typography.englishLike2021.labelMedium?.copyWith(
         height: 1.5,
@@ -95,7 +95,7 @@ class AtebaTheme {
         color: ColorPalette.light.textPrimary,
         fontSize: 12,
         fontFamily: Assets.yekanBakhFont,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w600,
       ),
       bodyMedium: Typography.englishLike2021.bodyMedium?.copyWith(
         height: 1.5,
@@ -103,7 +103,7 @@ class AtebaTheme {
         color: ColorPalette.light.textPrimary,
         fontSize: 14,
         fontFamily: Assets.yekanBakhFont,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w600,
       ),
       bodyLarge: Typography.englishLike2021.bodyLarge?.copyWith(
         height: 1.5,
@@ -119,7 +119,7 @@ class AtebaTheme {
         color: ColorPalette.light.textPrimary,
         fontSize: 16,
         fontFamily: Assets.yekanBakhFont,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w600,
       ),
       headlineMedium: Typography.englishLike2021.headlineMedium?.copyWith(
         height: 1.5,
@@ -143,7 +143,7 @@ class AtebaTheme {
         color: ColorPalette.light.textPrimary,
         fontSize: 24,
         fontFamily: Assets.yekanBakhFont,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w600,
       ),
       displayMedium: Typography.englishLike2021.displayMedium?.copyWith(
         height: 1.5,
@@ -215,7 +215,7 @@ class AtebaTheme {
         color: ColorPalette.dark.textPrimary,
         fontSize: 10,
         fontFamily: Assets.yekanBakhFont,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w600,
       ),
       labelMedium: Typography.englishLike2021.labelMedium?.copyWith(
         height: 1.5,
@@ -239,7 +239,7 @@ class AtebaTheme {
         color: ColorPalette.dark.textPrimary,
         fontSize: 12,
         fontFamily: Assets.yekanBakhFont,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w600,
       ),
       bodyMedium: Typography.englishLike2021.bodyMedium?.copyWith(
         height: 1.5,
@@ -247,7 +247,7 @@ class AtebaTheme {
         color: ColorPalette.dark.textPrimary,
         fontSize: 14,
         fontFamily: Assets.yekanBakhFont,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w600,
       ),
       bodyLarge: Typography.englishLike2021.bodyLarge?.copyWith(
         height: 1.5,
@@ -263,7 +263,7 @@ class AtebaTheme {
         color: ColorPalette.dark.textPrimary,
         fontSize: 16,
         fontFamily: Assets.yekanBakhFont,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w600,
       ),
       headlineMedium: Typography.englishLike2021.headlineMedium?.copyWith(
         height: 1.5,
@@ -287,7 +287,7 @@ class AtebaTheme {
         color: ColorPalette.dark.textPrimary,
         fontSize: 24,
         fontFamily: Assets.yekanBakhFont,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w600,
       ),
       displayMedium: Typography.englishLike2021.displayMedium?.copyWith(
         height: 1.5,

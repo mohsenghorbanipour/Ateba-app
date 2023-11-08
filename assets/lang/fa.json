@@ -1,7 +1,7 @@
 {
     "ateba_courses": "دوره های اموزشی اطبا",
     "loading": "در حال بارگزاری ...",
-    "includes_training": "شامل آموزش های :",
+    "includes_training": "شامل آموزش های",
     "toman": "تومان",
     "latest_tutorials": "جدیدترین آموزش ها",
     "day_ago": "روز قبل",
@@ -97,6 +97,9 @@
     "hour_ago": "ساعت قبل",
     "min_ago":"دقیقه قبل",
     "see_details": "مشاهده جزئیات",
-    "you_are_not_access_this_package": "شما به بسته آموزشی دسترسی ندارد!"
+    "you_are_not_access_this_package": "شما به بسته آموزشی دسترسی ندارد!",
+    "title_buy": "عنوان خرید",
+    "time_payment": "زمان پرداخت",
+    "amount": "مبلغ (تومان)"
     
 }

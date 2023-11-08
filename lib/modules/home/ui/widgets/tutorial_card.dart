@@ -31,7 +31,7 @@ class TutorialCard extends StatelessWidget {
           );
         },
         child: SizedBox(
-          width: 150,
+          width: 158,
           child: Stack(
             children: [
               Positioned(
@@ -55,10 +55,11 @@ class TutorialCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             tutorial.title ?? '',
-                            style: Theme.of(context).textTheme.labelMedium,
+                            style: Theme.of(context).textTheme.labelLarge,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 6),
@@ -71,12 +72,8 @@ class TutorialCard extends StatelessWidget {
                                   padding: const EdgeInsets.only(right: 4),
                                   child: Text(
                                     tutorial.subtitle ?? '',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelSmall
-                                        ?.copyWith(
-                                          fontSize: 8,
-                                        ),
+                                    style:
+                                        Theme.of(context).textTheme.labelSmall,
                                   ),
                                 )
                               ],
@@ -95,7 +92,6 @@ class TutorialCard extends StatelessWidget {
                                 .textTheme
                                 .labelSmall
                                 ?.copyWith(
-                                  fontSize: 8,
                                   color: ColorPalette.of(context)
                                       .textPrimary
                                       .withOpacity(0.7),
@@ -108,8 +104,8 @@ class TutorialCard extends StatelessWidget {
                 ),
               ),
               Positioned(
-                left: 8,
-                right: 8,
+                left: 12,
+                right: 12,
                 top: 0,
                 child: Stack(
                   children: [

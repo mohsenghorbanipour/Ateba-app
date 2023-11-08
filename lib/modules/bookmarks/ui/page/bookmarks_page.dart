@@ -43,6 +43,7 @@ class BookmarksPage extends StatelessWidget {
                               (bloc) => bloc.bookmarksStates.name,
                             )
                             .tr(),
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 2),
@@ -57,7 +58,7 @@ class BookmarksPage extends StatelessWidget {
                                   ? 'toturials'.tr()
                                   : '',
                           style:
-                              Theme.of(context).textTheme.labelSmall?.copyWith(
+                              Theme.of(context).textTheme.labelLarge?.copyWith(
                                     color: ColorPalette.of(context)
                                         .textPrimary
                                         .withOpacity(0.85),
@@ -144,8 +145,8 @@ class BookmarksPage extends StatelessWidget {
             const MyProductsWidget()
           else if (context.select<BookmarksBloc, bool>(
               (bloc) => bloc.bookmarksStates == BookmarksStates.bookmarks))
-          const BookmarksWidget()
-          else  
+            const BookmarksWidget()
+          else
             const OfflineGalleryWidget(),
         ],
       );

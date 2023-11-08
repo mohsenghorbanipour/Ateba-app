@@ -9,11 +9,30 @@ class User implements BaseModel<User> {
   User({
     this.id,
     this.name,
+    this.phone,
+    this.picture_url,
+    this.email,
+    this.field,
+    this.degree,
+    this.university,
+    this.country,
+    this.province,
+    this.city,
+    this.gender,
   });
 
   final int? id;
   final String? name;
-  // final profile;
+  final String? phone;
+  final String? picture_url;
+  final String? email;
+  final String? field;
+  final String? degree;
+  final String? university;
+  final String? country;
+  final String? province;
+  final String? city;
+  final String? gender;
 
   @override
   factory User.fromJson(Map<String, dynamic> json) =>

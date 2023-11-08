@@ -79,6 +79,7 @@ class LoginPage extends StatelessWidget {
                               ),
                               Text(
                                 TextInputFormatters.toPersianNumber('98+'),
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ],
                           ),

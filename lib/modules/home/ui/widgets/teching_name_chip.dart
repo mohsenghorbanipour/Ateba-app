@@ -38,9 +38,7 @@ class TechingNameChip extends StatelessWidget {
             child: Center(
               child: Text(
                 teachingName,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      fontSize: 8,
-                    ),
+                style: Theme.of(context).textTheme.labelSmall,
               ),
             ),
           ),
