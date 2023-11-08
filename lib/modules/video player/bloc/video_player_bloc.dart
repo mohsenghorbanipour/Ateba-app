@@ -47,10 +47,12 @@ class VideoPlayerBloc extends ChangeNotifier {
       if (playFromOfflineGallery) {
       } else {
         _controller = VideoPlayerController.networkUrl(
-          Uri.parse('https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'),
+          Uri.parse(
+              'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'),
         )..initialize();
       }
       initialized = true;
+      _controller?.play();
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
