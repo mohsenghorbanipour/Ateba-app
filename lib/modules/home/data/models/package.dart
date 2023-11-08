@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:ateba_app/core/base/base_model.dart';
+import 'package:ateba_app/modules/home/data/models/students_sample.dart';
 import 'package:ateba_app/modules/home/data/models/tutorials_sample.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -18,8 +19,8 @@ class Package implements BaseModel<Package> {
     this.price,
     this.tutorials_sample,
     this.students_count,
-    // this.students_thumbnail,
     this.tutorials_count,
+    this.students_sample,
   });
 
   final String? title;
@@ -30,8 +31,8 @@ class Package implements BaseModel<Package> {
   final int? price;
   final TutorialsSample? tutorials_sample;
   final int? tutorials_count;
-  // final String? students_thumbnail;
   final int? students_count;
+  final StudentsSample? students_sample;
 
   @override
   factory Package.fromJson(Map<String, dynamic> json) =>

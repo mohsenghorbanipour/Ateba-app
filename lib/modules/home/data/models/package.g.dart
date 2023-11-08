@@ -19,6 +19,10 @@ Package _$PackageFromJson(Map<String, dynamic> json) => Package(
               json['tutorials_sample'] as Map<String, dynamic>),
       students_count: json['students_count'] as int?,
       tutorials_count: json['tutorials_count'] as int?,
+      students_sample: json['students_sample'] == null
+          ? null
+          : StudentsSample.fromJson(
+              json['students_sample'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PackageToJson(Package instance) {
@@ -39,5 +43,6 @@ Map<String, dynamic> _$PackageToJson(Package instance) {
   writeNotNull('tutorials_sample', instance.tutorials_sample?.toJson());
   writeNotNull('tutorials_count', instance.tutorials_count);
   writeNotNull('students_count', instance.students_count);
+  writeNotNull('students_sample', instance.students_sample?.toJson());
   return val;
 }

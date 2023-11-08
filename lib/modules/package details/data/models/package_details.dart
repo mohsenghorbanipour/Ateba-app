@@ -24,6 +24,7 @@ class PackageDetails implements BaseModel<PackageDetails>{
     this.duration,
     this.teachers,
     this.is_bookmarked,
+    this.has_bought,
   });
 
   final String? title;
@@ -39,6 +40,7 @@ class PackageDetails implements BaseModel<PackageDetails>{
   final String? duration;
   final List<Teacher>? teachers;
   final bool? is_bookmarked;
+  final bool? has_bought;
 
   @override
   factory PackageDetails.fromJson(Map<String, dynamic> json) =>

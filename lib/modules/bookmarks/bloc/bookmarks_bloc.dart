@@ -104,4 +104,16 @@ class BookmarksBloc extends ChangeNotifier {
       LoggerHelper.errorLog(e, s);
     }
   }
+
+  Future<void> unbookmarkIc(String slug, int index) async {
+    try {
+      bool response = await BookmarksRemoteProvider.unBookmarkTutorial(slug);
+      if(response) {
+        dataList.removeAt(index);
+        notifyListeners();
+      }
+    } catch(e ,s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
 }

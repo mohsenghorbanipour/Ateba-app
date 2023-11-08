@@ -79,8 +79,8 @@ class AtebaRouter {
                 pageBuilder: (state) => const SubscriptionPage(),
               ),
               _routeFade(
-                path: Routes.videoPalyer,
-                name: Routes.videoPalyer,
+                path: Routes.videoPlayer,
+                name: Routes.videoPlayer,
                 pageBuilder: (state) => VideoPlayerPage(
                   data: state.extra as Map<String, dynamic>,
                 ),
@@ -113,12 +113,20 @@ class AtebaRouter {
             ],
           ),
           _routeFade(
-            path: Routes.packageDetails,
-            name: Routes.packageDetails,
-            pageBuilder: (state) => PackageDetailsPage(
-              slug: state.pathParameters['slug'] as String,
-            ),
-          ),
+              path: Routes.packageDetails,
+              name: Routes.packageDetails,
+              pageBuilder: (state) => PackageDetailsPage(
+                    slug: state.pathParameters['slug'] as String,
+                  ),
+              routes: [
+                _routeFade(
+                  path: Routes.packageVideoPlayer,
+                  name: Routes.packageVideoPlayer,
+                  pageBuilder: (state) => VideoPlayerPage(
+                    data: state.extra as Map<String, dynamic>,
+                  ),
+                )
+              ]),
           _routeFade(
             path: Routes.cart,
             name: Routes.cart,
@@ -154,6 +162,13 @@ class AtebaRouter {
                   ],
                 ),
               ]),
+          _routeFade(
+            path: Routes.mainPagevideoPlayer,
+            name: Routes.mainPagevideoPlayer,
+            pageBuilder: (state) => VideoPlayerPage(
+              data: state.extra as Map<String, dynamic>,
+            ),
+          )
         ],
       )
     ],

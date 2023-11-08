@@ -4,7 +4,6 @@
     "includes_training": "شامل آموزش های :",
     "toman": "تومان",
     "latest_tutorials": "جدیدترین آموزش ها",
-    "name_of_teacher": "نام مدرس",
     "day_ago": "روز قبل",
     "clinical_packages": "پکیج های بالینی",
     "educational_videos": "ویدیوهای آموزشی",
@@ -96,6 +95,8 @@
     "close": "بستن",
     "delete_from_bookmarking": "حذف از نشان شده ها",
     "hour_ago": "ساعت قبل",
-    "min_ago":"دقیقه قبل"
+    "min_ago":"دقیقه قبل",
+    "see_details": "مشاهده جزئیات",
+    "you_are_not_access_this_package": "شما به بسته آموزشی دسترسی ندارد!"
     
 }

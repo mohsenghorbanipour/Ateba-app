@@ -62,7 +62,7 @@ class OrderCard extends StatelessWidget {
                   Row(
                     children: [
                       SvgPicture.asset(
-                        Assets.calendarIc,
+                        Assets.refreshIc,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 4),
@@ -83,7 +83,7 @@ class OrderCard extends StatelessWidget {
                             children: [
                               SvgPicture.asset(
                                 Assets.clockFillIc,
-                                color: ColorPalette.of(context).textPrimary,
+                                color: ColorPalette.of(context).error,
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(right: 4),

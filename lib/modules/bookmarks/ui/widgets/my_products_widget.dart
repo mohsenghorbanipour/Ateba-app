@@ -100,6 +100,7 @@ class MyProductsWidget extends StatelessWidget {
                         height: 12,
                       ),
                       itemBuilder: (_, index) => BookmarkCard(
+                        index: index,
                         bookmark: dataList[index],
                       ),
                     ),

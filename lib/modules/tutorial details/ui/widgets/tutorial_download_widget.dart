@@ -36,10 +36,7 @@ class TutorialDownloadWidget extends StatelessWidget {
               if (Provider.of<DownloadVideoBloc>(context, listen: false)
                       .selectedVideoIdForDownload ==
                   video.id) {
-                LoggerHelper.logger.wtf(
-                  Provider.of<DownloadVideoBloc>(context, listen: false)
-                      .selectedVideoIndexForDownload,
-                );
+                
                 showAnimatedDialog(
                   context: context,
                   curve: Curves.easeIn,
@@ -96,7 +93,7 @@ class TutorialDownloadWidget extends StatelessWidget {
               if (Provider.of<DownloadVideoBloc>(context, listen: false)
                   .existVideoInCache(video.id ?? -1, slug)) {
                 context.goNamed(
-                  Routes.videoPalyer,
+                  Routes.videoPlayer,
                   pathParameters: {
                     'slug': slug,
                   },
@@ -144,31 +141,31 @@ class TutorialDownloadWidget extends StatelessWidget {
                   .existVideoInCache(video.id ?? -1, slug)) {
                 return;
               } else {
-                showAnimatedDialog(
-                  context: context,
-                  curve: Curves.easeIn,
-                  animationType: DialogTransitionType.fade,
-                  duration: const Duration(milliseconds: 300),
-                  builder: (ctx) => ChangeNotifierProvider.value(
-                    value: Provider.of<TutorialDetaialsBloc>(context,
-                        listen: false),
-                    child: DownloadDialog(
-                      video: video,
-                      slug: slug,
-                      type: 'tutorial',
-                      title: Provider.of<TutorialDetaialsBloc>(context,
-                                  listen: false)
-                              .tutorialDetaials
-                              ?.title ??
-                          '',
-                      updated_at: Provider.of<TutorialDetaialsBloc>(context,
-                                  listen: false)
-                              .tutorialDetaials
-                              ?.updated_at ??
-                          '',
+                  showAnimatedDialog(
+                    context: context,
+                    curve: Curves.easeIn,
+                    animationType: DialogTransitionType.fade,
+                    duration: const Duration(milliseconds: 300),
+                    builder: (ctx) => ChangeNotifierProvider.value(
+                      value: Provider.of<TutorialDetaialsBloc>(context,
+                          listen: false),
+                      child: DownloadDialog(
+                        video: video,
+                        slug: slug,
+                        type: 'tutorial',
+                        title: Provider.of<TutorialDetaialsBloc>(context,
+                                    listen: false)
+                                .tutorialDetaials
+                                ?.title ??
+                            '',
+                        updated_at: Provider.of<TutorialDetaialsBloc>(context,
+                                    listen: false)
+                                .tutorialDetaials
+                                ?.updated_at ??
+                            '',
+                      ),
                     ),
-                  ),
-                );
+                  );
               }
             },
             child: Container(

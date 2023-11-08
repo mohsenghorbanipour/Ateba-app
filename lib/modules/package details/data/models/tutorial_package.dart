@@ -15,6 +15,7 @@ class TutorialPackage implements BaseModel<TutorialPackage> {
     this.videos,
     this.attachments,
     this.is_bookmarked,
+    this.has_bought,
   });
 
   final String? title;
@@ -24,6 +25,7 @@ class TutorialPackage implements BaseModel<TutorialPackage> {
   final List<Video>? videos;
   final List<Attachment>? attachments;
   bool? is_bookmarked;
+  final bool? has_bought;
 
   @override
   factory TutorialPackage.fromJson(Map<String, dynamic> json) =>

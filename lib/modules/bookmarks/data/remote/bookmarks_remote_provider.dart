@@ -56,4 +56,19 @@ class BookmarksRemoteProvider {
       return null;
     }
   }
+
+  static Future<bool> unBookmarkTutorial(String slug) async {
+    try {
+      Response response = await _networkHelper.dio.delete(
+        RemoteRoutes.bookmarkTutorial(slug),
+      );
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      return false;
+    }
+  }
 }

@@ -17,7 +17,7 @@ class Assets {
   static const String personeFillIc = '${_iconsBasePath}persone_fill_ic.svg';
   static const String bookmarkIc = '${_iconsBasePath}bookmark_ic.svg';
   static const String bookmarkFillIc = '${_iconsBasePath}bookmark_fill_ic.svg';
-  static const String calendarIc = '${_iconsBasePath}calendar_ic.svg';
+  // static const String calendarIc = '${_iconsBasePath}calendar_ic.svg';
   static const String clockIc = '${_iconsBasePath}clock_ic.svg';
   static const String checkIc = '${_iconsBasePath}check_ic.svg';
   static const String shareIc = '${_iconsBasePath}share_ic.svg';
@@ -55,6 +55,8 @@ class Assets {
   static const String noActiveSubscription =
       '${_imagesBasePath}no_active_subscription.svg';
   static const String refreshIc = '${_iconsBasePath}refresh_ic.svg';
+  static const String crownIc = '${_iconsBasePath}crown_ic.svg';
+  static const String unbookmarkIc = '${_iconsBasePath}unbookmark_ic.svg';
 
   static const String testIc = '${_iconsBasePath}test_ic.png';
   static const String test2Ic = '${_iconsBasePath}test_2_ic.svg';

@@ -1,8 +1,10 @@
+import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/modules/categories/bloc/categories_bloc.dart';
 import 'package:ateba_app/modules/categories/ui/widgets/tab_item_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -48,7 +50,7 @@ class CategoriesTabWidget extends StatelessWidget {
                 },
                 color: ColorPalette.of(context).background,
                 elevation: 0,
-                offset: const Offset(10, 45),
+                offset: const Offset(0, 45),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                   side: BorderSide(
@@ -126,41 +128,51 @@ class CategoriesTabWidget extends StatelessWidget {
                             height: 35,
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Container(
-                                  width: 12,
-                                  height: 12,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      width: 1,
-                                      color:
-                                          ColorPalette.of(context).textPrimary,
-                                    ),
-                                  ),
-                                  child: Container(
-                                    width: 5,
-                                    height: 5,
-                                    margin: const EdgeInsets.all(2),
-                                    decoration: BoxDecoration(
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 12,
+                                      height: 12,
+                                      decoration: BoxDecoration(
                                         shape: BoxShape.circle,
-                                        color: Provider.of<CategoriesBloc>(
-                                                        context,
-                                                        listen: false)
-                                                    .categoriesDataType ==
-                                                CategoriesDataType
-                                                    .educationalPackages
-                                            ? ColorPalette.of(context).primary
-                                            : Colors.transparent),
-                                  ),
+                                        border: Border.all(
+                                          width: 1,
+                                          color: ColorPalette.of(context)
+                                              .textPrimary,
+                                        ),
+                                      ),
+                                      child: Container(
+                                        width: 5,
+                                        height: 5,
+                                        margin: const EdgeInsets.all(2),
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Provider.of<CategoriesBloc>(
+                                                            context,
+                                                            listen: false)
+                                                        .categoriesDataType ==
+                                                    CategoriesDataType
+                                                        .educationalPackages
+                                                ? ColorPalette.of(context)
+                                                    .primary
+                                                : Colors.transparent),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 8),
+                                      child: Text(
+                                        'educational_packages'.tr(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8),
-                                  child: Text(
-                                    'educational_packages'.tr(),
-                                    style:
-                                        Theme.of(context).textTheme.labelMedium,
-                                  ),
+                                SvgPicture.asset(
+                                  Assets.crownIc,
                                 )
                               ],
                             ),

@@ -21,6 +21,8 @@ class OfflineGalleryWidget extends StatelessWidget {
             ),
             padding: const EdgeInsets.all(16),
             itemBuilder: (_, index) => BookmarkCard(
+              index: index,
+              isGalleryOffline: true,
               bookmark: Bookmark(
                 link_to: LinkTo(type: 'tutorial', slug: videos[index].slug),
                 thumbnail: videos[index].thumbnail_url,
@@ -28,6 +30,7 @@ class OfflineGalleryWidget extends StatelessWidget {
                 video: videos[index].url,
                 duration: videos[index].duration,
                 updated_at: videos[index].updated_at,
+                path: videos[index].path,
               ),
             ),
           ),

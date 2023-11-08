@@ -3,6 +3,7 @@ import 'package:ateba_app/core/components/button_component.dart';
 import 'package:ateba_app/core/components/shimmer_components.dart';
 import 'package:ateba_app/core/components/toast_component.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
+import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/date_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
@@ -19,7 +20,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:ateba_app/core/utils/price_ext.dart';
 
 class PackageDetailsPage extends StatelessWidget {
   const PackageDetailsPage({
@@ -43,8 +46,8 @@ class PackageDetailsPage extends StatelessWidget {
                 .selectedCommentIndex = null;
           },
           child: Scaffold(
-            appBar: context
-                    .select<PackageDetailsBloc, bool>((bloc) => bloc.showOptions)
+            appBar: context.select<PackageDetailsBloc, bool>(
+                    (bloc) => bloc.showOptions)
                 ? AppBar(
                     backgroundColor:
                         ColorPalette.of(context).scaffoldBackground,
@@ -69,7 +72,8 @@ class PackageDetailsPage extends StatelessWidget {
                     actions: [
                       IconButton(
                         onPressed: () {
-                          Provider.of<PackageDetailsBloc>(context, listen: false)
+                          Provider.of<PackageDetailsBloc>(context,
+                                  listen: false)
                               .deleteComment();
                         },
                         icon: const Icon(
@@ -311,81 +315,89 @@ class PackageDetailsPage extends StatelessWidget {
                       )
                     ],
                   ),
-                Positioned(
-                  left: 16,
-                  right: 16,
-                  bottom: 16,
-                  child: Container(
-                    height: 48,
-                    width: double.infinity,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    decoration: BoxDecoration(
-                        color: ColorPalette.of(context).lightSilver,
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(
-                          width: 1,
-                          color: ColorPalette.of(context).border,
-                        )),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: ButtonComponent(
-                            onPressed: () {},
-                            height: 32,
-                            loading: context.select<PackageDetailsBloc, bool>(
-                                (bloc) => bloc.loading),
-                            color: Colors.transparent,
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: ColorPalette.of(context).textPrimary,
-                            ),
-                            child: Text(
-                              'access_by_subscription'.tr(),
-                              style: Theme.of(context).textTheme.labelMedium,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 16,
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: ButtonComponent(
-                            onPressed: () {
-                              if (Provider.of<CartBloc>(context, listen: false)
-                                  .checkExistOrderInCart('package', slug)) {
-                                ToastComponent.show(
-                                  'package_exist_in_cart'.tr(),
-                                  type: ToastType.info,
-                                );
-                              } else {
-                                Provider.of<PackageDetailsBloc>(context,
+                if (context.select<PackageDetailsBloc, bool>(
+                    (bloc) => !(bloc.packageDetails?.has_bought ?? false)))
+                  Positioned(
+                    left: 16,
+                    right: 16,
+                    bottom: 16,
+                    child: Container(
+                      height: 48,
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 4),
+                      decoration: BoxDecoration(
+                          color: ColorPalette.of(context).lightSilver,
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            width: 1,
+                            color: ColorPalette.of(context).border,
+                          )),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: ButtonComponent(
+                              onPressed: () {
+                                if (Provider.of<CartBloc>(context,
                                         listen: false)
-                                    .orderPackage(slug);
-                              }
-                            },
-                            loading: context.select<PackageDetailsBloc, bool>(
-                                (bloc) => bloc.loading || bloc.orderLoading),
-                            height: 32,
-                            child: Text(
-                              '${TextInputFormatters.toPersianNumber(context.select<PackageDetailsBloc, String>((bloc) => bloc.packageDetails?.price.toString() ?? '0'))}${'toman'.tr()} ${'add_to_basket'.tr()}',
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelMedium
-                                  ?.copyWith(
-                                    color: ColorPalette.of(context).white,
-                                  ),
+                                    .checkExistOrderInCart('package', slug)) {
+                                  context.goNamed(
+                                    Routes.cart,
+                                  );
+                                } else {
+                                  Provider.of<PackageDetailsBloc>(context,
+                                          listen: false)
+                                      .orderPackage(slug);
+                                }
+                              },
+                              loading: context.select<PackageDetailsBloc, bool>(
+                                  (bloc) => bloc.loading || bloc.orderLoading),
+                              height: 32,
+                              child: context.select<CartBloc, bool>((bloc) =>
+                                      bloc.checkExistOrderInCart(
+                                          'package', slug))
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'complete_buying'.tr(),
+                                          overflow: TextOverflow.ellipsis,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelMedium
+                                              ?.copyWith(
+                                                color: ColorPalette.of(context)
+                                                    .white,
+                                              ),
+                                        ),
+                                        const Padding(
+                                          padding: EdgeInsets.only(right: 4),
+                                          child: Icon(
+                                            Icons.arrow_back_ios_new_rounded,
+                                            size: 12,
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  : Text(
+                                      '${TextInputFormatters.toPersianNumber(context.select<PackageDetailsBloc, String>((bloc) => bloc.packageDetails?.price?.withPriceLable.toString() ?? '0'))} ${'toman'.tr()} ${'add_to_basket'.tr()}',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium
+                                          ?.copyWith(
+                                            color:
+                                                ColorPalette.of(context).white,
+                                          ),
+                                    ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                )
+                  )
               ],
             ),
           ),

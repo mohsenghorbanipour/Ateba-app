@@ -6,6 +6,9 @@ import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/date_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/home/data/models/package.dart';
+import 'package:ateba_app/modules/home/data/models/students_sample.dart';
+import 'package:ateba_app/modules/home/data/models/tutorials_sample.dart';
+import 'package:ateba_app/modules/home/ui/widgets/students_widget.dart';
 import 'package:ateba_app/modules/home/ui/widgets/teching_name_chip.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -142,8 +145,11 @@ class PackageCard extends StatelessWidget {
                 padding: const EdgeInsets.only(
                     top: 10, left: 12, right: 12, bottom: 8),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    StudentsWidget(
+                      students: package.students_sample ?? StudentsSample(),
+                    ),
                     ButtonComponent(
                       onPressed: () {},
                       width: 125,

@@ -1,23 +1,36 @@
 import 'package:ateba_app/core/components/button_component.dart';
+import 'package:ateba_app/core/components/shimmer_components.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/date_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
+import 'package:ateba_app/modules/bookmarks/bloc/bookmarks_bloc.dart';
 import 'package:ateba_app/modules/bookmarks/data/models/bookmark.dart';
+import 'package:ateba_app/modules/bookmarks/ui/dialogs/confirm_delete_dialog.dart';
+import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class BookmarkCard extends StatelessWidget {
   const BookmarkCard({
+    required this.index,
     required this.bookmark,
+    this.isBookmark = false,
+    this.isGalleryOffline = false,
     super.key,
   });
 
+  final int index;
   final Bookmark bookmark;
+  final bool isBookmark;
+  final bool isGalleryOffline;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -33,14 +46,63 @@ class BookmarkCard extends StatelessWidget {
         child: Column(
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
-                  child: CachedNetworkImage(
-                    width: 56,
-                    height: 56,
-                    imageUrl: bookmark.thumbnail ?? '',
-                  ),
+                Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: CachedNetworkImage(
+                        width: 56,
+                        height: 56,
+                        imageUrl: bookmark.thumbnail ?? '',
+                        fit: BoxFit.cover,
+                        placeholder: (_, __) => const ShimmerContainer(
+                          width: 56,
+                          height: 56,
+                          radius: 4,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      top: 0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              if (isGalleryOffline) {
+                                context.goNamed(
+                                  Routes.mainPagevideoPlayer,
+                                  extra: {
+                                    'video': Video(),
+                                    'show_with_path': true,
+                                    'path': bookmark.path ?? '',
+                                  },
+                                );
+                              }
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: 24,
+                              height: 24,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: ColorPalette.of(context).error,
+                              ),
+                              child: Icon(
+                                Icons.play_arrow_rounded,
+                                color: ColorPalette.of(context).white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
                 Expanded(
                   child: Padding(
@@ -62,7 +124,7 @@ class BookmarkCard extends StatelessWidget {
                               Row(
                                 children: [
                                   SvgPicture.asset(
-                                    Assets.calendarIc,
+                                    Assets.refreshIc,
                                     color: ColorPalette.of(context).error,
                                   ),
                                   Padding(
@@ -118,12 +180,76 @@ class BookmarkCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                )
+                ),
+                if (isBookmark)
+                  InkWell(
+                    onTap: () {
+                      Provider.of<BookmarksBloc>(context, listen: false)
+                          .unbookmarkIc(
+                        bookmark.link_to?.slug ?? '',
+                        index,
+                      );
+                    },
+                    child: SvgPicture.asset(
+                      Assets.unbookmarkIc,
+                    ),
+                  ),
+                if (isGalleryOffline)
+                  InkWell(
+                    onTap: () {
+                      showAnimatedDialog(
+                        context: context,
+                        curve: Curves.easeIn,
+                        animationType: DialogTransitionType.fade,
+                        duration: const Duration(milliseconds: 300),
+                        builder: (context) => const ConfirmDeleteDialog(),
+                      );
+                    },
+                    child: Icon(
+                      CupertinoIcons.delete,
+                      size: 18,
+                      color: ColorPalette.of(context).error,
+                    ),
+                  )
               ],
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: (bookmark.subtitle?.isNotEmpty ?? false)
+                        ? Row(
+                            children: [
+                              Container(
+                                width: 4,
+                                height: 4,
+                                margin: const EdgeInsets.only(left: 4),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: ColorPalette.of(context).error,
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  bookmark.subtitle ?? '',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelSmall
+                                      ?.copyWith(
+                                        color: ColorPalette.of(context)
+                                            .textPrimary
+                                            .withOpacity(0.8),
+                                      ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          )
+                        : Container(),
+                  ),
+                ),
                 ButtonComponent(
                   width: 140,
                   height: 24,
@@ -153,7 +279,9 @@ class BookmarkCard extends StatelessWidget {
                     }
                   },
                   child: Text(
-                    'see_tutorials'.tr(),
+                    (isBookmark || isGalleryOffline)
+                        ? 'see_details'.tr()
+                        : 'see_tutorials'.tr(),
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           color: ColorPalette.of(context).primary,
                         ),

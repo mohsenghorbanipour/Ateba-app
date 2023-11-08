@@ -1,9 +1,14 @@
+import 'package:ateba_app/core/base/bloc/download_video_bloc.dart';
+import 'package:ateba_app/core/components/toast_component.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/modules/package%20details/bloc/package_details_bloc.dart';
 import 'package:ateba_app/modules/package%20details/data/models/tutorial_package.dart';
+import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';
+import 'package:ateba_app/modules/tutorial%20details/ui/dialogs/download_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
@@ -45,23 +50,108 @@ class PackageDetailsMenu extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    Container(
-                      height: 35,
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            Assets.downloadIc,
-                            color: ColorPalette.of(context).textPrimary,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 4),
-                            child: Text(
-                              'add_to_gallery_offline'.tr(),
-                              style: Theme.of(context).textTheme.labelSmall,
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        if (Provider.of<PackageDetailsBloc>(context,
+                                    listen: false)
+                                .packageDetails
+                                ?.has_bought ??
+                            false) {
+                          if (Provider.of<DownloadVideoBloc>(context,
+                                      listen: false)
+                                  .selectedVideoIdForDownload !=
+                              null) {
+                            if (Provider.of<DownloadVideoBloc>(context,
+                                        listen: false)
+                                    .selectedVideoIdForDownload ==
+                                tutorialPackage.videos?.first.id) {
+                              showAnimatedDialog(
+                                context: context,
+                                curve: Curves.easeIn,
+                                animationType: DialogTransitionType.fade,
+                                duration: const Duration(milliseconds: 300),
+                                builder: (ctx) => ChangeNotifierProvider.value(
+                                  value: Provider.of<PackageDetailsBloc>(
+                                      context,
+                                      listen: false),
+                                  child: DownloadDialog(
+                                    video: tutorialPackage.videos?.first ??
+                                        Video(),
+                                    slug: tutorialPackage.slug ?? '',
+                                    type: 'tutorial',
+                                    title: tutorialPackage.title ?? '',
+                                    updated_at: Provider.of<PackageDetailsBloc>(
+                                                context,
+                                                listen: false)
+                                            .packageDetails
+                                            ?.updated_at ??
+                                        '',
+                                    currentIndex:
+                                        Provider.of<DownloadVideoBloc>(context,
+                                                listen: false)
+                                            .selectedVideoIndexForDownload,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              ToastComponent.show(
+                                'anuther_video_is_downloading'.tr(),
+                                type: ToastType.info,
+                              );
+                              return;
+                            }
+                          } else {
+                            showAnimatedDialog(
+                              context: context,
+                              curve: Curves.easeIn,
+                              animationType: DialogTransitionType.fade,
+                              duration: const Duration(milliseconds: 300),
+                              builder: (ctx) => ChangeNotifierProvider.value(
+                                value: Provider.of<PackageDetailsBloc>(context,
+                                    listen: false),
+                                child: DownloadDialog(
+                                  video:
+                                      tutorialPackage.videos?.first ?? Video(),
+                                  slug: tutorialPackage.slug ?? '',
+                                  type: 'tutorial',
+                                  title: tutorialPackage.title ?? '',
+                                  updated_at: Provider.of<PackageDetailsBloc>(
+                                              context,
+                                              listen: false)
+                                          .packageDetails
+                                          ?.updated_at ??
+                                      '',
+                                ),
+                              ),
+                            );
+                          }
+                        } else {
+                          ToastComponent.show(
+                            'you_are_not_access_this_package'.tr(),
+                            type: ToastType.info,
+                          );
+                          return;
+                        }
+                      },
+                      child: Container(
+                        height: 35,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              Assets.downloadIc,
+                              color: ColorPalette.of(context).textPrimary,
                             ),
-                          )
-                        ],
+                            Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: Text(
+                                'add_to_gallery_offline'.tr(),
+                                style: Theme.of(context).textTheme.labelSmall,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     InkWell(

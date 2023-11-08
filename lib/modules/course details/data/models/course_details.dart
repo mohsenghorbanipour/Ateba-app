@@ -20,6 +20,7 @@ class CourseDetails implements BaseModel<CourseDetails> {
     this.views_count,
     this.tutorials_count,
     this.teachers,
+    this.has_bought,
   });
 
   final String? title;
@@ -34,6 +35,7 @@ class CourseDetails implements BaseModel<CourseDetails> {
   final int? views_count;
   final int? tutorials_count;
   final List<Teacher>? teachers;
+  final bool? has_bought;
 
   @override
   factory CourseDetails.fromJson(Map<String, dynamic> json) =>

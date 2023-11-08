@@ -137,7 +137,7 @@ class TutorialCard extends StatelessWidget {
                               filter:
                                   ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
                               child: Container(
-                                width: 100,
+                                width: 75,
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 4, horizontal: 6),
                                 decoration: BoxDecoration(
@@ -149,7 +149,7 @@ class TutorialCard extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        '${'name_of_teacher'.tr()}(${tutorial.teacher ?? ''})',
+                                        tutorial.teacher ?? '',
                                         overflow: TextOverflow.ellipsis,
                                         style: Theme.of(context)
                                             .textTheme

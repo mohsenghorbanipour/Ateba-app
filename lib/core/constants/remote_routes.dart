@@ -50,4 +50,8 @@ class RemoteRoutes {
   static const String getSubscriptionPlans = 'subscription/plans';
   static String discountPreview(int id) => 'plans/$id/order';
 
+  // Video Features Api
+  static String getVideoChapter(int id) => 'videos/$id/chapters';
+  
+
 }

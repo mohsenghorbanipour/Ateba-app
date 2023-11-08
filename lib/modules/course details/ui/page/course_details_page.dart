@@ -292,117 +292,177 @@ class CourseDetailsPage extends StatelessWidget {
                       )
                     ],
                   ),
-                Positioned(
-                  left: 16,
-                  right: 16,
-                  bottom: 16,
-                  child: Container(
-                    height: 48,
-                    width: double.infinity,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    decoration: BoxDecoration(
-                        color: ColorPalette.of(context).lightSilver,
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(
-                          width: 1,
-                          color: ColorPalette.of(context).border,
-                        )),
-                    child: Row(
-                      children: [
-                        // if (context.select<AuthBloc, bool>(
-                        //     (bloc) => bloc.subscriptionExpireDate == null))
-                        Expanded(
-                          flex: 4,
-                          child: ButtonComponent(
-                            onPressed: () {},
-                            margin: const EdgeInsets.only(left: 12),
-                            height: 32,
-                            loading: context.select<CourseDetailsBloc, bool>(
-                                (bloc) => bloc.loading),
-                            color: Colors.transparent,
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: ColorPalette.of(context).textPrimary,
+                if (context.select<CourseDetailsBloc, bool>(
+                    (bloc) => !(bloc.courseDetails?.has_bought ?? false)))
+                  Positioned(
+                    left: 16,
+                    right: 16,
+                    bottom: 16,
+                    child: Container(
+                      height: 48,
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 4),
+                      decoration: BoxDecoration(
+                          color: ColorPalette.of(context).lightSilver,
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            width: 1,
+                            color: ColorPalette.of(context).border,
+                          )),
+                      child: Row(
+                        children: [
+                          if (context.select<AuthBloc, bool>(
+                              (bloc) => bloc.subscriptionExpireDate == null))
+                            Expanded(
+                              flex: 4,
+                              child: ButtonComponent(
+                                onPressed: () {},
+                                margin: const EdgeInsets.only(left: 12),
+                                height: 32,
+                                loading:
+                                    context.select<CourseDetailsBloc, bool>(
+                                        (bloc) => bloc.loading),
+                                color: Colors.transparent,
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: ColorPalette.of(context).textPrimary,
+                                ),
+                                child: Text(
+                                  'access_by_subscription'.tr(),
+                                  style:
+                                      Theme.of(context).textTheme.labelMedium,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
                             ),
-                            child: Text(
-                              'access_by_subscription'.tr(),
-                              style: Theme.of(context).textTheme.labelMedium,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 5,
-                          child: ButtonComponent(
-                            onPressed: () {
-                              if (Provider.of<CartBloc>(context, listen: false)
-                                  .checkExistOrderInCart('course', slug)) {
-                                context.goNamed(
-                                  Routes.cart,
-                                );
-                              } else {
-                                Provider.of<CourseDetailsBloc>(context,
+                          Expanded(
+                            flex: 5,
+                            child: ButtonComponent(
+                              onPressed: () {
+                                if (Provider.of<CartBloc>(context,
                                         listen: false)
-                                    .orderCourse(slug);
-                              }
-                            },
-                            loading: context.select<CourseDetailsBloc, bool>(
-                                (bloc) => bloc.loading || bloc.orderLoading),
-                            height: 32,
-                            child: context.select<CartBloc, bool>((bloc) =>
-                                    bloc.checkExistOrderInCart('course', slug))
-                                ? Text(
-                                    'complete_buying'.tr(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelMedium
-                                        ?.copyWith(
-                                          color: ColorPalette.of(context).white,
+                                    .checkExistOrderInCart('course', slug)) {
+                                  context.goNamed(
+                                    Routes.cart,
+                                  );
+                                } else {
+                                  Provider.of<CourseDetailsBloc>(context,
+                                          listen: false)
+                                      .orderCourse(slug);
+                                }
+                              },
+                              loading: context.select<CourseDetailsBloc, bool>(
+                                  (bloc) => bloc.loading || bloc.orderLoading),
+                              height: 32,
+                              child: context.select<CartBloc, bool>((bloc) =>
+                                      bloc.checkExistOrderInCart(
+                                          'course', slug))
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'complete_buying'.tr(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelMedium
+                                              ?.copyWith(
+                                                color: ColorPalette.of(context)
+                                                    .white,
+                                              ),
                                         ),
-                                  )
-                                : Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        TextInputFormatters.toPersianNumber(
-                                          '${context.select<CourseDetailsBloc, String>((bloc) => bloc.courseDetails?.price?.withPriceLable ?? '')}${'toman'.tr()}',
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelSmall
-                                            ?.copyWith(
-                                              color: ColorPalette.of(context)
-                                                  .white,
-                                            ),
-                                      ),
-                                      Expanded(
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 4),
-                                          child: Text(
-                                            'add_to_basket'.tr(),
-                                            overflow: TextOverflow.ellipsis,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelMedium
-                                                ?.copyWith(
-                                                  color:
-                                                      ColorPalette.of(context)
-                                                          .white,
-                                                ),
+                                        const Padding(
+                                          padding: EdgeInsets.only(right: 4),
+                                          child: Icon(
+                                            Icons.arrow_back_ios_new_rounded,
+                                            size: 12,
                                           ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                        )
+                                      ],
+                                    )
+                                  : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        if (context.select<AuthBloc, bool>(
+                                            (bloc) =>
+                                                bloc.subscriptionExpireDate ==
+                                                null))
+                                          Expanded(
+                                            child: RichText(
+                                              overflow: TextOverflow.ellipsis,
+                                              text: TextSpan(
+                                                text: TextInputFormatters
+                                                    .toPersianNumber(
+                                                  '${context.select<CourseDetailsBloc, String>((bloc) => bloc.courseDetails?.price?.withPriceLable ?? '')}${'toman'.tr()}',
+                                                ),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelSmall
+                                                    ?.copyWith(
+                                                      color: ColorPalette.of(
+                                                              context)
+                                                          .white,
+                                                    ),
+                                                children: [
+                                                  TextSpan(
+                                                    text:
+                                                        ' ${'add_to_basket'.tr()}',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .labelMedium
+                                                        ?.copyWith(
+                                                          color:
+                                                              ColorPalette.of(
+                                                                      context)
+                                                                  .white,
+                                                        ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        else
+                                          RichText(
+                                            overflow: TextOverflow.ellipsis,
+                                            text: TextSpan(
+                                              text: TextInputFormatters
+                                                  .toPersianNumber(
+                                                '${context.select<CourseDetailsBloc, String>((bloc) => bloc.courseDetails?.price?.withPriceLable ?? '')}${'toman'.tr()}',
+                                              ),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .labelSmall
+                                                  ?.copyWith(
+                                                    color:
+                                                        ColorPalette.of(context)
+                                                            .white,
+                                                  ),
+                                              children: [
+                                                TextSpan(
+                                                  text:
+                                                      ' ${'add_to_basket'.tr()}',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .labelMedium
+                                                      ?.copyWith(
+                                                        color: ColorPalette.of(
+                                                                context)
+                                                            .white,
+                                                      ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                )
+                  )
               ],
             ),
           ),

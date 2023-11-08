@@ -19,6 +19,7 @@ TutorialPackage _$TutorialPackageFromJson(Map<String, dynamic> json) =>
           ?.map((e) => Attachment.fromJson(e as Map<String, dynamic>))
           .toList(),
       is_bookmarked: json['is_bookmarked'] as bool?,
+      has_bought: json['has_bought'] as bool?,
     );
 
 Map<String, dynamic> _$TutorialPackageToJson(TutorialPackage instance) {
@@ -38,5 +39,6 @@ Map<String, dynamic> _$TutorialPackageToJson(TutorialPackage instance) {
   writeNotNull(
       'attachments', instance.attachments?.map((e) => e.toJson()).toList());
   writeNotNull('is_bookmarked', instance.is_bookmarked);
+  writeNotNull('has_bought', instance.has_bought);
   return val;
 }

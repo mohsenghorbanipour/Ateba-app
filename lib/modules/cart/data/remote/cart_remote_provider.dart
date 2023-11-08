@@ -1,3 +1,4 @@
+import 'package:ateba_app/core/components/toast_component.dart';
 import 'package:ateba_app/core/constants/remote_routes.dart';
 import 'package:ateba_app/core/network/api_response_model.dart';
 import 'package:ateba_app/core/network/network_helper.dart';
@@ -55,7 +56,13 @@ class CartRemoteProvider {
           response.data,
           (json) => OrdersResponse.fromJson(json),
         );
+      } else if (response.data['message'] != null) {
+        ToastComponent.show(
+          response.data['message'],
+          type: ToastType.error,
+        );
       }
+
       return null;
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);

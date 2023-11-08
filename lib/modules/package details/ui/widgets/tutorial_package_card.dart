@@ -1,17 +1,22 @@
+import 'package:ateba_app/core/base/bloc/download_video_bloc.dart';
 import 'package:ateba_app/core/components/shimmer_components.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
-import 'package:ateba_app/core/router/ateba_router.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
-import 'package:ateba_app/modules/home/data/models/tutorial.dart';
+import 'package:ateba_app/modules/package%20details/bloc/package_details_bloc.dart';
 import 'package:ateba_app/modules/package%20details/data/models/tutorial_package.dart';
 import 'package:ateba_app/modules/package%20details/ui/widgets/package_details_menu.dart';
+import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';
+import 'package:ateba_app/modules/tutorial%20details/ui/dialogs/download_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:provider/provider.dart';
 
 class TutorialPackageCard extends StatefulWidget {
   const TutorialPackageCard({
@@ -53,52 +58,67 @@ class _TutorialPackageCardState extends State<TutorialPackageCard> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
-                      child: Stack(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(4),
-                            child: CachedNetworkImage(
-                              width: 94,
-                              height: 56,
-                              fit: BoxFit.cover,
-                              placeholder: (_, __) => const ShimmerContainer(
+                      child: InkWell(
+                        onTap: () {
+                          context.goNamed(
+                            Routes.packageVideoPlayer,
+                            pathParameters: {
+                              'slug': widget.tutorialPackage.slug ?? '',
+                            },
+                            extra: {
+                              'show_with_path': false,
+                              'slug': widget.tutorialPackage.slug ?? '',
+                              'video': widget.tutorialPackage.videos?.first,
+                            },
+                          );
+                        },
+                        child: Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(4),
+                              child: CachedNetworkImage(
                                 width: 94,
                                 height: 56,
-                                radius: 4,
+                                fit: BoxFit.cover,
+                                placeholder: (_, __) => const ShimmerContainer(
+                                  width: 94,
+                                  height: 56,
+                                  radius: 4,
+                                ),
+                                imageUrl: widget.tutorialPackage.videos?.first
+                                        .thumbnail_url ??
+                                    '',
                               ),
-                              imageUrl: widget.tutorialPackage.videos?.first
-                                      .thumbnail_url ??
-                                  '',
                             ),
-                          ),
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            top: 0,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  alignment: Alignment.center,
-                                  width: 20,
-                                  height: 20,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: ColorPalette.of(context).error,
-                                  ),
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.play_arrow_rounded,
-                                      color: ColorPalette.of(context).white,
-                                      size: 16,
+                            Positioned(
+                              left: 0,
+                              right: 0,
+                              bottom: 0,
+                              top: 0,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    alignment: Alignment.center,
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: ColorPalette.of(context).error,
+                                    ),
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.play_arrow_rounded,
+                                        color: ColorPalette.of(context).white,
+                                        size: 16,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     Column(
@@ -159,9 +179,88 @@ class _TutorialPackageCardState extends State<TutorialPackageCard> {
                     ),
                   ],
                 ),
-                PackageDetailsMenu(
-                  index: widget.index,
-                  tutorialPackage: widget.tutorialPackage,
+                Row(
+                  children: [
+                    if (context.select<DownloadVideoBloc, bool>((bloc) =>
+                        bloc.existVideoInCache(
+                            widget.tutorialPackage.videos?.first.id ?? -1,
+                            widget.tutorialPackage.slug ?? '')))
+                      Container(
+                        height: 24,
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        decoration: BoxDecoration(
+                          color: ColorPalette.of(context).border,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: SvgPicture.asset(
+                          Assets.downloadedIc,
+                        ),
+                      ),
+                    if (context.select<DownloadVideoBloc, bool>((bloc) =>
+                        bloc.downloading &&
+                        bloc.selectedVideoIdForDownload ==
+                            widget.tutorialPackage.videos?.first.id))
+                      InkWell(
+                        onTap: () {
+                          if (Provider.of<DownloadVideoBloc>(context,
+                                      listen: false)
+                                  .selectedVideoIdForDownload ==
+                              widget.tutorialPackage.videos?.first.id) {
+                            showAnimatedDialog(
+                              context: context,
+                              curve: Curves.easeIn,
+                              animationType: DialogTransitionType.fade,
+                              duration: const Duration(milliseconds: 300),
+                              builder: (ctx) => ChangeNotifierProvider.value(
+                                value: Provider.of<PackageDetailsBloc>(context,
+                                    listen: false),
+                                child: DownloadDialog(
+                                  video: widget.tutorialPackage.videos?.first ??
+                                      Video(),
+                                  slug: widget.tutorialPackage.slug ?? '',
+                                  type: 'tutorial',
+                                  title: widget.tutorialPackage.title ?? '',
+                                  updated_at: Provider.of<PackageDetailsBloc>(
+                                              context,
+                                              listen: false)
+                                          .packageDetails
+                                          ?.updated_at ??
+                                      '',
+                                  currentIndex: Provider.of<DownloadVideoBloc>(
+                                          context,
+                                          listen: false)
+                                      .selectedVideoIndexForDownload,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        child: Container(
+                          height: 24,
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          decoration: BoxDecoration(
+                            color: ColorPalette.of(context).border,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularPercentIndicator(
+                              radius: 8.0,
+                              lineWidth: 1.5,
+                              percent:
+                                  context.select<DownloadVideoBloc, double>(
+                                      (bloc) => (bloc.percentage) / 100),
+                              progressColor: ColorPalette.of(context).primary,
+                            ),
+                          ),
+                        ),
+                      ),
+                    PackageDetailsMenu(
+                      index: widget.index,
+                      tutorialPackage: widget.tutorialPackage,
+                    ),
+                  ],
                 ),
               ],
             ),

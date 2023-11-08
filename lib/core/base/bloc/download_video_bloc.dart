@@ -55,8 +55,8 @@ class DownloadVideoBloc extends ChangeNotifier {
     downloading = true;
     notifyListeners();
     try {
-      Directory tempDir = await getApplicationDocumentsDirectory();
-      String tempPath = tempDir.path;
+      Directory? tempDir = await getApplicationCacheDirectory();
+      String tempPath = tempDir?.path ?? '';
 
       String number = '';
       Random random = Random();
@@ -120,8 +120,8 @@ class DownloadVideoBloc extends ChangeNotifier {
       cancelToken.cancel();
       downloading = false;
       percentage = 0;
-      selectedVideoIdForDownload = null;
       selectedVideoIndexForDownload = null;
+      selectedVideoIdForDownload = null;
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);

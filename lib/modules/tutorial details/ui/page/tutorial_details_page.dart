@@ -233,7 +233,7 @@ class TutorialDetailsPage extends StatelessWidget {
                                 );
                               } else {
                                 context.goNamed(
-                                  Routes.videoPalyer,
+                                  Routes.videoPlayer,
                                   pathParameters: {
                                     'slug': slug,
                                   },
@@ -472,7 +472,7 @@ class TutorialDetailsPage extends StatelessWidget {
                                   width: 16,
                                 ),
                                 SvgPicture.asset(
-                                  Assets.calendarIc,
+                                  Assets.refreshIc,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(right: 4),

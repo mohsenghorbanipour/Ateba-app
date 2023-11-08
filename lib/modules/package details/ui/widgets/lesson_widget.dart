@@ -1,8 +1,6 @@
-import 'package:ateba_app/modules/home/data/models/tutorial.dart';
 import 'package:ateba_app/modules/package%20details/bloc/package_details_bloc.dart';
 import 'package:ateba_app/modules/package%20details/data/models/tutorial_package.dart';
 import 'package:ateba_app/modules/package%20details/ui/widgets/tutorial_package_card.dart';
-import 'package:ateba_app/modules/tutorial%20details/data/models/tutorial_details.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

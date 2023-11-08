@@ -15,6 +15,7 @@ class Bookmark implements BaseModel<Bookmark>{
     this.updated_at,
     this.video,
     this.link_to,
+    this.path,
   });
 
   final String? title;
@@ -24,6 +25,7 @@ class Bookmark implements BaseModel<Bookmark>{
   final String? updated_at;
   final String? video;
   final LinkTo? link_to;
+  final String? path;
 
   @override
   factory Bookmark.fromJson(Map<String, dynamic> json) =>
