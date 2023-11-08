@@ -12,6 +12,7 @@ import 'package:ateba_app/modules/course%20details/ui/page/course_details_page.d
 import 'package:ateba_app/modules/main/ui/page/main_page.dart';
 import 'package:ateba_app/modules/package%20details/ui/page/package_details_page.dart';
 import 'package:ateba_app/modules/subscription/ui/page/subscription_page.dart';
+import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/page/tutorial_details_page.dart';
 import 'package:ateba_app/modules/category%20details/ui/page/category_details_page.dart';
 import 'package:ateba_app/modules/video%20player/ui/page/video_player_page.dart';
@@ -82,6 +83,7 @@ class AtebaRouter {
                 path: Routes.videoPlayer,
                 name: Routes.videoPlayer,
                 pageBuilder: (state) => VideoPlayerPage(
+                  videoId: state.pathParameters['id'] as String,
                   data: state.extra as Map<String, dynamic>,
                 ),
               )
@@ -123,6 +125,7 @@ class AtebaRouter {
                   path: Routes.packageVideoPlayer,
                   name: Routes.packageVideoPlayer,
                   pageBuilder: (state) => VideoPlayerPage(
+                    videoId: state.pathParameters['id'] as String,
                     data: state.extra as Map<String, dynamic>,
                   ),
                 )
@@ -166,6 +169,7 @@ class AtebaRouter {
             path: Routes.mainPagevideoPlayer,
             name: Routes.mainPagevideoPlayer,
             pageBuilder: (state) => VideoPlayerPage(
+              videoId: state.pathParameters['id'] as String,
               data: state.extra as Map<String, dynamic>,
             ),
           )

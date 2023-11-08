@@ -97,6 +97,7 @@
     "hour_ago": "ساعت قبل",
     "min_ago":"دقیقه قبل",
     "see_details": "مشاهده جزئیات",
-    "you_are_not_access_this_package": "شما به بسته آموزشی دسترسی ندارد!"
+    "you_are_not_access_this_package": "شما به بسته آموزشی دسترسی ندارد!",
+    "loading_video": "در حال بارگزاری ویدئو ..."
     
 }
