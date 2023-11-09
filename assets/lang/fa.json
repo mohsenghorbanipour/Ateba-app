@@ -10,6 +10,7 @@
     "lessones": "درس ها",
     "descriptions": "توضیحات",
     "teachers": "مدرسین",
+    "crop_image": "برش عکس",
     "user_comment": "نظرات کاربران",
     "what_you_will_learn": "آنچه خواهید آموخت ...",
     "login_to_account": "ورود به حساب",
@@ -100,6 +101,7 @@
     "you_are_not_access_this_package": "شما به بسته آموزشی دسترسی ندارد!",
     "title_buy": "عنوان خرید",
     "time_payment": "زمان پرداخت",
-    "amount": "مبلغ (تومان)"
+    "amount": "مبلغ (تومان)",
+    "edit_profile": "ویرایش پروفایل"
     
 }

@@ -4,11 +4,11 @@ import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/modules/auth/ui/page/login_otp_page.dart';
 import 'package:ateba_app/modules/auth/ui/page/login_page.dart';
 import 'package:ateba_app/modules/auth/ui/page/splash_page.dart';
-import 'package:ateba_app/modules/auth/ui/page/user_information_page.dart';
 import 'package:ateba_app/modules/cart/ui/page/cart_page.dart';
 import 'package:ateba_app/modules/categories/data/models/category.dart'
     as category;
 import 'package:ateba_app/modules/course%20details/ui/page/course_details_page.dart';
+import 'package:ateba_app/modules/edit%20profile/ui/page/edit_profile_page.dart';
 import 'package:ateba_app/modules/main/ui/page/main_page.dart';
 import 'package:ateba_app/modules/package%20details/ui/page/package_details_page.dart';
 import 'package:ateba_app/modules/subscription/ui/page/subscription_page.dart';
@@ -54,9 +54,11 @@ class AtebaRouter {
             pageBuilder: (state) => const LoginOtpPage(),
             routes: [
               _routeFade(
-                path: Routes.userInfo,
-                name: Routes.userInfo,
-                pageBuilder: (state) => const UserInformationPage(),
+                path: Routes.completeInfo,
+                name: Routes.completeInfo,
+                pageBuilder: (state) => EditProfilePage(
+                  isEditProfile: (state.extra as bool?) ?? false,
+                ),
               ),
             ],
           ),
@@ -174,6 +176,13 @@ class AtebaRouter {
             path: Routes.transactions,
             name: Routes.transactions,
             pageBuilder: (state) => const TransactionsPage(),
+          ),
+          _routeFade(
+            path: Routes.editProfile,
+            name: Routes.editProfile,
+            pageBuilder: (state) => EditProfilePage(
+              isEditProfile: (state.extra as bool?) ?? false,
+            ),
           ),
         ],
       )

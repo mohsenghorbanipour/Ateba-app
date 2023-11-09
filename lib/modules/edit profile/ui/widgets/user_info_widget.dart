@@ -4,18 +4,25 @@ import 'package:ateba_app/core/components/textfiled_component.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
+import 'package:ateba_app/modules/edit%20profile/bloc/edit_profile_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
-class UserInformationPage extends StatelessWidget {
-  const UserInformationPage({super.key});
+class UserInfoWidget extends StatelessWidget {
+  const UserInfoWidget({
+    this.isEditProfile = true,
+    super.key,
+  });
+
+  final bool isEditProfile;
 
   @override
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: ColorPalette.of(context).scaffoldBackground,
-        body: Column(
+        body: ListView(
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 32),
@@ -45,32 +52,45 @@ class UserInformationPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(right: 10),
                     child: Text(
-                      'complete_your_info'.tr(),
+                      isEditProfile
+                          ? 'edit_profile'.tr()
+                          : 'complete_your_info'.tr(),
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                   )
                 ],
               ),
             ),
-            Container(
-              width: 84,
-              height: 84,
-              margin: const EdgeInsets.only(top: 40),
-              decoration: BoxDecoration(
-                color: ColorPalette.of(context).background,
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                      offset: const Offset(0, 2),
-                      blurRadius: 4,
-                      color: ColorPalette.of(context).shadow)
-                ],
-              ),
-              child: Center(
-                child: SvgPicture.asset(
-                  Assets.galleryAddIc,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () {
+                    Provider.of<EditProfileBloc>(context, listen: false)
+                        .pickAndCompressImage(context);
+                  },
+                  child: Container(
+                    width: 84,
+                    height: 84,
+                    margin: const EdgeInsets.only(top: 40),
+                    decoration: BoxDecoration(
+                      color: ColorPalette.of(context).background,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                            offset: const Offset(0, 2),
+                            blurRadius: 4,
+                            color: ColorPalette.of(context).shadow)
+                      ],
+                    ),
+                    child: Center(
+                      child: SvgPicture.asset(
+                        Assets.galleryAddIc,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
@@ -100,7 +120,10 @@ class UserInformationPage extends StatelessWidget {
             ),
             ButtonComponent(
               onPressed: () {
-                context.goNamed(Routes.main);
+                if (isEditProfile) {
+                } else {
+                  context.goNamed(Routes.main);
+                }
               },
               margin: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(

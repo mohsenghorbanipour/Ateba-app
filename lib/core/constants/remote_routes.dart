@@ -5,6 +5,7 @@ class RemoteRoutes {
   static const String getMyProducts = 'my-products';
   static const String getProfile = 'profile';
   static const String getTransactions = 'transactions';
+  static const uploadImage = 'profile/upload';
   
 
   // Banners Api

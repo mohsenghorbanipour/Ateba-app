@@ -68,7 +68,8 @@ class LoginOtpPage extends StatelessWidget {
                       ButtonComponent(
                         onPressed: () {
                           context.goNamed(
-                            Routes.userInfo,
+                            Routes.editProfile,
+                            extra: false,
                           );
                         },
                         margin: const EdgeInsets.only(top: 16, bottom: 48),

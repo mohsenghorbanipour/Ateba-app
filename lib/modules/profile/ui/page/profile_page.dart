@@ -76,8 +76,22 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SvgPicture.asset(
-                  Assets.editWriteIc,
+                InkWell(
+                  onTap: () {
+                    context.goNamed(
+                      Routes.editProfile,
+                      extra: true,
+                    );
+                  },
+                  child: SizedBox(
+                    width: 32,
+                    height: 32,
+                    child: Center(
+                      child: SvgPicture.asset(
+                        Assets.editWriteIc,
+                      ),
+                    ),
+                  ),
                 )
               ],
             ),
