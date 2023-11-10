@@ -24,9 +24,6 @@ class CommentsWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
             child: TextFieldComponent(
-              controller:
-                  context.select<CourseDetailsBloc, TextEditingController>(
-                      (bloc) => bloc.commentController),
               labelText: 'your_comment'.tr(),
               name: 'comment',
               maxLines: 2,
@@ -195,6 +192,9 @@ class CommentsWidget extends StatelessWidget {
                             ),
                           );
                         },
+                        repliesLoading: bloc.repliesLoading &&
+                            bloc.commentIdForShowReplies ==
+                                bloc.comments[index].id,
                         selected: (bloc.selectedComment != null)
                             ? bloc.comments[index].id == bloc.selectedComment
                             : false,

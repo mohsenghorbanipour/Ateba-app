@@ -132,6 +132,7 @@ class CommentsWidget extends StatelessWidget {
                           bloc.selectedComment = bloc.comments[index].id;
                           bloc.selectedCommentIndex = index;
                         },
+                        repliesLoading: bloc.repliesLoading,
                         sendCommentFunction: () {
                           showModalBottomSheet(
                             context: context,

@@ -29,6 +29,7 @@ class CourseDetailsBloc extends ChangeNotifier {
   bool commentLoading = true;
   bool sendCommentLoading = false;
   bool sendReplyLoading = false;
+  bool repliesLoading = false;
   bool orderLoading = false;
 
   CourseDetails? courseDetails;
@@ -121,31 +122,43 @@ class CourseDetailsBloc extends ChangeNotifier {
     }
   }
 
-  Future<void> likeComment(String id, int index) async {
+  Future<void> likeComment(String id, int index,
+      {bool likeReply = false}) async {
     try {
       bool response = await CourseDetailsRemoteProvider.likeComment(
         id,
       );
       if (response) {
-        comments[index].is_liked = true;
-        comments[index].likes_count = (comments[index].likes_count ?? 0) + 1;
-        notifyListeners();
+        if (likeReply) {
+          replies[index].is_liked = true;
+          replies[index].likes_count = (replies[index].likes_count ?? 0) + 1;
+        } else {
+          comments[index].is_liked = true;
+          comments[index].likes_count = (comments[index].likes_count ?? 0) + 1;
+        }
       }
+      notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
     }
   }
 
-  Future<void> unlikeComment(String id, int index) async {
+  Future<void> unlikeComment(String id, int index,
+      {bool likeReply = false}) async {
     try {
       bool response = await CourseDetailsRemoteProvider.unlikeComment(
         id,
       );
       if (response) {
-        comments[index].is_liked = false;
-        comments[index].likes_count = (comments[index].likes_count ?? 0) - 1;
-        notifyListeners();
+        if (likeReply) {
+          replies[index].is_liked = false;
+          replies[index].likes_count = (replies[index].likes_count ?? 0) - 1;
+        } else {
+          comments[index].is_liked = false;
+          comments[index].likes_count = (comments[index].likes_count ?? 0) - 1;
+        }
       }
+      notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
     }
@@ -170,6 +183,7 @@ class CourseDetailsBloc extends ChangeNotifier {
 
   Future<void> loadReplies(String id) async {
     commentIdForShowReplies = id;
+    repliesLoading = true;
     notifyListeners();
     try {
       ApiResponseModel<List<Comment>>? response =
@@ -179,14 +193,16 @@ class CourseDetailsBloc extends ChangeNotifier {
       if (response != null) {
         replies = response.data ?? [];
       }
+      repliesLoading = false;
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
     }
   }
 
-  Future<void> sendReply(BuildContext context, String slug, String replyTo,
-      int commentIndex) async {
+  Future<void> sendReply(
+      BuildContext context, String slug, String replyTo, int commentIndex,
+      {bool replyToReply = false}) async {
     sendReplyLoading = true;
     notifyListeners();
     try {
@@ -197,14 +213,27 @@ class CourseDetailsBloc extends ChangeNotifier {
         replyTo: replyTo,
       );
       if (response != null && response.data != null) {
-        comments[commentIndex].replies_count =
-            (comments[commentIndex].replies_count ?? 0) + 1;
-        replayController.clear();
-        comment = '';
-        Navigator.of(context).pop();
-        await loadReplies(
-          replyTo,
-        );
+        if (replyToReply) {
+          replies.add(response.data ?? Comment());
+          commentController.clear();
+          comment = '';
+          int tempIndex =
+              comments.indexWhere((e) => e.id == commentIdForShowReplies);
+          if (tempIndex != -1) {
+            comments[tempIndex].replies_count =
+                (comments[tempIndex].replies_count ?? 0) + 1;
+          }
+          Navigator.of(context).pop();
+        } else {
+          comments[commentIndex].replies_count =
+              (comments[commentIndex].replies_count ?? 0) + 1;
+          commentController.clear();
+          comment = '';
+          Navigator.of(context).pop();
+          await loadReplies(
+            replyTo,
+          );
+        }
       }
       sendReplyLoading = false;
       notifyListeners();

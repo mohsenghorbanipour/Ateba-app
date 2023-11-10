@@ -55,7 +55,7 @@ class DownloadVideoBloc extends ChangeNotifier {
     downloading = true;
     notifyListeners();
     try {
-      Directory? tempDir = await getApplicationCacheDirectory();
+      Directory? tempDir = await getExternalStorageDirectory();
       String tempPath = tempDir?.path ?? '';
 
       String number = '';

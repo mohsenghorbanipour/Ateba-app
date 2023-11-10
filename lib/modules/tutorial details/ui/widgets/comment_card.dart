@@ -4,6 +4,8 @@ import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/date_helper.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
+import 'package:ateba_app/modules/course%20details/bloc/course_details_bloc.dart';
+import 'package:ateba_app/modules/package%20details/bloc/package_details_bloc.dart';
 import 'package:ateba_app/modules/tutorial%20details/bloc/tutorial_details_bloc.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/comment.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/modals/send_comment_modals.dart';
@@ -273,11 +275,130 @@ class CommentCard extends StatelessWidget {
                               ),
                             ),
                           );
-
                           break;
                         case BaseCommentPage.courseDetailsPage:
+                          showModalBottomSheet(
+                            context: context,
+                            barrierColor: Colors.transparent,
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                            useSafeArea: true,
+                            constraints: BoxConstraints(
+                              maxHeight: MediaQuery.of(context).size.height,
+                              minHeight: MediaQuery.of(context).size.height,
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0)),
+                            isScrollControlled: true,
+                            enableDrag: false,
+                            useRootNavigator: true,
+                            builder: (ctx) => ChangeNotifierProvider.value(
+                              value: Provider.of<CourseDetailsBloc>(context,
+                                  listen: false),
+                              builder: (context, child) => SendCommentModals(
+                                sendComment: () async {
+                                  await Provider.of<CourseDetailsBloc>(context,
+                                          listen: false)
+                                      .sendReply(
+                                    context,
+                                    Provider.of<CourseDetailsBloc>(context,
+                                                listen: false)
+                                            .courseDetails
+                                            ?.slug ??
+                                        '',
+                                    replies?[index].id ?? '',
+                                    index,
+                                    replyToReply: true,
+                                  );
+                                },
+                                onChange: (val) {
+                                  Provider.of<CourseDetailsBloc>(context,
+                                          listen: false)
+                                      .comment = val;
+                                },
+                                onWillPop: () async {
+                                  Provider.of<CourseDetailsBloc>(context,
+                                          listen: false)
+                                      .comment = '';
+                                  return true;
+                                },
+                                commentEmpty:
+                                    context.select<CourseDetailsBloc, bool>(
+                                        (bloc) => bloc.comment.isEmpty),
+                                controller: context.select<CourseDetailsBloc,
+                                    TextEditingController>(
+                                  (bloc) => bloc.commentController,
+                                ),
+                                loading:
+                                    context.select<CourseDetailsBloc, bool>(
+                                        (bloc) => bloc.sendReplyLoading),
+                                replayTo: replies?[index].user?.name ?? '',
+                                isReplay: true,
+                              ),
+                            ),
+                          );
                           break;
                         case BaseCommentPage.packageDetailsPage:
+                          showModalBottomSheet(
+                            context: context,
+                            barrierColor: Colors.transparent,
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                            useSafeArea: true,
+                            constraints: BoxConstraints(
+                              maxHeight: MediaQuery.of(context).size.height,
+                              minHeight: MediaQuery.of(context).size.height,
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0)),
+                            isScrollControlled: true,
+                            enableDrag: false,
+                            useRootNavigator: true,
+                            builder: (ctx) => ChangeNotifierProvider.value(
+                              value: Provider.of<PackageDetailsBloc>(context,
+                                  listen: false),
+                              builder: (context, child) => SendCommentModals(
+                                sendComment: () async {
+                                  await Provider.of<PackageDetailsBloc>(context,
+                                          listen: false)
+                                      .sendReply(
+                                    context,
+                                    Provider.of<PackageDetailsBloc>(context,
+                                                listen: false)
+                                            .packageDetails
+                                            ?.slug ??
+                                        '',
+                                    replies?[index].id ?? '',
+                                    index,
+                                    replyToReply: true,
+                                  );
+                                },
+                                onChange: (val) {
+                                  Provider.of<PackageDetailsBloc>(context,
+                                          listen: false)
+                                      .comment = val;
+                                },
+                                onWillPop: () async {
+                                  Provider.of<PackageDetailsBloc>(context,
+                                          listen: false)
+                                      .comment = '';
+                                  return true;
+                                },
+                                commentEmpty:
+                                    context.select<PackageDetailsBloc, bool>(
+                                        (bloc) => bloc.comment.isEmpty),
+                                controller: context.select<PackageDetailsBloc,
+                                    TextEditingController>(
+                                  (bloc) => bloc.commentController,
+                                ),
+                                loading:
+                                    context.select<PackageDetailsBloc, bool>(
+                                        (bloc) => bloc.sendReplyLoading),
+                                replayTo: replies?[index].user?.name ?? '',
+                                isReplay: true,
+                              ),
+                            ),
+                          );
                           break;
                       }
                     },
@@ -303,8 +424,42 @@ class CommentCard extends StatelessWidget {
                           }
                           break;
                         case BaseCommentPage.courseDetailsPage:
+                          if (replies?[index].is_liked ?? false) {
+                            Provider.of<CourseDetailsBloc>(context,
+                                    listen: false)
+                                .unlikeComment(
+                              replies?[index].id ?? '',
+                              index,
+                              likeReply: true,
+                            );
+                          } else {
+                            Provider.of<CourseDetailsBloc>(context,
+                                    listen: false)
+                                .likeComment(
+                              replies?[index].id ?? '',
+                              index,
+                              likeReply: true,
+                            );
+                          }
                           break;
                         case BaseCommentPage.packageDetailsPage:
+                          if (replies?[index].is_liked ?? false) {
+                            Provider.of<PackageDetailsBloc>(context,
+                                    listen: false)
+                                .unlikeComment(
+                              replies?[index].id ?? '',
+                              index,
+                              likeReply: true,
+                            );
+                          } else {
+                            Provider.of<PackageDetailsBloc>(context,
+                                    listen: false)
+                                .likeComment(
+                              replies?[index].id ?? '',
+                              index,
+                              likeReply: true,
+                            );
+                          }
                           break;
                       }
                     },

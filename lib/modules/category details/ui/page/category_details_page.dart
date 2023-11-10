@@ -29,6 +29,7 @@ class CategoryDetailsPage extends StatelessWidget {
         builder: (context, child) => Scaffold(
           backgroundColor: ColorPalette.of(context).scaffoldBackground,
           body: ListView(
+            physics: const BouncingScrollPhysics(),
             children: [
               Padding(
                 padding: const EdgeInsets.only(top: 24),
