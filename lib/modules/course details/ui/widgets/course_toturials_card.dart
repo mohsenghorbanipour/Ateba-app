@@ -29,7 +29,7 @@ class CourseToturialsCard extends StatelessWidget {
           );
         },
         child: Container(
-          height: 38,
+          height: 40,
           padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
               color: ColorPalette.of(context).background,

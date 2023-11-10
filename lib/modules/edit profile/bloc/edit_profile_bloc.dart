@@ -26,21 +26,23 @@ class EditProfileBloc extends ChangeNotifier {
     try {
       XFile? pickedFile = await _picker.pickImage(
         source: ImageSource.gallery,
-        maxHeight: 200,
-        maxWidth: 200,
       );
+
       if (pickedFile != null) {
         final croppedFile = await ImageCropper().cropImage(
           sourcePath: pickedFile.path,
           cropStyle: CropStyle.circle,
+          maxHeight: 400,
+          maxWidth: 400,
           uiSettings: [
             AndroidUiSettings(
-                toolbarTitle: 'crop_image'.tr(),
-                toolbarColor: ColorPalette.light.primary,
-                toolbarWidgetColor: Colors.white,
-                initAspectRatio: CropAspectRatioPreset.square,
-                lockAspectRatio: false,
-                hideBottomControls: true),
+              toolbarTitle: 'crop_image'.tr(),
+              toolbarColor: ColorPalette.light.primary,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.square,
+              lockAspectRatio: false,
+              hideBottomControls: true,
+            ),
             IOSUiSettings(
               title: 'crop_image'.tr(),
               hidesNavigationBar: true,
@@ -49,12 +51,12 @@ class EditProfileBloc extends ChangeNotifier {
               context: context,
               presentStyle: CropperPresentStyle.page,
               boundary: const CroppieBoundary(
-                width: 300,
-                height: 300,
+                width: 400,
+                height: 400,
               ),
               viewPort: const CroppieViewPort(
-                width: 300,
-                height: 300,
+                width: 400,
+                height: 400,
               ),
               enableExif: true,
               enableZoom: true,
@@ -62,6 +64,7 @@ class EditProfileBloc extends ChangeNotifier {
             ),
           ],
         );
+
         if (croppedFile != null) {
           _pickedImage = await compressAndGetFile(
             File(croppedFile.path),
@@ -70,7 +73,7 @@ class EditProfileBloc extends ChangeNotifier {
           FormData formData = FormData.fromMap(
             {
               'picture': await MultipartFile.fromFile(
-                _pickedImage?.path ?? '',
+                pickedFile.path,
               ),
             },
           );

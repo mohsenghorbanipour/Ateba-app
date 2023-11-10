@@ -57,8 +57,8 @@ class CommentCard extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        width: 36,
-                        height: 36,
+                        width: 40,
+                        height: 40,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: ColorPalette.of(context).error,
@@ -78,6 +78,7 @@ class CommentCard extends StatelessWidget {
                               children: [
                                 Text(
                                   comment.user?.name ?? '',
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 if (comment.is_pined ?? false)
                                   Padding(
@@ -92,10 +93,7 @@ class CommentCard extends StatelessWidget {
                               DateHelper.getRealDate(
                                 comment.created_at ?? '',
                               ),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelMedium
-                                  ?.copyWith(fontSize: 10),
+                              style: Theme.of(context).textTheme.labelMedium,
                             )
                           ],
                         ),
@@ -114,7 +112,8 @@ class CommentCard extends StatelessWidget {
                                 child: Text(
                                   TextInputFormatters.toPersianNumber(
                                       comment.likes_count.toString()),
-                                  style: Theme.of(context).textTheme.labelSmall,
+                                  style:
+                                      Theme.of(context).textTheme.labelMedium,
                                 ),
                               ),
                             SvgPicture.asset(
@@ -140,7 +139,7 @@ class CommentCard extends StatelessWidget {
                             ),
                             Text(
                               'your_answer'.tr(),
-                              style: Theme.of(context).textTheme.labelSmall,
+                              style: Theme.of(context).textTheme.labelMedium,
                             )
                           ],
                         ),
@@ -153,6 +152,7 @@ class CommentCard extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
                   comment.content ?? '',
+                  style: Theme.of(context).textTheme.labelLarge,
                 ),
               ),
               if ((comment.replies_count ?? 0) > 0)
@@ -178,19 +178,16 @@ class CommentCard extends StatelessWidget {
                                         commentIdForShowReplies == comment.id)
                                     ? '${'hide_answers'.tr()} (${TextInputFormatters.toPersianNumber(comment.replies_count.toString())})'
                                     : '${'show_comments'.tr()} (${TextInputFormatters.toPersianNumber(comment.replies_count.toString())})',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelSmall
-                                    ?.copyWith(fontSize: 8),
+                                style: Theme.of(context).textTheme.labelSmall,
                               ),
                               if (repliesLoading)
                                 Padding(
                                   padding: const EdgeInsets.only(right: 6),
                                   child: SizedBox(
-                                    width: 8,
-                                    height: 8,
+                                    width: 10,
+                                    height: 10,
                                     child: CircularProgressIndicator(
-                                      strokeWidth: 1,
+                                      strokeWidth: 1.3,
                                       color: ColorPalette.of(context).primary,
                                     ),
                                   ),
@@ -209,6 +206,7 @@ class CommentCard extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: replies?.length,
                   shrinkWrap: true,
+                  padding: const EdgeInsets.only(right: 12),
                   itemBuilder: (context, index) => ReplyCard(
                     reply: replies?[index] ?? Comment(),
                     replyTap: () {

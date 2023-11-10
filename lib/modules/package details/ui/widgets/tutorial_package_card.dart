@@ -17,6 +17,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:styled_text/tags/styled_text_tag.dart';
+import 'package:styled_text/widgets/styled_text.dart';
 
 class TutorialPackageCard extends StatefulWidget {
   const TutorialPackageCard({
@@ -143,12 +145,7 @@ class _TutorialPackageCardState extends State<TutorialPackageCard> {
                                             .duration ??
                                         '',
                                   ),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelSmall
-                                      ?.copyWith(
-                                        fontSize: 8,
-                                      ),
+                                  style: Theme.of(context).textTheme.labelSmall,
                                 ),
                               ),
                               const SizedBox(
@@ -164,12 +161,7 @@ class _TutorialPackageCardState extends State<TutorialPackageCard> {
                                   TextInputFormatters.toPersianNumber(
                                       (widget.tutorialPackage.views_count ?? 0)
                                           .toString()),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelSmall
-                                      ?.copyWith(
-                                        fontSize: 8,
-                                      ),
+                                  style: Theme.of(context).textTheme.labelSmall,
                                 ),
                               ),
                             ],
@@ -266,10 +258,21 @@ class _TutorialPackageCardState extends State<TutorialPackageCard> {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
-              child: Text(
-                widget.tutorialPackage.description ?? '',
+              child: StyledText(
+                text: widget.tutorialPackage.description ?? '',
+                tags: {
+                  'p': StyledTextTag(
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      color: ColorPalette.of(context).textPrimary,
+                      fontSize: 14,
+                    ),
+                  ),
+                },
                 maxLines: showMore ? 1000 : 3,
                 overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.justify,
+                style: Theme.of(context).textTheme.labelLarge,
               ),
             ),
             Padding(

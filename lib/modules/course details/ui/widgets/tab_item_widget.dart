@@ -22,7 +22,7 @@ class TabItemWidget extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: Theme.of(context).textTheme.labelMedium,
+                style: Theme.of(context).textTheme.labelLarge,
               ),
               if (selected)
                 Container(

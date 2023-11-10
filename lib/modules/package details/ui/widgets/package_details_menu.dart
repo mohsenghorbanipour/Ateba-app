@@ -147,7 +147,7 @@ class PackageDetailsMenu extends StatelessWidget {
                               padding: const EdgeInsets.only(right: 4),
                               child: Text(
                                 'add_to_gallery_offline'.tr(),
-                                style: Theme.of(context).textTheme.labelSmall,
+                                style: Theme.of(context).textTheme.labelMedium,
                               ),
                             )
                           ],
@@ -192,7 +192,7 @@ class PackageDetailsMenu extends StatelessWidget {
                                 (tutorialPackage.is_bookmarked ?? false)
                                     ? 'delete_from_bookmarking'.tr()
                                     : 'bookmarking'.tr(),
-                                style: Theme.of(context).textTheme.labelSmall,
+                                style: Theme.of(context).textTheme.labelMedium,
                               ),
                             )
                           ],

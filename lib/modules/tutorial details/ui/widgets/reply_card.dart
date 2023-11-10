@@ -32,8 +32,8 @@ class ReplyCard extends StatelessWidget {
                 Row(
                   children: [
                     Container(
-                      width: 28,
-                      height: 28,
+                      width: 32,
+                      height: 32,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: ColorPalette.of(context).primary,
@@ -56,7 +56,7 @@ class ReplyCard extends StatelessWidget {
                             children: [
                               Text(
                                 reply.user?.name ?? '',
-                                style: Theme.of(context).textTheme.labelMedium,
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
                               if (reply.is_pined ?? false)
                                 Padding(

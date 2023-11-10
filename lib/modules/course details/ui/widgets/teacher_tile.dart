@@ -38,7 +38,7 @@ class TeacherTile extends StatelessWidget {
                   child: Text(
                     '${teacher.name ?? ''} - ${teacher.expertise ?? ''}',
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
                   ),
@@ -51,7 +51,7 @@ class TeacherTile extends StatelessWidget {
                   child: Text(
                     teacher.description ?? '',
                     style: Theme.of(context).textTheme.labelMedium,
-                    maxLines: 3,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

@@ -122,45 +122,34 @@ class TutorialCard extends StatelessWidget {
                       ),
                     ),
                     Positioned(
+                      bottom: 8,
                       left: 0,
-                      right: 16,
-                      bottom: 6,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ClipRect(
-                            child: BackdropFilter(
-                              filter:
-                                  ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
-                              child: Container(
-                                width: 75,
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 4, horizontal: 6),
-                                decoration: BoxDecoration(
-                                  color: ColorPalette.of(context)
-                                      .background
-                                      .withOpacity(0.6),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        tutorial.teacher ?? '',
-                                        overflow: TextOverflow.ellipsis,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelSmall
-                                            ?.copyWith(
-                                              fontSize: 8,
-                                            ),
-                                      ),
+                      child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: ClipRect(
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 4, horizontal: 6),
+                              decoration: BoxDecoration(
+                                color: ColorPalette.of(context)
+                                    .background
+                                    .withOpacity(0.6),
+                              ),
+                              child: Text(
+                                tutorial.teacher ?? '',
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelSmall
+                                    ?.copyWith(
+                                      fontSize: 8,
                                     ),
-                                  ],
-                                ),
                               ),
                             ),
                           ),
-                        ],
+                        ),
                       ),
                     )
                   ],

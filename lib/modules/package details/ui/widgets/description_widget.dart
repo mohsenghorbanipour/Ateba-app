@@ -46,9 +46,7 @@ class DescriptionWidget extends StatelessWidget {
                 Expanded(
                   child: Text(
                     'description_info'.tr(),
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
+                    style: Theme.of(context).textTheme.titleSmall,
                   ),
                 ),
               ],
@@ -90,6 +88,7 @@ class DescriptionWidget extends StatelessWidget {
                                 ) +
                                 'viewed'.tr(),
                           ),
+                          style: Theme.of(context).textTheme.labelLarge,
                         )
                       ],
                     ),
@@ -130,6 +129,7 @@ class DescriptionWidget extends StatelessWidget {
                                 ) +
                                 'educational_titles'.tr(),
                           ),
+                          style: Theme.of(context).textTheme.labelLarge,
                         )
                       ],
                     ),

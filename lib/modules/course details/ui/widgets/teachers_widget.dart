@@ -17,6 +17,7 @@ class TeachersWidget extends StatelessWidget {
             padding: const EdgeInsets.only(top: 32, left: 16, right: 16),
             child: Text(
               'introduction_of_professors'.tr(),
+              style: Theme.of(context).textTheme.titleSmall,
             ),
           ),
           Selector<CourseDetailsBloc, List<Teacher>>(

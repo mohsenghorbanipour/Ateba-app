@@ -25,6 +25,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:provider/provider.dart';
+import 'package:styled_text/styled_text.dart';
 
 class TutorialDetailsPage extends StatelessWidget {
   const TutorialDetailsPage({
@@ -433,7 +434,6 @@ class TutorialDetailsPage extends StatelessWidget {
                                         .textTheme
                                         .labelMedium
                                         ?.copyWith(
-                                          fontSize: 10,
                                           color: ColorPalette.of(context)
                                               .textPrimary
                                               .withOpacity(0.88),
@@ -461,7 +461,6 @@ class TutorialDetailsPage extends StatelessWidget {
                                         .textTheme
                                         .labelMedium
                                         ?.copyWith(
-                                          fontSize: 10,
                                           color: ColorPalette.of(context)
                                               .textPrimary
                                               .withOpacity(0.88),
@@ -489,7 +488,6 @@ class TutorialDetailsPage extends StatelessWidget {
                                         .textTheme
                                         .labelMedium
                                         ?.copyWith(
-                                          fontSize: 10,
                                           color: ColorPalette.of(context)
                                               .textPrimary
                                               .withOpacity(0.88),
@@ -500,19 +498,24 @@ class TutorialDetailsPage extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 24, right: 16),
-                            child: Text(
-                              'summary_of_tutorial'.tr(),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 6, 16, 26),
-                            child: Text(
-                              context.select<TutorialDetaialsBloc, String>(
-                                  (bloc) =>
-                                      bloc.tutorialDetaials?.description ?? ''),
+                            padding: const EdgeInsets.fromLTRB(16, 12, 16, 26),
+                            child: StyledText(
+                              text:
+                                  context.select<TutorialDetaialsBloc, String>(
+                                      (bloc) =>
+                                          bloc.tutorialDetaials?.description ??
+                                          ''),
+                              tags: {
+                                'p': StyledTextTag(
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    color: ColorPalette.of(context).textPrimary,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              },
                               textAlign: TextAlign.justify,
-                              style: Theme.of(context).textTheme.labelMedium,
+                              style: Theme.of(context).textTheme.labelLarge,
                             ),
                           ),
                           Selector<TutorialDetaialsBloc, List<Attachment>>(

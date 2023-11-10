@@ -13,7 +13,7 @@ class LatestTutorialsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         width: double.infinity,
-        height: 221,
+        height: 230,
         margin: const EdgeInsets.only(top: 24),
         padding: const EdgeInsets.only(top: 8, bottom: 24),
         color: ColorPalette.of(context).midGrey,

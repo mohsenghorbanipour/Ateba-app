@@ -154,7 +154,9 @@ class CourseDetailsPage extends StatelessWidget {
                         flexibleSpace: FlexibleSpaceBar(
                           background: Padding(
                             padding: EdgeInsets.only(
-                                top: AppBar().preferredSize.height, bottom: 16),
+                              top: AppBar().preferredSize.height - 40,
+                              bottom: 16,
+                            ),
                             child: Row(
                               children: [
                                 Expanded(
@@ -214,7 +216,7 @@ class CourseDetailsPage extends StatelessWidget {
                           preferredSize: const Size(double.infinity, 38),
                           child: Container(
                             width: double.infinity,
-                            height: 38,
+                            height: 40,
                             color: ColorPalette.of(context).darkSilver,
                             child: Row(
                               children: [
