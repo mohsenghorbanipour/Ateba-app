@@ -40,19 +40,57 @@ class VideoPlayerBloc extends ChangeNotifier {
   VideoPlayerController? get controller => _controller;
 
   bool initialized = false;
+  bool isPlaying = false;
+
+  int? onUpdateControllerTime;
 
   Future<void> initialVideoPlayer(String url,
       {bool playFromOfflineGallery = false}) async {
     try {
       if (playFromOfflineGallery) {
       } else {
-        _controller = VideoPlayerController.networkUrl(
+        final controller = VideoPlayerController.networkUrl(
           Uri.parse(
               'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'),
-        )..initialize();
+        );
+        _controller = controller;
+        notifyListeners();
+        _controller?.initialize().then(
+          (_) {
+            _controller?.addListener(() {
+              onControllerUpdata();
+            });
+            _controller?.play();
+            notifyListeners();
+          },
+        );
       }
       initialized = true;
       _controller?.play();
+      notifyListeners();
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  void onControllerUpdata() {
+    try {
+      onUpdateControllerTime = 0;
+      final now = DateTime.now().millisecondsSinceEpoch;
+      if(onUpdateControllerTime! > now) {
+        return;
+      }
+      onUpdateControllerTime = now+500;
+      final controller = _controller;
+      if (controller == null) {
+        return;
+      }
+      if (!controller.value.isInitialized) {
+        LoggerHelper.logger.i('controller can not be initialized');
+        return;
+      }
+      final playing = controller.value.isPlaying;
+      isPlaying = playing;
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
