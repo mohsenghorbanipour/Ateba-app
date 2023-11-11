@@ -25,7 +25,7 @@ class OfflineGalleryWidget extends StatelessWidget {
               isGalleryOffline: true,
               bookmark: Bookmark(
                 link_to: LinkTo(type: 'tutorial', slug: videos[index].slug),
-                thumbnail: videos[index].thumbnail_url,
+                thumbnail_url: videos[index].thumbnail_url,
                 title: videos[index].title,
                 video: videos[index].url,
                 duration: videos[index].duration,

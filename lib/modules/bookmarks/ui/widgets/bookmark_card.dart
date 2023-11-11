@@ -55,7 +55,7 @@ class BookmarkCard extends StatelessWidget {
                       child: CachedNetworkImage(
                         width: 56,
                         height: 56,
-                        imageUrl: bookmark.thumbnail ?? '',
+                        imageUrl: bookmark.thumbnail_url ?? '',
                         fit: BoxFit.cover,
                         placeholder: (_, __) => const ShimmerContainer(
                           width: 56,

@@ -9,7 +9,7 @@ part of 'bookmark.dart';
 Bookmark _$BookmarkFromJson(Map<String, dynamic> json) => Bookmark(
       title: json['title'] as String?,
       subtitle: json['subtitle'] as String?,
-      thumbnail: json['thumbnail'] as String?,
+      thumbnail_url: json['thumbnail'] as String?,
       duration: json['duration'] as String?,
       updated_at: json['updated_at'] as String?,
       video: json['video'] as String?,
@@ -30,7 +30,7 @@ Map<String, dynamic> _$BookmarkToJson(Bookmark instance) {
 
   writeNotNull('title', instance.title);
   writeNotNull('subtitle', instance.subtitle);
-  writeNotNull('thumbnail', instance.thumbnail);
+  writeNotNull('thumbnail', instance.thumbnail_url);
   writeNotNull('duration', instance.duration);
   writeNotNull('updated_at', instance.updated_at);
   writeNotNull('video', instance.video);

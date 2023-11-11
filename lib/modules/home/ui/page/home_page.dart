@@ -1,5 +1,7 @@
 import 'package:ateba_app/core/components/shimmer_components.dart';
 import 'package:ateba_app/core/router/routes.dart';
+import 'package:ateba_app/core/theme/style/color_palatte.dart';
+import 'package:ateba_app/modules/categories/bloc/categories_bloc.dart';
 import 'package:ateba_app/modules/categories/data/models/category.dart';
 import 'package:ateba_app/modules/home/bloc/home_bloc.dart';
 import 'package:ateba_app/modules/home/data/models/course.dart';
@@ -10,14 +12,19 @@ import 'package:ateba_app/modules/home/ui/widgets/latest_tutorials_widget.dart';
 import 'package:ateba_app/modules/home/ui/widgets/course_shimmer_card.dart';
 import 'package:ateba_app/modules/home/ui/widgets/package_card.dart';
 import 'package:ateba_app/modules/home/ui/widgets/package_shimmer_card.dart';
+import 'package:ateba_app/modules/home/ui/widgets/view_more_widget.dart';
+import 'package:ateba_app/modules/main/bloc/main_page_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:super_tooltip/super_tooltip.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+
+  final _tooltipController = SuperTooltipController();
 
   @override
   Widget build(BuildContext context) => CustomScrollView(
@@ -44,14 +51,31 @@ class HomePage extends StatelessWidget {
                       physics: const BouncingScrollPhysics(),
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       scrollDirection: Axis.horizontal,
-                      itemCount: courses.length,
+                      itemCount: courses.length + 1,
                       shrinkWrap: true,
                       separatorBuilder: (_, __) => const SizedBox(
                         width: 12,
                       ),
-                      itemBuilder: (context, index) => CourseCard(
-                        course: courses[index],
-                      ),
+                      itemBuilder: (context, index) => index == courses.length
+                          ? ViewMoreWidget(
+                              title: 'all_courses'.tr(),
+                              onTap: () {
+                                MainPageBloc().changePage(2);
+                                Provider.of<CategoriesBloc>(context,
+                                        listen: false)
+                                    .tabState = TabState.clinicalPackages;
+                                Provider.of<CategoriesBloc>(context,
+                                            listen: false)
+                                        .categoriesDataType =
+                                    CategoriesDataType.medicalCourses;
+                                Provider.of<CategoriesBloc>(context,
+                                        listen: false)
+                                    .loadCategoryData();
+                              },
+                            )
+                          : CourseCard(
+                              course: courses[index],
+                            ),
                     ),
                   ),
                 )
@@ -157,9 +181,28 @@ class HomePage extends StatelessWidget {
                       width: 4,
                     ),
                     InkWell(
-                      onTap: () {},
-                      child: const Icon(
-                        Icons.info_outline_rounded,
+                      onTap: () {
+                        _tooltipController.showTooltip();
+                      },
+                      child: SuperTooltip(
+                        controller: _tooltipController,
+                        hasShadow: true,
+                        shadowBlurRadius: 10,
+                        shadowSpreadRadius: 10,
+                        shadowColor:
+                            ColorPalette.of(context).black.withOpacity(0.05),
+                        barrierColor: Colors.transparent,
+                        borderWidth: 0.5,
+                        arrowLength: 10,
+                        borderColor: ColorPalette.of(context).border,
+                        content: Text(
+                          'packages_tooltip'.tr(),
+                          style: Theme.of(context).textTheme.labelMedium,
+                        ),
+                        elevation: 1,
+                        child: const Icon(
+                          Icons.info_outline_rounded,
+                        ),
                       ),
                     )
                   ],
@@ -175,15 +218,32 @@ class HomePage extends StatelessWidget {
                     child: ListView.separated(
                       physics: const BouncingScrollPhysics(),
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      itemCount: packages.length,
+                      itemCount: packages.length + 1,
                       scrollDirection: Axis.horizontal,
                       separatorBuilder: (_, __) => const SizedBox(
                         width: 12,
                       ),
                       shrinkWrap: true,
-                      itemBuilder: (_, index) => PackageCard(
-                        package: packages[index],
-                      ),
+                      itemBuilder: (_, index) => index == packages.length
+                          ? ViewMoreWidget(
+                              title: 'all_packages'.tr(),
+                              onTap: () {
+                                MainPageBloc().changePage(2);
+                                Provider.of<CategoriesBloc>(context,
+                                        listen: false)
+                                    .tabState = TabState.clinicalPackages;
+                                Provider.of<CategoriesBloc>(context,
+                                            listen: false)
+                                        .categoriesDataType =
+                                    CategoriesDataType.educationalPackages;
+                                Provider.of<CategoriesBloc>(context,
+                                        listen: false)
+                                    .loadCategoryData();
+                              },
+                            )
+                          : PackageCard(
+                              package: packages[index],
+                            ),
                     ),
                   ),
                 )

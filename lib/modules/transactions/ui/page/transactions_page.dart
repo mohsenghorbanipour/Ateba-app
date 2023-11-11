@@ -1,3 +1,4 @@
+import 'package:ateba_app/core/components/shimmer_components.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/modules/transactions/bloc/transactions_bloc.dart';
 import 'package:ateba_app/modules/transactions/data/models/transaction.dart';
@@ -71,7 +72,10 @@ class TransactionsPage extends StatelessWidget {
                 ),
                 child: context
                         .select<TransactionsBloc, bool>((bloc) => bloc.loading)
-                    ? Container()
+                    ? const ShimmerContainer(
+                        width: double.infinity,
+                        height: 250,
+                      )
                     : Selector<TransactionsBloc, List<Transaction>>(
                         selector: (context, bloc) => bloc.transactions,
                         builder: (context, transactions, child) =>

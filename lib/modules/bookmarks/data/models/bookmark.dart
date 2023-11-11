@@ -10,7 +10,7 @@ class Bookmark implements BaseModel<Bookmark>{
   Bookmark({
     this.title,
     this.subtitle,
-    this.thumbnail,
+    this.thumbnail_url,
     this.duration,
     this.updated_at,
     this.video,
@@ -20,7 +20,7 @@ class Bookmark implements BaseModel<Bookmark>{
 
   final String? title;
   final String? subtitle;
-  final String? thumbnail;
+  final String? thumbnail_url;
   final String? duration;
   final String? updated_at;
   final String? video;

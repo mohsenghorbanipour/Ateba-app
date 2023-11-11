@@ -5,7 +5,7 @@ import 'package:ateba_app/modules/profile/ui/page/profile_page.dart';
 import 'package:flutter/material.dart';
 
 final List<Widget> pages = <Widget>[
-  const HomePage(),
+  HomePage(),
   const Text(
     'Search Page',
   ),
