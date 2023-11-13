@@ -6,12 +6,24 @@ import 'package:dio/dio.dart';
 class AuthRemoteProvider {
   static final NetworkHelper _networkHelper = NetworkHelper();
 
+  static Future<bool> sendCode() async {
+    try {
+      Response response = await _networkHelper.dio.post(
+        RemoteRoutes.sendCode,
+      );
+      return false;
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      return false;
+    }
+  }
+
   static Future<String?> getUserSubscription() async {
     try {
       Response response = await _networkHelper.dio.get(
         RemoteRoutes.getUserSubscription,
       );
-      if(response.statusCode == 200) {
+      if (response.statusCode == 200) {
         return response.data['expires_at'];
       }
       return null;

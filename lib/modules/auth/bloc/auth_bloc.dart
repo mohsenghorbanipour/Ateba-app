@@ -10,6 +10,16 @@ class AuthBloc extends ChangeNotifier {
 
   Jalali? subscriptionExpireDate;
 
+  Future<void> sendCode() async {
+    try {
+      AuthRemoteProvider.sendCode(
+        
+      );
+    } catch(e, s){
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
   Future<void> getUserSubscription() async {
     try {
       String? expireData = await AuthRemoteProvider.getUserSubscription();

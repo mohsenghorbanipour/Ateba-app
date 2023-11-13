@@ -3,6 +3,8 @@ class RemoteRoutes {
   // Auth Api
   static const String getUserSubscription = 'subscription';
   static const String getMyProducts = 'my-products';
+  static const String sendCode = 'login';
+  static const String verifyCode = 'login/verify';
   
 
   // Banners Api
