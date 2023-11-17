@@ -1,3 +1,4 @@
+import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/modules/categories/bloc/categories_bloc.dart';
 import 'package:ateba_app/modules/home/data/models/course.dart';
@@ -55,35 +56,42 @@ class CategoryDataWidget extends StatelessWidget {
           isLoading:
               context.select<CategoriesBloc, bool>((bloc) => bloc.loadingMore),
           child: Expanded(
-            child: Consumer<CategoriesBloc>(
-              builder: (context, bloc, child) =>
-                  bloc.categoriesDataType == CategoriesDataType.medicalCourses
-                      ? ListView.separated(
-                          physics: const BouncingScrollPhysics(),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 24),
-                          itemCount: bloc.courses.length,
-                          separatorBuilder: (_, __) => const SizedBox(
-                            height: 16,
+            child: RefreshIndicator(
+              color: ColorPalette.of(context).primary,
+              onRefresh: () async {
+                Provider.of<CategoriesBloc>(context, listen: false)
+                    .loadCategoryData();
+              },
+              child: Consumer<CategoriesBloc>(
+                builder: (context, bloc, child) =>
+                    bloc.categoriesDataType == CategoriesDataType.medicalCourses
+                        ? ListView.separated(
+                            physics: const BouncingScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 24),
+                            itemCount: bloc.courses.length,
+                            separatorBuilder: (_, __) => const SizedBox(
+                              height: 16,
+                            ),
+                            itemBuilder: (context, index) => CourseCard(
+                              course: bloc.courses[index],
+                              width: double.infinity,
+                            ),
+                          )
+                        : ListView.separated(
+                            physics: const BouncingScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 24),
+                            itemCount: bloc.packages.length,
+                            separatorBuilder: (_, __) => const SizedBox(
+                              height: 16,
+                            ),
+                            itemBuilder: (context, index) => PackageCard(
+                              package: bloc.packages[index],
+                              width: double.infinity,
+                            ),
                           ),
-                          itemBuilder: (context, index) => CourseCard(
-                            course: bloc.courses[index],
-                            width: double.infinity,
-                          ),
-                        )
-                      : ListView.separated(
-                          physics: const BouncingScrollPhysics(),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 24),
-                          itemCount: bloc.packages.length,
-                          separatorBuilder: (_, __) => const SizedBox(
-                            height: 16,
-                          ),
-                          itemBuilder: (context, index) => PackageCard(
-                            package: bloc.packages[index],
-                            width: double.infinity,
-                          ),
-                        ),
+              ),
             ),
           ),
         );

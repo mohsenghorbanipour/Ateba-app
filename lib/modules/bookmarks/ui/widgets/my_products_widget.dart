@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/modules/bookmarks/bloc/bookmarks_bloc.dart';
@@ -9,7 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MyProductsWidget extends StatelessWidget {
-  const MyProductsWidget({super.key});
+  MyProductsWidget({super.key});
+
+  int lastSelectedIndex = 0;
 
   @override
   Widget build(BuildContext context) => Expanded(
@@ -32,11 +36,13 @@ class MyProductsWidget extends StatelessWidget {
                             .loadMyProduct(
                           type: 'course',
                         );
+                        lastSelectedIndex = 0;
                       } else {
                         Provider.of<BookmarksBloc>(context, listen: false)
                             .loadMyProduct(
                           type: 'package',
                         );
+                        lastSelectedIndex = 1;
                       }
                     },
                     labelColor: ColorPalette.of(context).textPrimary,
@@ -94,18 +100,27 @@ class MyProductsWidget extends StatelessWidget {
                 )
               else
                 Expanded(
-                  child: Selector<BookmarksBloc, List<Bookmark>>(
-                    selector: (context, bloc) => bloc.dataList,
-                    builder: (context, dataList, child) => ListView.separated(
-                      physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
-                      itemCount: dataList.length,
-                      separatorBuilder: (_, __) => const SizedBox(
-                        height: 12,
-                      ),
-                      itemBuilder: (_, index) => BookmarkCard(
-                        index: index,
-                        bookmark: dataList[index],
+                  child: RefreshIndicator(
+                    color: ColorPalette.of(context).primary,
+                    onRefresh: () async {
+                      Provider.of<BookmarksBloc>(context, listen: false)
+                          .loadMyProduct(
+                        type: lastSelectedIndex == 0 ? 'course' : 'package',
+                      );
+                    },
+                    child: Selector<BookmarksBloc, List<Bookmark>>(
+                      selector: (context, bloc) => bloc.dataList,
+                      builder: (context, dataList, child) => ListView.separated(
+                        physics: const BouncingScrollPhysics(),
+                        padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
+                        itemCount: dataList.length,
+                        separatorBuilder: (_, __) => const SizedBox(
+                          height: 12,
+                        ),
+                        itemBuilder: (_, index) => BookmarkCard(
+                          index: index,
+                          bookmark: dataList[index],
+                        ),
                       ),
                     ),
                   ),

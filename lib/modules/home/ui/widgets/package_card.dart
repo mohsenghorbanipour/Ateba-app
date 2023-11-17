@@ -112,19 +112,11 @@ class PackageCard extends StatelessWidget {
                   runAlignment: WrapAlignment.start,
                   alignment: WrapAlignment.start,
                   children: List.generate(
-                    (package.tutorials_sample?.tutorials_titles?.length ?? 0),
-                    (index) => (index ==
-                                ((package.tutorials_sample?.tutorials_titles
-                                            ?.length ??
-                                        0) -
-                                    1) &&
-                            (package.tutorials_sample?.tutorials_titles
-                                        ?.length ??
-                                    0) >
-                                4)
+                    4,
+                    (index) => (index == 3)
                         ? TechingNameChip(
                             teachingName:
-                                '${TextInputFormatters.toPersianNumber(((package.tutorials_sample?.tutorials_count ?? 0) - ((package.tutorials_sample?.tutorials_titles?.length ?? 0) - 1)).toString())}+',
+                                '${TextInputFormatters.toPersianNumber(((package.tutorials_sample?.tutorials_count ?? 0) - ((package.tutorials_sample?.tutorials_titles?.length ?? 0) - 3)).toString())}+',
                             isCircle: true,
                             isPackages: true,
                           )

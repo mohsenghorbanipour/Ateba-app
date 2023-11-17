@@ -27,20 +27,26 @@ class BookmarksWidget extends StatelessWidget {
               )
             else
               Expanded(
-                child: Selector<BookmarksBloc, List<Bookmark>>(
-                  selector: (context, bloc) => bloc.dataList,
-                  shouldRebuild: (_, __) => true,
-                  builder: (context, dataList, child) => ListView.separated(
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: dataList.length,
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                    itemBuilder: (context, index) => BookmarkCard(
-                      index: index,
-                      bookmark: dataList[index],
-                      isBookmark: true,
-                    ),
-                    separatorBuilder: (_, __) => const SizedBox(
-                      height: 12,
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    Provider.of<BookmarksBloc>(context, listen: false)
+                        .loadBookamrks();
+                  },
+                  child: Selector<BookmarksBloc, List<Bookmark>>(
+                    selector: (context, bloc) => bloc.dataList,
+                    shouldRebuild: (_, __) => true,
+                    builder: (context, dataList, child) => ListView.separated(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: dataList.length,
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                      itemBuilder: (context, index) => BookmarkCard(
+                        index: index,
+                        bookmark: dataList[index],
+                        isBookmark: true,
+                      ),
+                      separatorBuilder: (_, __) => const SizedBox(
+                        height: 12,
+                      ),
                     ),
                   ),
                 ),

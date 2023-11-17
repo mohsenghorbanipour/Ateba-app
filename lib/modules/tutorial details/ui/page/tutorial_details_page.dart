@@ -198,7 +198,7 @@ class TutorialDetailsPage extends StatelessWidget {
                                             padding:
                                                 const EdgeInsets.only(right: 4),
                                             child: Text(
-                                              'add_to_list'.tr(),
+                                              'bookmarking'.tr(),
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .labelMedium,
@@ -524,8 +524,6 @@ class TutorialDetailsPage extends StatelessWidget {
                             builder: (context, attachments, child) =>
                                 ListView.separated(
                               physics: const NeverScrollableScrollPhysics(),
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
                               itemCount: attachments.length,
                               shrinkWrap: true,
                               itemBuilder: (context, index) => AttachmentTile(

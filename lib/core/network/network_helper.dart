@@ -1,13 +1,15 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:ateba_app/core/constants/constants.dart';
 import 'package:ateba_app/core/network/dio_connectivity_request_retrier.dart';
 import 'package:ateba_app/core/network/retry_on_connection_change_inceptor.dart';
 import 'package:ateba_app/core/utils/app_directory.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
+import 'package:ateba_app/modules/auth/bloc/auth_bloc.dart';
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
-import 'package:cookie_jar/cookie_jar.dart';
 
 class NetworkHelper {
   factory NetworkHelper() => _instance;
@@ -18,12 +20,9 @@ class NetworkHelper {
   Dio dio = Dio(
     BaseOptions(
       baseUrl: Constants.baseUrl,
-      sendTimeout: const Duration(seconds: 20),
       validateStatus: (status) => status! < 500,
       headers: {
-        'Authorization':
-            'Bearer 18|ateba_token_D4nsrkUiKrpy5unGot9yjJdMKBDy8pkN6RXf4pSZe25cc664',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
       },
     ),
   );
@@ -37,9 +36,16 @@ class NetworkHelper {
   final bool onErrorLog = true;
   static const Duration postTimeOut = Duration(seconds: 15);
 
+  // final Connectivity connectivity = Connectivity();
   static final NetworkHelper _instance = NetworkHelper._init();
 
   Future<void> initDio() async {
+    AuthBloc authBloc = AuthBloc();
+    LoggerHelper.logger.i({'access': authBloc.token});
+    isLogin = authBloc.isLogin;
+    accessToken = authBloc.token;
+    dio.options.headers['Authorization'] = 'Bearer $accessToken';
+
     dio
       ..interceptors.clear()
       ..interceptors.add(InterceptorsWrapper(
@@ -47,15 +53,18 @@ class NetworkHelper {
       ..interceptors.add(RetryOnConnectionChangeInterceptor(
           requestRetrier: DioConnectivityRequestRetrier(dio: dio)));
     if (!kIsWeb) {
-      dio.interceptors.add(
-        CookieManager(
-          PersistCookieJar(
-            storage: FileStorage((await appDirectory()).path),
-          ),
-        ),
-      );
+      dio.interceptors.add(CookieManager(
+          PersistCookieJar(storage: FileStorage((await appDirectory()).path))));
     }
   }
+
+  // void addCookie() async {
+  //   dio.interceptors.add(
+  //     CookieManager(
+  //       PersistCookieJar(dir: (await appDirectory()).path),
+  //     ),
+  //   );
+  // }
 
   void onRequest(RequestOptions request,
       RequestInterceptorHandler requestInterceptorHandler) {
@@ -92,6 +101,27 @@ class NetworkHelper {
         },
       );
     }
+    if (isLogin && (response.statusCode ?? 0) == 401) {
+      // LoggerHelper.logger.wtf('401');
+      // if (isWorking != null) {
+      //   await isWorking;
+      //   responseInterceptorHandler
+      //       .resolve(await retry(dio, response.requestOptions));
+      // }
+      // //!LOCK
+      // var completer = Completer<void>();
+      // isWorking = completer.future;
+      // // dio.lock();
+      // //!TASK
+      // // await AuthBloc().refreshToken();
+      // //!UNLOCK
+      // completer.complete();
+      // isWorking = null;
+      // // dio.unlock();
+      // LoggerHelper.logger.wtf('retry');
+      // responseInterceptorHandler
+      //     .resolve(await retry(dio, response.requestOptions));
+    }
     return responseInterceptorHandler.next(response);
   }
 
@@ -124,7 +154,6 @@ class NetworkHelper {
         StackTrace.empty,
       );
     }
-
     errorInterceptorHandler.next(dioError);
   }
 

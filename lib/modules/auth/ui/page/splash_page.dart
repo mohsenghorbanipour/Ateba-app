@@ -29,12 +29,23 @@ class _SplashPageState extends State<SplashPage> {
 
   Future<void> _initData() async {
     try {
-      await Future.delayed(const Duration(seconds: 2));
-      Provider.of<HomeBloc>(context, listen: false).loadDate();
-      Provider.of<AuthBloc>(context, listen: false).loadDate();
-      Provider.of<CategoriesBloc>(context, listen: false).loadCategories();
-      Provider.of<CartBloc>(context, listen: false).loadOrders();
-      GoRouter.of(context).goNamed(Routes.login);
+      await AuthBloc().init().then(
+        (_) async {
+          if (AuthBloc().isLogin) {
+            AuthBloc().loadData();
+            Provider.of<HomeBloc>(context, listen: false).loadData();
+            CategoriesBloc().loadCategories();
+            CartBloc().loadOrders();
+            context.goNamed(
+              Routes.main,
+            );
+          } else {
+            context.goNamed(
+              Routes.login,
+            );
+          }
+        },
+      );
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
     }

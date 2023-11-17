@@ -76,15 +76,25 @@ class CategoryDetailsPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: CachedNetworkImage(
-                            imageUrl: category.thumbnail_url ?? '',
-                            fit: BoxFit.cover,
-                            width: 72,
-                            height: 72,
+                        Container(
+                          decoration: BoxDecoration(
+                            color: ColorPalette.of(context).background,
+                            border: Border.all(
+                              width: 1,
+                              color: ColorPalette.of(context).error,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                        ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: CachedNetworkImage(
+                              imageUrl: category.thumbnail_url ?? '',
+                              fit: BoxFit.cover,
+                              width: 72,
+                              height: 72,
+                            ),
+                          ),
+                        )
                       ],
                     ),
                     const SizedBox(

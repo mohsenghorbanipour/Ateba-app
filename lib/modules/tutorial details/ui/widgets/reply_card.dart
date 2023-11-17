@@ -142,7 +142,7 @@ class ReplyCard extends StatelessWidget {
               padding: const EdgeInsets.only(top: 8),
               child: RichText(
                 text: TextSpan(
-                  text: '${reply.reply_to ?? ''} ',
+                  text: '@' '${reply.reply_to ?? ''} ',
                   style: Theme.of(context)
                       .textTheme
                       .labelMedium

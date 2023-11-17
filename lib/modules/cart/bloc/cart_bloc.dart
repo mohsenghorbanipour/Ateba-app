@@ -91,4 +91,11 @@ class CartBloc extends ChangeNotifier {
     );
     return isExist;
   }
+
+  void clearData() {
+    _ordersResponse = null;
+    loading = false;
+    applyDiscountLoading = false;
+    paymentLoading = false;
+  }
 }

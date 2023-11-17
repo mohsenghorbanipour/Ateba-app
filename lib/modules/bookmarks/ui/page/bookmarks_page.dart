@@ -142,7 +142,7 @@ class BookmarksPage extends StatelessWidget {
             ),
           if (context.select<BookmarksBloc, bool>(
               (bloc) => bloc.bookmarksStates == BookmarksStates.my_products))
-            const MyProductsWidget()
+            MyProductsWidget()
           else if (context.select<BookmarksBloc, bool>(
               (bloc) => bloc.bookmarksStates == BookmarksStates.bookmarks))
             const BookmarksWidget()

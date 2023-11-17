@@ -10,22 +10,10 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 Future<XFile?> compressAndGetFile(File file, BuildContext context) async {
   var imageSize = file.lengthSync() / 1024;
   int quality;
-  if (imageSize <= 200) {
+  if (imageSize <= 1000) {
     quality = 100;
-  } else if (imageSize <= 400) {
-    quality = 90;
-  } else if (imageSize <= 600) {
-    quality = 80;
-  } else if (imageSize <= 1000) {
-    quality = 70;
-  } else if (imageSize <= 2000) {
-    quality = 60;
-  } else if (imageSize <= 3000) {
-    quality = 50;
-  } else if (imageSize <= 4000) {
-    quality = 40;
   } else {
-    quality = 30;
+    quality = 1;
   }
 
   final dir = await path_provider.getTemporaryDirectory();
@@ -35,6 +23,7 @@ Future<XFile?> compressAndGetFile(File file, BuildContext context) async {
     file.absolute.path,
     '${file.absolute.path}-temp.jpg',
     quality: quality,
+    
   );
 
   return result;

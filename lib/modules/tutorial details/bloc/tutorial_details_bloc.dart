@@ -7,8 +7,17 @@ import 'package:ateba_app/modules/tutorial%20details/data/models/comment.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/tutorial_details.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/remote/tutorial_details_remote_provider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+enum AttachmentType {
+  text,
+  gallery,
+  video,
+  voice,
+  pdf,
+  file,
+  link,
+}
 
 class TutorialDetaialsBloc extends ChangeNotifier {
   TutorialDetaialsBloc(String slug) {
@@ -103,7 +112,7 @@ class TutorialDetaialsBloc extends ChangeNotifier {
         page: (currentPageComments + 1),
       );
       if (response != null) {
-        comments?.addAll(response.data ?? []);
+        comments.addAll(response.data ?? []);
         currentPageComments++;
         if (response.links?.next?.isNotEmpty ?? false) {
           canLoadMoreComment = true;

@@ -51,7 +51,7 @@ class ButtonComponent extends StatelessWidget {
           style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
                 backgroundColor: MaterialStateProperty.resolveWith(
                   (states) => !enabled
-                      ? ColorPalette.of(context).primary
+                      ? ColorPalette.dark.background.withOpacity(0.3)
                       : color ?? ColorPalette.of(context).primary,
                 ),
                 overlayColor: MaterialStateProperty.resolveWith((states) =>

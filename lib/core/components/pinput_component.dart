@@ -27,123 +27,127 @@ class PinPutComponent extends StatelessWidget {
         padding: padding,
         child: Directionality(
           textDirection: dartui.TextDirection.ltr,
-          child: Pinput(
-            autofocus: false,
-            // errorBuilder: (val, val2) {
-            //   return Container();
-            // },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Pinput(
+                autofocus: false,
+                // errorBuilder: (val, val2) {
+                //   return Container();
+                // },
 
-            forceErrorState: false,
-            keyboardType: TextInputType.phone,
-            onChanged: onChanged,
-            focusNode: _pinPutFocusNode,
-            controller: controller,
-            length: 6,
-
-            defaultPinTheme: PinTheme(
-              // margin: const EdgeInsets.symmetric(horizontal: 8),
-              height: 45,
-              width: 100,
-              textStyle: TextStyle(
-                fontSize: 20,
-                color: ColorPalette.of(context).primary,
-                fontWeight: FontWeight.w600,
-              ),
-              decoration: BoxDecoration(
-                color: ColorPalette.of(context).background,
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            submittedPinTheme: PinTheme(
-              // margin: const EdgeInsets.symmetric(horizontal: 8),
-              height: 45,
-              width: 100,
-              textStyle: TextStyle(
-                fontSize: 20,
-                color: ColorPalette.of(context).primary,
-                fontWeight: FontWeight.w600,
-              ),
-              decoration: BoxDecoration(
-                color: ColorPalette.of(context).lightPrimary,
-                border: Border.all(
-                  width: 1,
-                  color: ColorPalette.of(context).border,
+                forceErrorState: false,
+                keyboardType: TextInputType.phone,
+                onChanged: onChanged,
+                focusNode: _pinPutFocusNode,
+                controller: controller,
+                length: fieldCount,
+                defaultPinTheme: PinTheme(
+                  // margin: const EdgeInsets.symmetric(horizontal: 8),
+                  height: 45,
+                  width: 65,
+                  textStyle: TextStyle(
+                    fontSize: 20,
+                    color: ColorPalette.of(context).primary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  decoration: BoxDecoration(
+                    color: ColorPalette.of(context).background,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            focusedPinTheme: PinTheme(
-              // margin: const EdgeInsets.symmetric(horizontal: 8),
-              height: 45,
-              width: 100,
-              textStyle: TextStyle(
-                fontSize: 20,
-                color: ColorPalette.of(context).error,
-                fontWeight: FontWeight.w600,
-              ),
-              decoration: BoxDecoration(
-                color: ColorPalette.of(context).primary.withOpacity(0.08),
-                border: Border.all(
-                  width: 1,
-                  color: ColorPalette.of(context).primary.withOpacity(0.4),
+                submittedPinTheme: PinTheme(
+                  // margin: const EdgeInsets.symmetric(horizontal: 8),
+                  height: 45,
+                  width: 65,
+                  textStyle: TextStyle(
+                    fontSize: 20,
+                    color: ColorPalette.of(context).primary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  decoration: BoxDecoration(
+                    color: ColorPalette.of(context).lightPrimary,
+                    border: Border.all(
+                      width: 1,
+                      color: ColorPalette.of(context).border,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            followingPinTheme: PinTheme(
-              // margin: const EdgeInsets.symmetric(horizontal: 8),
-              height: 45,
-              width: 100,
-              textStyle: TextStyle(
-                fontSize: 20,
-                color: ColorPalette.of(context).error,
-                fontWeight: FontWeight.w600,
-              ),
-              decoration: BoxDecoration(
-                color: ColorPalette.of(context).white,
-                border: Border.all(
-                  width: 1,
-                  color: ColorPalette.of(context).border,
+                focusedPinTheme: PinTheme(
+                  // margin: const EdgeInsets.symmetric(horizontal: 8),
+                  height: 45,
+                  width: 65,
+                  textStyle: TextStyle(
+                    fontSize: 20,
+                    color: ColorPalette.of(context).error,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  decoration: BoxDecoration(
+                    color: ColorPalette.of(context).primary.withOpacity(0.08),
+                    border: Border.all(
+                      width: 1,
+                      color: ColorPalette.of(context).primary.withOpacity(0.4),
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            disabledPinTheme: PinTheme(
-              // margin: const EdgeInsets.symmetric(horizontal: 8),
-              height: 45,
-              width: 100,
-              textStyle: TextStyle(
-                fontSize: 20,
-                color: ColorPalette.of(context).error,
-                fontWeight: FontWeight.w600,
-              ),
-              decoration: BoxDecoration(
-                color: ColorPalette.of(context).error.withOpacity(0.08),
-                border: Border.all(
-                  width: 1,
-                  color: ColorPalette.of(context).error.withOpacity(0.4),
+                followingPinTheme: PinTheme(
+                  // margin: const EdgeInsets.symmetric(horizontal: 8),
+                  height: 45,
+                  width: 65,
+                  textStyle: TextStyle(
+                    fontSize: 20,
+                    color: ColorPalette.of(context).error,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  decoration: BoxDecoration(
+                    color: ColorPalette.of(context).white,
+                    border: Border.all(
+                      width: 1,
+                      color: ColorPalette.of(context).border,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            errorPinTheme: PinTheme(
-              // margin: const EdgeInsets.symmetric(horizontal: 8),
-              height: 45,
-              width: 100,
-              textStyle: TextStyle(
-                fontSize: 20,
-                color: ColorPalette.of(context).error,
-                fontWeight: FontWeight.w600,
-              ),
-              decoration: BoxDecoration(
-                color: ColorPalette.of(context).error.withOpacity(0.08),
-                border: Border.all(
-                  width: 1,
-                  color: ColorPalette.of(context).error.withOpacity(0.4),
+                disabledPinTheme: PinTheme(
+                  // margin: const EdgeInsets.symmetric(horizontal: 8),
+                  height: 45,
+                  width: 65,
+                  textStyle: TextStyle(
+                    fontSize: 20,
+                    color: ColorPalette.of(context).error,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  decoration: BoxDecoration(
+                    color: ColorPalette.of(context).error.withOpacity(0.08),
+                    border: Border.all(
+                      width: 1,
+                      color: ColorPalette.of(context).error.withOpacity(0.4),
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-                borderRadius: BorderRadius.circular(12),
+                errorPinTheme: PinTheme(
+                  // margin: const EdgeInsets.symmetric(horizontal: 8),
+                  height: 45,
+                  width: 65,
+                  textStyle: TextStyle(
+                    fontSize: 20,
+                    color: ColorPalette.of(context).error,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  decoration: BoxDecoration(
+                    color: ColorPalette.of(context).error.withOpacity(0.08),
+                    border: Border.all(
+                      width: 1,
+                      color: ColorPalette.of(context).error.withOpacity(0.4),
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       );

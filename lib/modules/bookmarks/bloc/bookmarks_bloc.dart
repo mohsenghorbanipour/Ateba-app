@@ -108,12 +108,23 @@ class BookmarksBloc extends ChangeNotifier {
   Future<void> unbookmarkIc(String slug, int index) async {
     try {
       bool response = await BookmarksRemoteProvider.unBookmarkTutorial(slug);
-      if(response) {
+      if (response) {
         dataList.removeAt(index);
         notifyListeners();
       }
-    } catch(e ,s) {
+    } catch (e, s) {
       LoggerHelper.errorLog(e, s);
     }
+  }
+
+  void clearData() {
+    dataList.clear();
+    _bookmarkSortType = BookmarkSortType.all;
+    _bookmarksStates = BookmarksStates.my_products;
+    _showBookmarksState = false;
+    loading = false;
+    loadingMore = false;
+    canLoadMoreBookmarks = false;
+    bookmarksCurrentPage = null;
   }
 }

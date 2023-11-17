@@ -4,10 +4,12 @@ import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/auth/bloc/auth_bloc.dart';
+import 'package:ateba_app/modules/profile/ui/dialogs/logout_dialog.dart';
 import 'package:ateba_app/modules/profile/ui/widgets/profile_tile.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
@@ -255,20 +257,31 @@ class ProfilePage extends StatelessWidget {
           const SizedBox(
             height: 32,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                SvgPicture.asset(
-                  Assets.exitIc,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 6),
-                  child: Text(
-                    'logout_from_account'.tr(),
+          InkWell(
+            onTap: () {
+              showAnimatedDialog(
+                context: context,
+                curve: Curves.easeIn,
+                animationType: DialogTransitionType.fade,
+                duration: const Duration(milliseconds: 300),
+                builder: (context) => const LogoutDialog(),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    Assets.exitIc,
                   ),
-                )
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(right: 6),
+                    child: Text(
+                      'logout_from_account'.tr(),
+                    ),
+                  )
+                ],
+              ),
             ),
           )
         ],

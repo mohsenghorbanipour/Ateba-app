@@ -66,7 +66,7 @@ class ToastComponent {
                             textAlign: TextAlign.start,
                             style: Theme.of(context)
                                 .textTheme
-                                .headlineSmall
+                                .bodyMedium
                                 ?.copyWith(color: Colors.white),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 5,

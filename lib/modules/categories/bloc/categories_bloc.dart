@@ -19,6 +19,10 @@ enum CategoriesDataType {
 }
 
 class CategoriesBloc extends ChangeNotifier {
+  factory CategoriesBloc() => _instance;
+  CategoriesBloc._init();
+  static final CategoriesBloc _instance = CategoriesBloc._init();
+
   // ==== Variables ==== //
 
   TabState _tabState = TabState.educationalVideos;
@@ -168,5 +172,19 @@ class CategoriesBloc extends ChangeNotifier {
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
     }
+  }
+
+  void clearData() {
+    courses.clear();
+    packages.clear();
+    categories.clear();
+    _showDataTypeMenu = false;
+    _tabState = TabState.educationalVideos;
+    _categoriesDataType = CategoriesDataType.medicalCourses;
+    _showDataTypeMenu = false;
+    currentPage;
+    canLoadMore = true;
+    loading = false;
+    loadingMore = false;
   }
 }

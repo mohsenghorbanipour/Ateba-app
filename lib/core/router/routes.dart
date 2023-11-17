@@ -18,4 +18,5 @@ class Routes {
   static const String transactions = 'transactions';
   static const String editProfile = 'edit-profile';
   static const String completeInfo = 'complete-info';
+  static const String photoGalleryPage = 'photo-gallry';
 }

@@ -1,4 +1,6 @@
 class RemoteRoutes {
+  // App Api
+  static const String getAppConfig = 'configs';
 
   // Auth ans User Api
   static const String getUserSubscription = 'subscription';
@@ -6,7 +8,8 @@ class RemoteRoutes {
   static const String getProfile = 'profile';
   static const String getTransactions = 'transactions';
   static const uploadImage = 'profile/upload';
-  
+  static const String sendCode = 'login';
+  static const String verifyCode = 'login/verify';
 
   // Banners Api
   static const String getTopBanner = 'banners/slider';
@@ -55,6 +58,4 @@ class RemoteRoutes {
 
   // Video Features Api
   static String getVideoChapter(int id) => 'videos/$id/chapters';
-  
-
 }

@@ -11,8 +11,10 @@ import 'package:ateba_app/modules/course%20details/ui/page/course_details_page.d
 import 'package:ateba_app/modules/edit%20profile/ui/page/edit_profile_page.dart';
 import 'package:ateba_app/modules/main/ui/page/main_page.dart';
 import 'package:ateba_app/modules/package%20details/ui/page/package_details_page.dart';
+import 'package:ateba_app/modules/photo%20gallery/ui/page/photo_gallery_page.dart';
 import 'package:ateba_app/modules/subscription/ui/page/subscription_page.dart';
 import 'package:ateba_app/modules/transactions/ui/page/transactions_page.dart';
+import 'package:ateba_app/modules/tutorial%20details/data/models/attachment.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/page/tutorial_details_page.dart';
 import 'package:ateba_app/modules/category%20details/ui/page/category_details_page.dart';
 import 'package:ateba_app/modules/video%20player/ui/page/video_player_page.dart';
@@ -46,21 +48,19 @@ class AtebaRouter {
       _routeFade(
         path: Routes.login,
         name: Routes.login,
-        pageBuilder: (state) => const LoginPage(),
+        pageBuilder: (state) => LoginPage(),
         routes: [
           _routeFade(
             path: Routes.loginOtp,
             name: Routes.loginOtp,
             pageBuilder: (state) => const LoginOtpPage(),
-            routes: [
-              _routeFade(
-                path: Routes.completeInfo,
-                name: Routes.completeInfo,
-                pageBuilder: (state) => EditProfilePage(
-                  isEditProfile: (state.extra as bool?) ?? false,
-                ),
-              ),
-            ],
+          ),
+          _routeFade(
+            path: Routes.completeInfo,
+            name: Routes.completeInfo,
+            pageBuilder: (state) => EditProfilePage(
+              isEditProfile: (state.extra as bool?) ?? false,
+            ),
           ),
         ],
       ),
@@ -87,7 +87,14 @@ class AtebaRouter {
                 pageBuilder: (state) => VideoPlayerPage(
                   data: state.extra as Map<String, dynamic>,
                 ),
-              )
+              ),
+              _routeFade(
+                path: Routes.photoGalleryPage,
+                name: Routes.photoGalleryPage,
+                pageBuilder: (state) => PhotoGalleryPage(
+                  attachment: state.extra as Attachment,
+                ),
+              ),
             ],
           ),
           _routeFade(

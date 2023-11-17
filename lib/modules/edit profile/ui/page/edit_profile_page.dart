@@ -19,7 +19,10 @@ class EditProfilePage extends StatelessWidget {
             isEditProfile: isEditProfile,
           ),
         )
-      : UserInfoWidget(
-          isEditProfile: isEditProfile,
+      : ChangeNotifierProvider(
+          create: (context) => EditProfileBloc(),
+          builder: (context, child) => UserInfoWidget(
+            isEditProfile: isEditProfile,
+          ),
         );
 }

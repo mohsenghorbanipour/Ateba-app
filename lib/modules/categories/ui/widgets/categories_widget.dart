@@ -1,3 +1,4 @@
+import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/modules/categories/bloc/categories_bloc.dart';
 import 'package:ateba_app/modules/categories/data/models/category.dart';
 import 'package:ateba_app/modules/categories/ui/widgets/category_card.dart';
@@ -29,19 +30,27 @@ class CategoriesWidget extends StatelessWidget {
       : Expanded(
           child: Selector<CategoriesBloc, List<Category>>(
             selector: (context, bloc) => bloc.categories,
-            builder: (context, categories, child) => GridView.builder(
-              shrinkWrap: true,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 28),
-              physics: const BouncingScrollPhysics(),
-              itemCount: categories.length,
-              itemBuilder: (context, index) => CategoryCard(
-                category: categories[index],
-              ),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 16,
-                mainAxisExtent: 104,
-                mainAxisSpacing: 28,
+            builder: (context, categories, child) => RefreshIndicator(
+              color: ColorPalette.of(context).primary,
+              onRefresh: () async {
+                await Provider.of<CategoriesBloc>(context, listen: false)
+                    .loadCategories();
+              },
+              child: GridView.builder(
+                shrinkWrap: true,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 28),
+                physics: const BouncingScrollPhysics(),
+                itemCount: categories.length,
+                itemBuilder: (context, index) => CategoryCard(
+                  category: categories[index],
+                ),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 16,
+                  mainAxisExtent: 104,
+                  mainAxisSpacing: 28,
+                ),
               ),
             ),
           ),

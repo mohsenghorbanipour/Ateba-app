@@ -11,7 +11,9 @@ ApiResponseModel<T> _$ApiResponseModelFromJson<T>(
   T Function(Object? json) fromJsonT,
 ) =>
     ApiResponseModel<T>(
+      success: json['success'] as bool?,
       data: _$nullableGenericFromJson(json['data'], fromJsonT),
+      message: json['message'] as String?,
     );
 
 Map<String, dynamic> _$ApiResponseModelToJson<T>(
@@ -26,7 +28,9 @@ Map<String, dynamic> _$ApiResponseModelToJson<T>(
     }
   }
 
+  writeNotNull('success', instance.success);
   writeNotNull('data', _$nullableGenericToJson(instance.data, toJsonT));
+  writeNotNull('message', instance.message);
   return val;
 }
 

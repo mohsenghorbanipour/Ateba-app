@@ -191,7 +191,7 @@ class _TextFieldComponentState extends State<TextFieldComponent> {
             obscureText: widget.obscure ? showText : false,
             maxLines: widget.maxLines,
             enableInteractiveSelection: true,
-            style: widget.style ?? Theme.of(context).textTheme.headlineSmall,
+            style: widget.style ?? Theme.of(context).textTheme.bodyMedium,
             readOnly: widget.readOnly,
             textDirection: widget.textDirection ??
                 (intl.Bidi.detectRtlDirectionality(text ?? '')

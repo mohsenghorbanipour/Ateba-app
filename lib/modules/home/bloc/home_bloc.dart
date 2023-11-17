@@ -28,7 +28,7 @@ class HomeBloc extends ChangeNotifier {
 
   // ==== ==== //
 
-  Future<void> loadDate() async {
+  Future<void> loadData() async {
     await Future.wait([
       loadTopBanner(),
       loadToturials(),
@@ -39,6 +39,8 @@ class HomeBloc extends ChangeNotifier {
   }
 
   Future<void> loadTopBanner() async {
+    topBannerLoading = true;
+    notifyListeners();
     try {
       ApiResponseModel<List<BannerSlider>>? response =
           await HomeRemoteProvider.getTopBanner();
@@ -53,6 +55,8 @@ class HomeBloc extends ChangeNotifier {
   }
 
   Future<void> loadToturials() async {
+    toturialsLoading = true;
+    notifyListeners();
     try {
       PaginationResponseModel<List<Tutorial>>? response =
           await HomeRemoteProvider.getToturials();
@@ -67,6 +71,8 @@ class HomeBloc extends ChangeNotifier {
   }
 
   Future<void> loadCourses() async {
+    coursesLoading = true;
+    notifyListeners();
     try {
       PaginationResponseModel<List<Course>>? response =
           await HomeRemoteProvider.getCourses();
@@ -81,6 +87,8 @@ class HomeBloc extends ChangeNotifier {
   }
 
   Future<void> loadMiddleBanner() async {
+    middleBannerLoading = true;
+    notifyListeners();
     try {
       ApiResponseModel<List<BannerSlider>>? response =
           await HomeRemoteProvider.getMiddleBanner();
@@ -95,6 +103,8 @@ class HomeBloc extends ChangeNotifier {
   }
 
   Future<void> loadPackages() async {
+    packagesLoading = true;
+    notifyListeners();
     try {
       PaginationResponseModel<List<Package>>? response =
           await HomeRemoteProvider.getPackages();
@@ -106,5 +116,18 @@ class HomeBloc extends ChangeNotifier {
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
     }
+  }
+
+  void clearData() {
+    courses.clear();
+    packages.clear();
+    tutorials.clear();
+    middleBanners = null;
+    topBanners.clear();
+    coursesLoading = true;
+    toturialsLoading = true;
+    topBannerLoading = true;
+    middleBannerLoading = true;
+    packagesLoading = true;
   }
 }
