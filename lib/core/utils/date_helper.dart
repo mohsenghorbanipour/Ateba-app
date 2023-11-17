@@ -15,7 +15,9 @@ class DateHelper {
       Jalali jalali = Jalali.fromGregorian(
         Gregorian(year, month, day),
       );
-      return withDay ? '${jalali.formatter.dd} - ${jalali.formatter.mN} - ${jalali.formatter.yyyy}' : '${jalali.formatter.mN} - ${jalali.formatter.yyyy}';
+      return withDay
+          ? '${jalali.formatter.dd} - ${jalali.formatter.mN} - ${jalali.formatter.yyyy}'
+          : '${jalali.formatter.mN} - ${jalali.formatter.yyyy}';
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
       return '';
@@ -76,6 +78,23 @@ class DateHelper {
       return 'yesterday'.tr();
     } else {
       return TextInputFormatters.toPersianNumber('$distance ${'day_ago'.tr()}');
+    }
+  }
+
+  static String getRealTimeVideo(int beginningSecond) {
+    if (beginningSecond == 0) {
+      return TextInputFormatters.toPersianNumber('00:00:00');
+    } else {
+      int hour = (beginningSecond ~/ 60) ~/ 60;
+      int min = beginningSecond ~/ 60;
+      if (min >= 60) {
+        min = min % 60;
+      }
+      int sec = beginningSecond % 60;
+      String secount = sec < 10 ? '0$sec' : '$sec';
+      String minute = min < 10 ? '0$min' : '$min';
+      String hours = hour < 10 ? '0$hour' : '$hour';
+      return TextInputFormatters.toPersianNumber('$hours:$minute:$secount');
     }
   }
 }

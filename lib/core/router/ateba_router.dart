@@ -22,7 +22,6 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
-import 'package:video_player/video_player.dart';
 
 class AtebaRouter {
   late GoRouter router = GoRouter(
@@ -85,6 +84,7 @@ class AtebaRouter {
                 path: Routes.videoPlayer,
                 name: Routes.videoPlayer,
                 pageBuilder: (state) => VideoPlayerPage(
+                  videoId: state.pathParameters['id'] as String,
                   data: state.extra as Map<String, dynamic>,
                 ),
               ),
@@ -133,6 +133,7 @@ class AtebaRouter {
                   path: Routes.packageVideoPlayer,
                   name: Routes.packageVideoPlayer,
                   pageBuilder: (state) => VideoPlayerPage(
+                    videoId: state.pathParameters['id'] as String,
                     data: state.extra as Map<String, dynamic>,
                   ),
                 )
@@ -176,6 +177,7 @@ class AtebaRouter {
             path: Routes.mainPagevideoPlayer,
             name: Routes.mainPagevideoPlayer,
             pageBuilder: (state) => VideoPlayerPage(
+              videoId: state.pathParameters['id'] as String,
               data: state.extra as Map<String, dynamic>,
             ),
           ),

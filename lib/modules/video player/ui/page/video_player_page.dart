@@ -1,373 +1,417 @@
-// ignore_for_file: use_build_context_synchronously, division_optimization
+import 'dart:math';
 
-import 'dart:io';
-
+import 'package:ateba_app/core/components/loading_component.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
+import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';
 import 'package:ateba_app/modules/video%20player/bloc/video_player_bloc.dart';
 import 'package:ateba_app/modules/video%20player/data/models/video_chapter.dart';
-import 'package:chewie/chewie.dart';
+import 'package:ateba_app/modules/video%20player/ui/modals/video_chapter_modal.dart';
+import 'package:ateba_app/modules/video%20player/ui/modals/video_player_setting_modal.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:ui' as ui;
+import 'dart:math' as math;
 
-class VideoPlayerPage extends StatefulWidget {
+class VideoPlayerPage extends StatelessWidget {
   const VideoPlayerPage({
+    required this.videoId,
     required this.data,
+    // required this.video,
+    // this.pathFile,
+    // this.playFromOfflineGallery = false,
     super.key,
   });
 
+  final String videoId;
   final Map<String, dynamic> data;
-
-  @override
-  State<VideoPlayerPage> createState() => _VideoPlayerPageState();
-}
-
-class _VideoPlayerPageState extends State<VideoPlayerPage> {
-  bool fullscreen = false;
-  VideoPlayerController? controller;
-  ChewieController? chewieController;
-
-  String selectedQuality = 'auto';
-
-  @override
-  void initState() {
-    initializePlayer();
-
-    super.initState();
-  }
-
-  Future<void> initializePlayer() async {
-    controller = (widget.data['show_with_path'] as bool)
-        ? VideoPlayerController.file(
-            File(
-              widget.data['path'] as String,
-            ),
-          )
-        : VideoPlayerController.networkUrl(
-            Uri.parse(
-              (widget.data['video'] as Video).hls_url ?? '',
-            ),
-          );
-    await controller?.initialize();
-    chewieController = ChewieController(
-      videoPlayerController: controller!,
-      aspectRatio: 3 / 2,
-      autoInitialize: true,
-      autoPlay: true,
-      deviceOrientationsAfterFullScreen: [
-        DeviceOrientation.portraitUp,
-      ],
-      placeholder: Container(
-        color: Colors.grey,
-      ),
-    );
-    setState(() {});
-  }
+  // final Video video;
+  // final String? pathFile;
+  // final bool playFromOfflineGallery;
 
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
-        create: (context) =>
-            VideoPlayerBloc((widget.data['video'] as Video).id ?? -1),
-        lazy: false,
-        builder: (context, child) => Scaffold(
-          body: Stack(
-            children: [
-              if (chewieController != null)
-                Chewie(
-                  controller: chewieController!,
-                ),
-              if (chewieController == null)
-                Align(
-                  alignment: Alignment.center,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 4,
-                    color: ColorPalette.of(context).primary,
-                  ),
-                ),
-              if (!widget.data['show_with_path'])
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          showModalBottomSheet(
-                            context: context,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) => Container(
-                              margin: const EdgeInsets.all(12),
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: ColorPalette.of(context).background,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: List.generate(
-                                  (((widget.data['video'] as Video)
-                                              .download_links
-                                              ?.length ??
-                                          0) +
-                                      1),
-                                  (index) => InkWell(
-                                    onTap: () {
-                                      controller?.pause();
-                                      if ((((widget.data['video'] as Video)
-                                                  .download_links
-                                                  ?.length ??
-                                              0)) ==
-                                          index) {
-                                        controller = null;
-                                        chewieController = null;
-                                        setState(() {});
-                                        controller =
-                                            VideoPlayerController.networkUrl(
-                                                Uri.parse((widget.data['video']
-                                                            as Video)
-                                                        .hls_url ??
-                                                    ''));
-                                        chewieController = ChewieController(
-                                          videoPlayerController: controller!,
-                                          aspectRatio: 3 / 2,
-                                          autoInitialize: true,
-                                          autoPlay: true,
-                                          deviceOrientationsAfterFullScreen: [
-                                            DeviceOrientation.portraitUp
-                                          ],
-                                          materialProgressColors:
-                                              ChewieProgressColors(
-                                            playedColor: Colors.purple,
-                                            handleColor: Colors.purple,
-                                            backgroundColor: Colors.grey,
-                                            bufferedColor: Colors.purple,
+        create: (context) => VideoPlayerBloc(videoId, data['video'])
+          ..initialVideoPlayer(
+            (data['video'] as Video).hls_url ?? '',
+          )
+          ..setShowOption(),
+        builder: (context, index) => GestureDetector(
+          onTap: () {
+            Provider.of<VideoPlayerBloc>(context, listen: false)
+                .setShowOption();
+          },
+          child: Scaffold(
+            body: Consumer<VideoPlayerBloc>(
+              builder: (context, bloc, child) => (bloc.initialized)
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        if (!bloc.fullScreen)
+                          const SizedBox(
+                            height: 100,
+                          ),
+                        RotatedBox(
+                          quarterTurns: bloc.fullScreen ? 1 : 0,
+                          child: AspectRatio(
+                            aspectRatio: bloc.controller!.value.aspectRatio,
+                            child: Stack(
+                              children: [
+                                VideoPlayer(
+                                  bloc.controller!,
+                                ),
+                                if (bloc.showOptions || !bloc.isPlaying)
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: InkWell(
+                                      onTap: () {
+                                        bloc.playOrPauseVideo();
+                                      },
+                                      child: Container(
+                                        width: 65,
+                                        height: 65,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: ColorPalette.of(context)
+                                              .textPrimary
+                                              .withOpacity(0.6),
+                                        ),
+                                        child: Center(
+                                          child: Icon(
+                                            bloc.isPlaying
+                                                ? Icons.pause
+                                                : Icons.play_arrow_rounded,
+                                            size: 36,
+                                            color:
+                                                ColorPalette.of(context).white,
                                           ),
-                                          placeholder: Container(
-                                            color: Colors.grey,
-                                          ),
-                                        );
-                                        controller?.initialize();
-                                        setState(() {
-                                          selectedQuality = 'auto';
-                                        });
-                                      } else {
-                                        controller = null;
-                                        chewieController = null;
-                                        setState(() {});
-                                        controller =
-                                            VideoPlayerController.networkUrl(
-                                          Uri.parse(
-                                              (widget.data['video'] as Video)
-                                                      .download_links?[index]
-                                                      .url ??
-                                                  ''),
-                                        );
-                                        chewieController = ChewieController(
-                                          videoPlayerController: controller!,
-                                          aspectRatio: 3 / 2,
-                                          autoInitialize: true,
-                                          autoPlay: true,
-                                          deviceOrientationsAfterFullScreen: [
-                                            DeviceOrientation.portraitUp
-                                          ],
-                                          materialProgressColors:
-                                              ChewieProgressColors(
-                                            playedColor: Colors.purple,
-                                            handleColor: Colors.purple,
-                                            backgroundColor: Colors.grey,
-                                            bufferedColor: Colors.purple,
-                                          ),
-                                          placeholder: Container(
-                                            color: Colors.grey,
-                                          ),
-                                        );
-                                        selectedQuality =
-                                            (widget.data['video'] as Video)
-                                                    .download_links?[index]
-                                                    .quality ??
-                                                '';
-                                        setState(() {});
-                                      }
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          color: index ==
-                                                  (((widget.data['video']
-                                                              as Video)
-                                                          .download_links
-                                                          ?.length ??
-                                                      0))
-                                              ? selectedQuality == 'auto'
-                                                  ? ColorPalette.of(context)
-                                                      .primary
-                                                      .withOpacity(0.5)
-                                                  : Colors.transparent
-                                              : selectedQuality ==
-                                                      (widget.data['video']
-                                                              as Video)
-                                                          .download_links?[
-                                                              index]
-                                                          .quality
-                                                  ? ColorPalette.of(context)
-                                                      .primary
-                                                      .withOpacity(0.5)
-                                                  : Colors.transparent,
-                                          borderRadius: index == 0
-                                              ? const BorderRadius.only(
-                                                  topLeft: Radius.circular(12),
-                                                  topRight: Radius.circular(12))
-                                              : index ==
-                                                      (((widget.data['video']
-                                                                  as Video)
-                                                              .download_links
-                                                              ?.length ??
-                                                          0))
-                                                  ? const BorderRadius.only(
-                                                      bottomLeft:
-                                                          Radius.circular(12),
-                                                      bottomRight:
-                                                          Radius.circular(12),
-                                                    )
-                                                  : null),
-                                      width: double.infinity,
-                                      height: 40,
-                                      child: Center(
-                                        child: Text(
-                                          index ==
-                                                  (((widget.data['video']
-                                                              as Video)
-                                                          .download_links
-                                                          ?.length ??
-                                                      0))
-                                              ? 'auto'
-                                              : (widget.data['video'] as Video)
-                                                      .download_links?[index]
-                                                      .quality ??
-                                                  '',
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          width: 80,
-                          height: 30,
-                          margin: const EdgeInsets.only(top: 4),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: ColorPalette.of(context)
-                                .textPrimary
-                                .withOpacity(0.6),
-                          ),
-                          child: Center(
-                            child: Text(
-                              selectedQuality,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall
-                                  ?.copyWith(
-                                    color: ColorPalette.of(context).white,
-                                  ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              if (context.select<VideoPlayerBloc, bool>(
-                  (bloc) => !bloc.loading && bloc.chapters.isNotEmpty))
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    width: double.infinity,
-                    height: 54,
-                    margin:
-                        const EdgeInsets.only(bottom: 64, left: 8, right: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color:
-                          ColorPalette.of(context).textPrimary.withOpacity(0.6),
-                    ),
-                    child: Directionality(
-                      textDirection: ui.TextDirection.ltr,
-                      child: Selector<VideoPlayerBloc, List<VideoChapter>>(
-                        selector: (context, bloc) => bloc.chapters,
-                        builder: (context, chapters, child) =>
-                            ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: chapters.length + 1,
-                          separatorBuilder: (context, index) => Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  chapters[index].title ?? '',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelMedium
-                                      ?.copyWith(
-                                        color: ColorPalette.of(context).white,
+                                if (bloc.showOptions || !bloc.isPlaying)
+                                  Positioned(
+                                    left: 0,
+                                    bottom: 0,
+                                    right: 0,
+                                    child: Container(
+                                      width: double.infinity,
+                                      height: 80,
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                            colors: [
+                                              ColorPalette.of(context)
+                                                  .black
+                                                  .withOpacity(0.6),
+                                              ColorPalette.of(context)
+                                                  .black
+                                                  .withOpacity(0.4),
+                                              ColorPalette.of(context)
+                                                  .black
+                                                  .withOpacity(0.2),
+                                              ColorPalette.of(context)
+                                                  .black
+                                                  .withOpacity(0.0)
+                                            ],
+                                            end: Alignment.topCenter,
+                                            begin: Alignment.bottomCenter),
                                       ),
-                                ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 12),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                InkWell(
+                                                  onTap: () {
+                                                    bloc.fullScreen =
+                                                        !bloc.fullScreen;
+                                                  },
+                                                  child: Icon(
+                                                    Icons.fullscreen_rounded,
+                                                    size: 32,
+                                                    color:
+                                                        ColorPalette.of(context)
+                                                            .white,
+                                                  ),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    if (bloc
+                                                        .chapters.isNotEmpty)
+                                                      InkWell(
+                                                        onTap: () {
+                                                          showModalBottomSheet(
+                                                            context: context,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            builder: (context) =>
+                                                                VideoChapterModal(
+                                                              imageUrl: (data['video']
+                                                                          as Video)
+                                                                      .thumbnail_url ??
+                                                                  '',
+                                                              chapters:
+                                                                  bloc.chapters,
+                                                            ),
+                                                          );
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            Transform.rotate(
+                                                              angle: (math.pi *
+                                                                  -1),
+                                                              child: Icon(
+                                                                Icons
+                                                                    .arrow_forward_ios_rounded,
+                                                                size: 10,
+                                                                color: ColorPalette.of(
+                                                                        context)
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      right: 2),
+                                                              child: Text(
+                                                                'chapters'.tr(),
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .labelMedium
+                                                                    ?.copyWith(
+                                                                        color: ColorPalette.of(context)
+                                                                            .white),
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              width: 2,
+                                                              height: 2,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                color: ColorPalette.of(
+                                                                        context)
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    if ((bloc.sec
+                                                                ?.isNotEmpty ??
+                                                            false) &&
+                                                        (bloc.mins
+                                                                ?.isNotEmpty ??
+                                                            false) &&
+                                                        (bloc.hour
+                                                                ?.isNotEmpty ??
+                                                            false))
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 8,
+                                                                right: 4),
+                                                        child: Text(
+                                                          '${TextInputFormatters.toPersianNumber(
+                                                            (data['video']
+                                                                        as Video)
+                                                                    .duration ??
+                                                                '', // '1:30:27/2:01:0.8',
+                                                          )}/${TextInputFormatters.toPersianNumber('${bloc.hour ?? ''}:${bloc.mins ?? ''}:${bloc.sec ?? ''}')}',
+                                                          style: Theme.of(
+                                                                  context)
+                                                              .textTheme
+                                                              .labelMedium
+                                                              ?.copyWith(
+                                                                  color: ColorPalette.of(
+                                                                          context)
+                                                                      .white
+                                                                      .withOpacity(
+                                                                          0.8)),
+                                                        ),
+                                                      ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          Directionality(
+                                            textDirection: ui.TextDirection.ltr,
+                                            child: SliderTheme(
+                                              data: const SliderThemeData(
+                                                trackHeight: 2,
+                                              ),
+                                              child: Slider(
+                                                value: max(
+                                                    0,
+                                                    min(bloc.progress * 100,
+                                                        100)),
+                                                min: 0,
+                                                max: 100,
+                                                divisions: 100,
+                                                onChanged: (val) {
+                                                  bloc.setProgress(val);
+                                                },
+                                                label: bloc
+                                                    .controller?.value.position
+                                                    .toString()
+                                                    .split('.')[0],
+                                                onChangeStart: (val) {
+                                                  bloc.controller?.pause();
+                                                },
+                                                onChangeEnd: (val) {
+                                                  final duration = bloc
+                                                      .controller
+                                                      ?.value
+                                                      .duration;
+                                                  if (duration != null) {
+                                                    var newValue = max(
+                                                        0, min(val, 99) * 0.01);
+                                                    var milis = (duration
+                                                                .inMilliseconds *
+                                                            newValue)
+                                                        .toInt();
+                                                    bloc.controller?.seekTo(
+                                                      Duration(
+                                                          milliseconds: milis),
+                                                    );
+                                                    bloc.controller?.play();
+                                                  }
+                                                },
+                                                thumbColor:
+                                                    ColorPalette.of(context)
+                                                        .primary,
+                                                activeColor:
+                                                    ColorPalette.of(context)
+                                                        .primary,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                if (bloc.showOptions || !bloc.isPlaying)
+                                  Positioned(
+                                    left: 0,
+                                    top: 0,
+                                    right: 0,
+                                    child: Container(
+                                      width: double.infinity,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            ColorPalette.of(context)
+                                                .black
+                                                .withOpacity(0.6),
+                                            ColorPalette.of(context)
+                                                .black
+                                                .withOpacity(0.4),
+                                            ColorPalette.of(context)
+                                                .black
+                                                .withOpacity(0.2),
+                                            ColorPalette.of(context)
+                                                .black
+                                                .withOpacity(0.0)
+                                          ],
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(2.0),
+                                            child: InkWell(
+                                              onTap: () {
+                                                showModalBottomSheet(
+                                                  context: context,
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  builder: (ctx) =>
+                                                      ChangeNotifierProvider
+                                                          .value(
+                                                    value: Provider.of<
+                                                            VideoPlayerBloc>(
+                                                        context,
+                                                        listen: false),
+                                                    builder: (ctx, child) =>
+                                                        VideoPlayerSettingModal(
+                                                      videoQualities: (data[
+                                                                      'video']
+                                                                  as Video)
+                                                              .download_links ??
+                                                          [],
+                                                      hlsUrl: (data['video']
+                                                                  as Video)
+                                                              .hls_url ??
+                                                          '',
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: SizedBox(
+                                                width: 32,
+                                                height: 32,
+                                                child: Icon(
+                                                  Icons.settings,
+                                                  color:
+                                                      ColorPalette.of(context)
+                                                          .white,
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                               ],
                             ),
                           ),
-                          itemBuilder: (_, index) => index == 0
-                              ? const SizedBox()
-                              : Column(
-                                  children: [
-                                    Expanded(
-                                      child: VerticalDivider(
-                                        width: 1,
-                                        color: ColorPalette.of(context).white,
-                                      ),
-                                    ),
-                                    Text(
-                                      ((chapters[index - 1].beginning_second ??
-                                                  0) /
-                                              60)
-                                          .toInt()
-                                          .toString(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelSmall
-                                          ?.copyWith(
-                                              color: ColorPalette.of(context)
-                                                  .white),
-                                    ),
-                                    Expanded(
-                                      child: VerticalDivider(
-                                        width: 1,
-                                        color: ColorPalette.of(context).white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
                         ),
-                      ),
+                        if (!bloc.fullScreen)
+                          const SizedBox(
+                            height: 100,
+                            width: double.infinity,
+                          )
+                      ],
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        LoadingComponent(
+                          color: ColorPalette.of(context).primary,
+                          size: 25,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16),
+                          child: Text(
+                            'loading_video'.tr(),
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        )
+                      ],
                     ),
-                  ),
-                )
-            ],
+            ),
           ),
         ),
       );
-
-  @override
-  void dispose() {
-    controller?.dispose();
-    chewieController?.dispose();
-    super.dispose();
-  }
 }

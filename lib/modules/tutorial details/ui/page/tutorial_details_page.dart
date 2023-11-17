@@ -236,10 +236,17 @@ class TutorialDetailsPage extends StatelessWidget {
                                 context.goNamed(
                                   Routes.videoPlayer,
                                   pathParameters: {
+                                    'id': Provider.of<TutorialDetaialsBloc>(
+                                                context,
+                                                listen: false)
+                                            .getVideo()
+                                            ?.id
+                                            .toString() ??
+                                        '',
                                     'slug': slug,
                                   },
                                   extra: {
-                                    'show_with_path': false,
+                                    'playFromOfflineGallery': false,
                                     'slug': slug,
                                     'video': Provider.of<TutorialDetaialsBloc>(
                                             context,
