@@ -1,6 +1,8 @@
+import 'package:ateba_app/core/base/bloc/download_video_bloc.dart';
 import 'package:ateba_app/core/components/button_component.dart';
 import 'package:ateba_app/core/components/shimmer_components.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
+import 'package:ateba_app/core/resources/models/cache_video_model.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/date_helper.dart';
@@ -9,6 +11,7 @@ import 'package:ateba_app/modules/bookmarks/bloc/bookmarks_bloc.dart';
 import 'package:ateba_app/modules/bookmarks/data/models/bookmark.dart';
 import 'package:ateba_app/modules/bookmarks/ui/dialogs/confirm_delete_dialog.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';
+import 'package:ateba_app/modules/tutorial%20details/data/models/video_link.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -77,10 +80,26 @@ class BookmarkCard extends StatelessWidget {
                               if (isGalleryOffline) {
                                 context.goNamed(
                                   Routes.mainPagevideoPlayer,
+                                  pathParameters: {
+                                    'id': bookmark.videoId.toString(),
+                                  },
                                   extra: {
-                                    'video': Video(),
-                                    'show_with_path': true,
-                                    'path': bookmark.path ?? '',
+                                    'playFromOfflineGallery': true,
+                                    'slug': '',
+                                    'path': bookmark.path,
+                                    'video': Video(
+                                      download_links: [
+                                        VideoLink(
+                                          quality: bookmark.quality,
+                                          size: '',
+                                        ),
+                                      ],
+                                      id: bookmark.videoId,
+                                      hls_url: '',
+                                      thumbnail_url: bookmark.thumbnail_url,
+                                      duration: bookmark.duration,
+                                      title: bookmark.title,
+                                    ),
                                   },
                                 );
                               }

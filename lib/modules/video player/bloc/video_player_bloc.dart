@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:ateba_app/core/network/api_response_model.dart';
@@ -77,9 +78,22 @@ class VideoPlayerBloc extends ChangeNotifier {
   String selectedQuality = 'auto';
 
   Future<void> initialVideoPlayer(String url,
-      {bool playFromOfflineGallery = false}) async {
+      {bool playFromOfflineGallery = false, String cacheQuality = ''}) async {
     try {
       if (playFromOfflineGallery) {
+        final controller = VideoPlayerController.file(
+          File(url),
+        );
+        _controller = controller;
+        selectedQuality = cacheQuality;
+        notifyListeners();
+        _controller?.initialize().then(
+          (_) {
+            _controller?.addListener(() {
+              onControllerUpdata();
+            });
+          },
+        );
       } else {
         final controller = VideoPlayerController.networkUrl(
           Uri.parse(url),

@@ -121,13 +121,6 @@ class _LoginOtpPageState extends State<LoginOtpPage> {
                                 context,
                                 code,
                               );
-                              //) {
-                                
-                              // } else {
-                              //   context.goNamed(
-                              //     ,
-                              //   );
-                              // }
                             }
                           },
                           onSubmit: (code) {},

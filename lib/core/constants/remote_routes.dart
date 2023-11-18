@@ -11,7 +11,8 @@ class RemoteRoutes {
   static const String sendCode = 'login';
   static const String verifyCode = 'login/verify';
   static const String getProfileConfig = 'profile/configs';
-  
+  static String getCities(int provinceId) =>
+      'profile/province/$provinceId/cities';
 
   // Banners Api
   static const String getTopBanner = 'banners/slider';

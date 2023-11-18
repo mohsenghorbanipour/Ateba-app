@@ -14,11 +14,13 @@ class VideoPlayerSettingModal extends StatelessWidget {
   const VideoPlayerSettingModal({
     required this.videoQualities,
     required this.hlsUrl,
+    this.cacheVideo = false,
     super.key,
   });
 
   final List<VideoLink> videoQualities;
   final String hlsUrl;
+  final bool cacheVideo;
 
   @override
   Widget build(BuildContext context) => Modal(
@@ -51,6 +53,7 @@ class VideoPlayerSettingModal extends StatelessWidget {
                       builder: (ctx, child) => SelectQualityModal(
                         videoQualities: videoQualities,
                         hlsUrl: hlsUrl,
+                        cacheVideo: cacheVideo,
                       ),
                     ),
                   );

@@ -1,11 +1,13 @@
 import 'package:ateba_app/core/base/bloc/download_video_bloc.dart';
 import 'package:ateba_app/core/components/toast_component.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
+import 'package:ateba_app/core/resources/models/cache_video_model.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/widgets/no_active_subscription_dialog.dart';
 import 'package:ateba_app/modules/tutorial%20details/bloc/tutorial_details_bloc.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';
+import 'package:ateba_app/modules/tutorial%20details/data/models/video_link.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/dialogs/download_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +37,6 @@ class TutorialDownloadWidget extends StatelessWidget {
               if (Provider.of<DownloadVideoBloc>(context, listen: false)
                       .selectedVideoIdForDownload ==
                   video.id) {
-                
                 showAnimatedDialog(
                   context: context,
                   curve: Curves.easeIn,
@@ -91,20 +92,39 @@ class TutorialDownloadWidget extends StatelessWidget {
             onTap: () {
               if (Provider.of<DownloadVideoBloc>(context, listen: false)
                   .existVideoInCache(video.id ?? -1, slug)) {
+                CacheVideoModel cacheVideoModel =
+                    Provider.of<DownloadVideoBloc>(context, listen: false)
+                        .getVideoFromId(video.id ?? -1);
                 context.goNamed(
                   Routes.videoPlayer,
                   pathParameters: {
+                    'id': Provider.of<TutorialDetaialsBloc>(context,
+                                listen: false)
+                            .getVideo()
+                            ?.id
+                            .toString() ??
+                        '',
                     'slug': slug,
                   },
                   extra: {
+                    'playFromOfflineGallery': true,
                     'slug': slug,
-                    'video': Provider.of<TutorialDetaialsBloc>(context,
-                            listen: false)
-                        .getVideo(),
-                    'show_with_path': true,
                     'path':
                         Provider.of<DownloadVideoBloc>(context, listen: false)
-                            .getPath((video.id ?? -1), slug),
+                            .getPath(video.id ?? -1, slug),
+                    'video': Video(
+                      download_links: [
+                        VideoLink(
+                          quality: cacheVideoModel.qality,
+                          size: cacheVideoModel.size,
+                        ),
+                      ],
+                      id: cacheVideoModel.id,
+                      hls_url: cacheVideoModel.url,
+                      thumbnail_url: cacheVideoModel.thumbnail_url,
+                      duration: cacheVideoModel.duration,
+                      title: cacheVideoModel.title,
+                    ),
                   },
                 );
                 return;
@@ -140,31 +160,31 @@ class TutorialDownloadWidget extends StatelessWidget {
                   .existVideoInCache(video.id ?? -1, slug)) {
                 return;
               } else {
-                  showAnimatedDialog(
-                    context: context,
-                    curve: Curves.easeIn,
-                    animationType: DialogTransitionType.fade,
-                    duration: const Duration(milliseconds: 300),
-                    builder: (ctx) => ChangeNotifierProvider.value(
-                      value: Provider.of<TutorialDetaialsBloc>(context,
-                          listen: false),
-                      child: DownloadDialog(
-                        video: video,
-                        slug: slug,
-                        type: 'tutorial',
-                        title: Provider.of<TutorialDetaialsBloc>(context,
-                                    listen: false)
-                                .tutorialDetaials
-                                ?.title ??
-                            '',
-                        updated_at: Provider.of<TutorialDetaialsBloc>(context,
-                                    listen: false)
-                                .tutorialDetaials
-                                ?.updated_at ??
-                            '',
-                      ),
+                showAnimatedDialog(
+                  context: context,
+                  curve: Curves.easeIn,
+                  animationType: DialogTransitionType.fade,
+                  duration: const Duration(milliseconds: 300),
+                  builder: (ctx) => ChangeNotifierProvider.value(
+                    value: Provider.of<TutorialDetaialsBloc>(context,
+                        listen: false),
+                    child: DownloadDialog(
+                      video: video,
+                      slug: slug,
+                      type: 'tutorial',
+                      title: Provider.of<TutorialDetaialsBloc>(context,
+                                  listen: false)
+                              .tutorialDetaials
+                              ?.title ??
+                          '',
+                      updated_at: Provider.of<TutorialDetaialsBloc>(context,
+                                  listen: false)
+                              .tutorialDetaials
+                              ?.updated_at ??
+                          '',
                     ),
-                  );
+                  ),
+                );
               }
             },
             child: Container(

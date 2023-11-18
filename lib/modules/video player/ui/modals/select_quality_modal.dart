@@ -9,11 +9,13 @@ class SelectQualityModal extends StatelessWidget {
   const SelectQualityModal({
     required this.videoQualities,
     required this.hlsUrl,
+    this.cacheVideo = false,
     super.key,
   });
 
   final List<VideoLink> videoQualities;
   final String hlsUrl;
+  final bool cacheVideo;
 
   @override
   Widget build(BuildContext context) => Modal(
@@ -22,7 +24,9 @@ class SelectQualityModal extends StatelessWidget {
             ListView.builder(
               reverse: true,
               padding: const EdgeInsets.all(12),
-              itemCount: videoQualities.length + 1,
+              itemCount: cacheVideo
+                  ? videoQualities.length
+                  : videoQualities.length + 1,
               shrinkWrap: true,
               itemBuilder: (context, index) => index == videoQualities.length
                   ? InkWell(

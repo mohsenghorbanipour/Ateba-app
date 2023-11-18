@@ -127,7 +127,7 @@ class NetworkHelper {
       // //!LOCK
       var completer = Completer<void>();
       isWorking = completer.future;
-      BuildContext context = AtebaApp.navigatorKey.currentContext!;
+      BuildContext context = AtebaRouter.navigatorKey.currentContext!;
       Provider.of<AuthBloc>(context, listen: false).logout();
       Provider.of<HomeBloc>(context, listen: false).clearData();
       Provider.of<CategoriesBloc>(context, listen: false).clearData();

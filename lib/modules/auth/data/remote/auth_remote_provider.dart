@@ -2,6 +2,8 @@ import 'package:ateba_app/core/constants/remote_routes.dart';
 import 'package:ateba_app/core/network/api_response_model.dart';
 import 'package:ateba_app/core/network/network_helper.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
+import 'package:ateba_app/modules/auth/data/models/config_item.dart';
+import 'package:ateba_app/modules/auth/data/models/profile_config_response.dart';
 import 'package:ateba_app/modules/auth/data/models/token_response.dart';
 import 'package:ateba_app/modules/auth/data/models/user.dart';
 import 'package:dio/dio.dart';
@@ -133,23 +135,79 @@ class AuthRemoteProvider {
     }
   }
 
-  static Future<void> getProfileConfig() async {
+  // static Future<void> getProfileConfig() async {
+  //   try {
+  //     Response response = await _networkHelper.dio.get(
+  //       RemoteRoutes.getProfileConfig,
+  //     );
+  //   } catch (e, s) {
+  //     LoggerHelper.errorLog(e, s);
+  //   }
+  // }
+
+  static Future<ApiResponseModel<ProfileConfigResponse>?>
+      getProfileConfig() async {
     try {
       Response response = await _networkHelper.dio.get(
         RemoteRoutes.getProfileConfig,
       );
-    } catch (e, s) {
-      LoggerHelper.errorLog(e, s);
-    }
-  }
-
-  static Future<void> getAppConfig() async {
-    try {
-      Response response = await _networkHelper.dio.get(
-        RemoteRoutes.getAppConfig,
+      if (response.statusCode == 200) {
+        return ApiResponseModel(
+          success: true,
+          message: response.data['message'],
+          data: ProfileConfigResponse.fromJson(
+            response.data,
+          ),
+        );
+      }
+      return ApiResponseModel(
+        success: false,
+        message: response.data['message'],
+        data: null,
       );
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+      return ApiResponseModel(
+        success: false,
+        message: 'sth_wrong'.tr(),
+        data: null,
+      );
+    }
+  }
+
+  static Future<ApiResponseModel<List<ConfigItem>?>> getCities(
+      int provinceId) async {
+    try {
+      Response response = await _networkHelper.dio.get(
+        RemoteRoutes.getCities(provinceId),
+      );
+      if (response.statusCode == 200) {
+        return ApiResponseModel(
+          success: true,
+          message: response.data is Map<String, dynamic>
+              ? response.data['message']
+              : '',
+          data: (response.data as List<dynamic>)
+              .map(
+                (e) => ConfigItem.fromJson(e),
+              )
+              .toList(),
+        );
+      }
+      return ApiResponseModel(
+        success: false,
+        message: response.data is Map<String, dynamic>
+            ? response.data['message']
+            : 'sth_wrong'.tr(),
+        data: null,
+      );
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      return ApiResponseModel(
+        success: false,
+        message: 'sth_wrong'.tr(),
+        data: null,
+      );
     }
   }
 }

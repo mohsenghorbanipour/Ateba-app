@@ -9,11 +9,11 @@ import 'package:easy_localization/easy_localization.dart';
 class EditProfileRemoteProvider {
   static final NetworkHelper _networkHelper = NetworkHelper();
 
-  static Future<void> updataProfile(User user) async {
+  static Future<void> updataProfile(FormData user) async {
     try {
       Response response = await _networkHelper.dio.post(
         RemoteRoutes.getProfile,
-        data: user.toJson(),
+        data: user,
       );
       if (response.statusCode == 200) {}
     } catch (e, s) {

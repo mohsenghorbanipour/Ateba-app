@@ -25,13 +25,16 @@ import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 
 class AtebaRouter {
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
+
   late GoRouter router = GoRouter(
     debugLogDiagnostics: true,
     initialLocation: Routes.splash,
     observers: <NavigatorObserver>[
       BotToastNavigatorObserver(),
     ],
-    navigatorKey: AtebaApp.navigatorKey,
+    navigatorKey: navigatorKey,
     // ur lPathStrategy: UrlPathStrategy.path,
     // errorPageBuilder: (context, state) => MaterialPage<void>(
     //   key: state.pageKey,

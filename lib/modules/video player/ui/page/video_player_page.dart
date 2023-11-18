@@ -34,7 +34,13 @@ class VideoPlayerPage extends StatelessWidget {
   Widget build(BuildContext context) => ChangeNotifierProvider(
         create: (context) => VideoPlayerBloc(videoId, data['video'])
           ..initialVideoPlayer(
-            (data['video'] as Video).hls_url ?? '',
+            data['playFromOfflineGallery'] as bool
+                ? data['path'] as String
+                : (data['video'] as Video).hls_url ?? '',
+            playFromOfflineGallery: data['playFromOfflineGallery'] as bool,
+            cacheQuality: data['playFromOfflineGallery'] as bool
+                ? (data['video'] as Video).download_links?.first.quality ?? ''
+                : '',
           )
           ..setShowOption(),
         builder: (context, index) => GestureDetector(
@@ -362,6 +368,9 @@ class VideoPlayerPage extends StatelessWidget {
                                                                   as Video)
                                                               .hls_url ??
                                                           '',
+                                                      cacheVideo: data[
+                                                              'playFromOfflineGallery']
+                                                          as bool,
                                                     ),
                                                   ),
                                                 );

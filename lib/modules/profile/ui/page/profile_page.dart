@@ -78,6 +78,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
+                    
                     context.goNamed(
                       Routes.editProfile,
                       extra: true,

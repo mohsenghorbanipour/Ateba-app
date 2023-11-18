@@ -37,7 +37,7 @@ class HomePage extends StatelessWidget {
           slivers: [
             SliverList(
               delegate: SliverChildListDelegate([
-                // const BannerSliderWidget(),
+                const BannerSliderWidget(),
                 Padding(
                   padding:
                       const EdgeInsets.only(top: 24, right: 16, bottom: 12),

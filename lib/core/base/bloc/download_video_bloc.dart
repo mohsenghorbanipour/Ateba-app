@@ -55,8 +55,9 @@ class DownloadVideoBloc extends ChangeNotifier {
     downloading = true;
     notifyListeners();
     try {
-      Directory? tempDir = await getExternalStorageDirectory();
-      String tempPath = tempDir?.path ?? '';
+      // Directory? tempDir = await getExternalStorageDirectory();
+      Directory? tempDir = await getApplicationCacheDirectory();
+      String tempPath = tempDir.path;
 
       String number = '';
       Random random = Random();
@@ -156,5 +157,9 @@ class DownloadVideoBloc extends ChangeNotifier {
       LoggerHelper.errorLog(e, s);
       return '';
     }
+  }
+
+  CacheVideoModel getVideoFromId(int id) {
+    return videos.firstWhere((e) => e.id == id);
   }
 }

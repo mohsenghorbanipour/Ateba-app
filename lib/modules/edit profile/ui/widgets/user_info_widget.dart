@@ -7,7 +7,13 @@ import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/form_validators.dart';
+import 'package:ateba_app/core/widgets/filed_of_education_modal.dart';
+import 'package:ateba_app/core/widgets/select_city_modal.dart';
 import 'package:ateba_app/core/widgets/select_gender_input.dart';
+import 'package:ateba_app/core/widgets/select_province_modal.dart';
+import 'package:ateba_app/core/widgets/universities_modal.dart';
+import 'package:ateba_app/modules/auth/bloc/auth_bloc.dart';
+import 'package:ateba_app/modules/auth/data/models/user.dart';
 import 'package:ateba_app/modules/edit%20profile/bloc/edit_profile_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +23,12 @@ import 'package:provider/provider.dart';
 
 class UserInfoWidget extends StatelessWidget {
   const UserInfoWidget({
+    required this.user,
     this.isEditProfile = true,
     super.key,
   });
 
+  final User user;
   final bool isEditProfile;
 
   @override
@@ -124,6 +132,19 @@ class UserInfoWidget extends StatelessWidget {
                     child: TextFieldComponent(
                       name: 'name',
                       textAlign: TextAlign.right,
+                      initialValue: user.name,
+                      validators: [
+                        FormValidators.required(context),
+                      ],
+                      onChanged: (val) {
+                        if (val != user.name) {
+                          Provider.of<EditProfileBloc>(context, listen: false)
+                              .isEditedProfile = true;
+                        } else {
+                          Provider.of<EditProfileBloc>(context, listen: false)
+                              .isEditedProfile = false;
+                        }
+                      },
                       keyboardType: TextInputType.name,
                       labelText: 'name'.tr(),
                       hintText: 'name_hint'.tr(),
@@ -134,9 +155,19 @@ class UserInfoWidget extends StatelessWidget {
                     child: TextFieldComponent(
                       name: 'email',
                       textAlign: TextAlign.left,
+                      initialValue: user.email,
                       validators: [
                         FormValidators.isEmail(context),
                       ],
+                      onChanged: (val) {
+                        if (val != user.email) {
+                          Provider.of<EditProfileBloc>(context, listen: false)
+                              .isEditedProfile = true;
+                        } else {
+                          Provider.of<EditProfileBloc>(context, listen: false)
+                              .isEditedProfile = false;
+                        }
+                      },
                       keyboardType: TextInputType.emailAddress,
                       labelText: 'email'.tr(),
                       hintText: 'emailaddress@gmail.com',
@@ -146,26 +177,102 @@ class UserInfoWidget extends StatelessWidget {
                     labelText: 'field_of_study'.tr(),
                     margin: const EdgeInsets.fromLTRB(16, 24, 16, 24),
                     hintText: 'select'.tr(),
+                    value: context.select<EditProfileBloc, String?>(
+                      (bloc) =>
+                          bloc.selectedFiled?.title ??
+                          AuthBloc().userProfile?.field,
+                    ),
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (ctx) => ChangeNotifierProvider.value(
+                          value: Provider.of<EditProfileBloc>(context,
+                              listen: false),
+                          child: const FieldOfEducationModal(),
+                        ),
+                      );
+                    },
                   ),
                   InputComponent(
                     labelText: 'university_of_study'.tr(),
                     margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                     hintText: 'select'.tr(),
+                    value: context.select<EditProfileBloc, String?>(
+                      (bloc) =>
+                          bloc.selectedUniversity?.name ??
+                          AuthBloc().userProfile?.university,
+                    ),
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (ctx) => ChangeNotifierProvider.value(
+                          value: Provider.of<EditProfileBloc>(context,
+                              listen: false),
+                          child: const UniversitiesModal(),
+                        ),
+                      );
+                    },
                   ),
                   InputComponent(
                     labelText: 'country'.tr(),
                     margin: const EdgeInsets.fromLTRB(16, 24, 16, 24),
                     hintText: 'select'.tr(),
+                    onTap: () {},
                   ),
                   InputComponent(
                     labelText: 'province'.tr(),
                     margin: const EdgeInsets.fromLTRB(16, 0, 16, 24),
                     hintText: 'select'.tr(),
+                    value: context.select<EditProfileBloc, String?>(
+                      (bloc) =>
+                          bloc.selectedProvince?.name ??
+                          AuthBloc().userProfile?.province,
+                    ),
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (ctx) => ChangeNotifierProvider.value(
+                          value: Provider.of<EditProfileBloc>(context,
+                              listen: false),
+                          child: const SelectProvinceModal(),
+                        ),
+                      );
+                    },
                   ),
                   InputComponent(
                     labelText: 'city'.tr(),
                     margin: const EdgeInsets.fromLTRB(16, 0, 16, 24),
                     hintText: 'select'.tr(),
+                    value: context.select<EditProfileBloc, String?>(
+                      (bloc) =>
+                          bloc.selectedCity?.name ??
+                          AuthBloc().userProfile?.city,
+                    ),
+                    onTap: () {
+                      if (Provider.of<EditProfileBloc>(context, listen: false)
+                              .selectedProvince !=
+                          null) {
+                        Provider.of<EditProfileBloc>(context, listen: false)
+                            .loadCities();
+
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (ctx) => ChangeNotifierProvider.value(
+                            value: Provider.of<EditProfileBloc>(context,
+                                listen: false),
+                            child: const SelectCityModal(),
+                          ),
+                        );
+                      }
+                    },
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
@@ -188,6 +295,8 @@ class UserInfoWidget extends StatelessWidget {
             ButtonComponent(
               onPressed: () {
                 if (isEditProfile) {
+                  Provider.of<EditProfileBloc>(context, listen: false)
+                      .editProfile();
                 } else {
                   context.goNamed(Routes.main);
                 }

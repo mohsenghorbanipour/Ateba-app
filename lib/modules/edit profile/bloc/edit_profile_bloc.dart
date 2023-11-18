@@ -7,6 +7,10 @@ import 'package:ateba_app/core/constants/image_compress.dart';
 import 'package:ateba_app/core/network/api_response_model.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
+import 'package:ateba_app/modules/auth/data/models/config_item.dart';
+import 'package:ateba_app/modules/auth/data/models/profile_config_response.dart';
+import 'package:ateba_app/modules/auth/data/models/user.dart';
+import 'package:ateba_app/modules/auth/data/remote/auth_remote_provider.dart';
 import 'package:ateba_app/modules/edit%20profile/data/remote/edit_profile_remote_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -22,12 +26,16 @@ enum Gender {
 class EditProfileBloc extends ChangeNotifier {
   // Variables
 
+  bool loadingProfileConfig = false;
+  bool loadingCities = false;
+
   String imagePath = '';
 
   bool _isEditedProfile = false;
   bool get isEditedProfile => _isEditedProfile;
   set isEditedProfile(val) {
     _isEditedProfile = val;
+    notifyListeners();
   }
 
   Gender _gender = Gender.male;
@@ -37,17 +45,54 @@ class EditProfileBloc extends ChangeNotifier {
     notifyListeners();
   }
 
+  ProfileConfigResponse? profileConfigResponse;
+  List<ConfigItem> cities = [];
+
+  ConfigItem? _selectedFiled;
+  ConfigItem? get selectedFiled => _selectedFiled;
+  set selectedFiled(val) {
+    if (_selectedFiled != val) {
+      _selectedFiled = val;
+      isEditedProfile = true;
+      notifyListeners();
+    }
+  }
+
+  ConfigItem? _selectedUniversity;
+  ConfigItem? get selectedUniversity => _selectedUniversity;
+  set selectedUniversity(val) {
+    if (_selectedUniversity != val) {
+      _selectedUniversity = val;
+      isEditedProfile = true;
+      notifyListeners();
+    }
+  }
+
+  ConfigItem? _selectedProvince;
+  ConfigItem? get selectedProvince => _selectedProvince;
+  set selectedProvince(val) {
+    if (_selectedProvince != val) {
+      _selectedProvince = val;
+      isEditedProfile = true;
+      notifyListeners();
+    }
+  }
+
+  ConfigItem? _selectedCity;
+  ConfigItem? get selectedCity => _selectedCity;
+  set selectedCity(val) {
+    if (_selectedCity != val) {
+      _selectedCity = val;
+      isEditedProfile = true;
+      notifyListeners();
+    }
+  }
+
   // ====== //
 
   static const int maxFileSize = 1024 * 1024;
   final ImagePicker _picker = ImagePicker();
   XFile? pickedImage;
-
-  Future<void> updataProfile() async {
-    try {} catch (e, s) {
-      LoggerHelper.errorLog(e, s);
-    }
-  }
 
   Future<void> pickAndCompressImage(BuildContext context) async {
     try {
@@ -141,6 +186,63 @@ class EditProfileBloc extends ChangeNotifier {
         pickedImage = null;
       }
       notifyListeners();
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> loadProfileConfig() async {
+    loadingProfileConfig = true;
+    notifyListeners();
+    try {
+      ApiResponseModel<ProfileConfigResponse>? response =
+          await AuthRemoteProvider.getProfileConfig();
+      showMessageToast(response?.message ?? '', response?.success ?? false);
+      if (response?.success ?? false) {
+        profileConfigResponse = response?.data;
+      }
+      loadingProfileConfig = false;
+      notifyListeners();
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      loadingProfileConfig = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> loadCities() async {
+    loadingCities = true;
+    notifyListeners();
+    try {
+      ApiResponseModel<List<ConfigItem>?> response =
+          await AuthRemoteProvider.getCities(_selectedProvince!.id!);
+      showMessageToast(response.message ?? '', response.success ?? false);
+      if (response.success ?? true) {
+        cities = response.data ?? [];
+      }
+      loadingCities = false;
+      notifyListeners();
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      loadingCities = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> editProfile() async {
+    try {
+      EditProfileRemoteProvider.updataProfile(
+        FormData.fromMap(
+          {
+            'field_id': _selectedFiled?.id,
+            'university_id': _selectedUniversity?.id,
+            'country': 'ایران',
+            'province_id': _selectedProvince?.id,
+            'city_id': _selectedCity?.id,
+            'gender': gender.name,
+          },
+        ),
+      );
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
     }

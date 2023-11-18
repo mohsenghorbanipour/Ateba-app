@@ -9,7 +9,7 @@ class Routes {
   static const String categoryTutorialsDetials = 'tutorial/:path';
   static const String packageDetails = 'package/:slug';
   static const String videoPlayer = 'player/:id';
-  static const String mainPagevideoPlayer = 'video-player';
+  static const String mainPagevideoPlayer = 'video-player/:id';
   static const String packageVideoPlayer = 'package-video-player';
   static const String cart = 'cart';
   static const String subscription = 'subscription';

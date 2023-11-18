@@ -98,26 +98,26 @@ class AuthBloc extends ChangeNotifier {
         response.success ?? false,
       );
       if (response.success ?? false) {
-        // if (response.data?.has_completed_profile ?? false) {
-        _token = response.data?.token ?? '';
-        _isLogin = true;
-        authenticateUser(_token ?? '');
-        await loadProfile();
-        loading = false;
-        notifyListeners();
-        AuthBloc().loadData();
-        Provider.of<HomeBloc>(context, listen: false).loadData();
-        CategoriesBloc().loadCategories();
-        CartBloc().loadOrders();
-        context.goNamed(
-          Routes.main,
-        );
-        // } else {
-        //   // await loadAppConfig();
-        //   context.goNamed(
-        //     Routes.main,
-        //   );
-        // }
+        if (response.data?.has_completed_profile ?? false) {
+          _token = response.data?.token ?? '';
+          _isLogin = true;
+          authenticateUser(_token ?? '');
+          await loadProfile();
+          loading = false;
+          notifyListeners();
+          AuthBloc().loadData();
+          Provider.of<HomeBloc>(context, listen: false).loadData();
+          CategoriesBloc().loadCategories();
+          CartBloc().loadOrders();
+          context.goNamed(
+            Routes.main,
+          );
+        } else {
+          await loadProfileConfig();
+          context.goNamed(
+            Routes.completeInfo,
+          );
+        }
       }
       loading = false;
       notifyListeners();
@@ -159,7 +159,7 @@ class AuthBloc extends ChangeNotifier {
 
   Future<void> loadAppConfig() async {
     try {
-      AuthRemoteProvider.getAppConfig();
+      //  AuthRemoteProvider.getAppConfig();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
     }
