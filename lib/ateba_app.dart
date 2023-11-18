@@ -19,6 +19,9 @@ import 'package:ateba_app/core/theme/style/ateba_theme.dart' as mytheme;
 class AtebaApp extends StatelessWidget {
   const AtebaApp({super.key});
 
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>(debugLabel: 'mainNavigator');
+
   @override
   Widget build(BuildContext context) {
     final botToastBuilder = BotToastInit();
@@ -83,6 +86,7 @@ class AtebaApp extends StatelessWidget {
                 final GoRouter router =
                     Provider.of<AtebaRouter>(context, listen: false).router;
                 return MaterialApp.router(
+                  key: navigatorKey,
                   title: AppConfig.appName,
                   localizationsDelegates: context.localizationDelegates,
                   supportedLocales: context.supportedLocales,
@@ -92,6 +96,7 @@ class AtebaApp extends StatelessWidget {
                     child = botToastBuilder(context, child);
                     return child;
                   },
+            
                   routeInformationParser: router.routeInformationParser,
                   routerDelegate: router.routerDelegate,
                   routeInformationProvider: router.routeInformationProvider,

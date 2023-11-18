@@ -1,5 +1,4 @@
 import 'package:ateba_app/core/components/loading_component.dart';
-import 'package:ateba_app/core/components/textfiled_component.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/modules/cart/bloc/cart_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';

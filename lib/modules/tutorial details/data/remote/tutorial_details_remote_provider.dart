@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:ateba_app/core/constants/remote_routes.dart';
 import 'package:ateba_app/core/network/api_response_model.dart';
@@ -8,7 +7,6 @@ import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/comment.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/tutorial_details.dart';
 import 'package:dio/dio.dart';
-import 'package:logger/logger.dart';
 
 class TutorialDetaialsRemoteProvider {
   static final NetworkHelper _networkHelper = NetworkHelper();

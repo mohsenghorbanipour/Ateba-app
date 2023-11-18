@@ -10,6 +10,7 @@ class RemoteRoutes {
   static const uploadImage = 'profile/upload';
   static const String sendCode = 'login';
   static const String verifyCode = 'login/verify';
+  static const String getProfileConfig = 'profile/configs';
   
 
   // Banners Api

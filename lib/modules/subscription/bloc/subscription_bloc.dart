@@ -5,7 +5,6 @@ import 'package:ateba_app/modules/cart/data/models/orders_response.dart';
 import 'package:ateba_app/modules/subscription/data/models/subscription_plan.dart';
 import 'package:ateba_app/modules/subscription/data/remote/subscription_remote_provider.dart';
 import 'package:flutter/foundation.dart';
-import 'package:logger/logger.dart';
 
 class SubscriptionBloc extends ChangeNotifier {
   bool loading = false;

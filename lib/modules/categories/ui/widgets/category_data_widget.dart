@@ -1,7 +1,5 @@
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
-import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/modules/categories/bloc/categories_bloc.dart';
-import 'package:ateba_app/modules/home/data/models/course.dart';
 import 'package:ateba_app/modules/home/ui/widgets/course_card.dart';
 import 'package:ateba_app/modules/home/ui/widgets/course_shimmer_card.dart';
 import 'package:ateba_app/modules/home/ui/widgets/package_card.dart';

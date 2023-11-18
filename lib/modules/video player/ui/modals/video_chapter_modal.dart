@@ -1,7 +1,6 @@
 import 'package:ateba_app/core/components/modal_component.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/date_helper.dart';
-import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/video%20player/data/models/video_chapter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';

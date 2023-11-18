@@ -1,4 +1,3 @@
-import 'package:ateba_app/core/base/bloc/download_video_bloc.dart';
 import 'package:ateba_app/core/components/modal_component.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/video_link.dart';

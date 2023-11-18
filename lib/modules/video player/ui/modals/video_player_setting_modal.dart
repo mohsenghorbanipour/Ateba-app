@@ -8,7 +8,6 @@ import 'package:ateba_app/modules/video%20player/ui/modals/select_quality_modal.
 import 'package:ateba_app/modules/video%20player/ui/widgets/video_player_setting_tile.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class VideoPlayerSettingModal extends StatelessWidget {

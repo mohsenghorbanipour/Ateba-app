@@ -1,13 +1,11 @@
 import 'package:ateba_app/core/components/button_component.dart';
 import 'package:ateba_app/core/components/shimmer_components.dart';
-import 'package:ateba_app/core/constants/remote_routes.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/date_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/home/data/models/package.dart';
 import 'package:ateba_app/modules/home/data/models/students_sample.dart';
-import 'package:ateba_app/modules/home/data/models/tutorials_sample.dart';
 import 'package:ateba_app/modules/home/ui/widgets/students_widget.dart';
 import 'package:ateba_app/modules/home/ui/widgets/teching_name_chip.dart';
 import 'package:cached_network_image/cached_network_image.dart';

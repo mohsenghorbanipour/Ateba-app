@@ -2,7 +2,6 @@ import 'package:ateba_app/core/base/base_model.dart';
 import 'package:ateba_app/modules/home/data/models/teacher.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/attachment.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/comment.dart';
-import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'tutorial_details.g.dart';

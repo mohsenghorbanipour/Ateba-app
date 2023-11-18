@@ -1,7 +1,6 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
-import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/modules/bookmarks/bloc/bookmarks_bloc.dart';
 import 'package:ateba_app/modules/bookmarks/data/models/bookmark.dart';
 import 'package:ateba_app/modules/bookmarks/ui/widgets/bookmark_card.dart';

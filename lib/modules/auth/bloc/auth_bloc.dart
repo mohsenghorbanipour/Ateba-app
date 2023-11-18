@@ -12,7 +12,6 @@ import 'package:ateba_app/modules/auth/data/remote/auth_remote_provider.dart';
 import 'package:ateba_app/modules/cart/bloc/cart_bloc.dart';
 import 'package:ateba_app/modules/categories/bloc/categories_bloc.dart';
 import 'package:ateba_app/modules/home/bloc/home_bloc.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -41,6 +40,7 @@ class AuthBloc extends ChangeNotifier {
 
   Future<void> loadData() async {
     await Future.wait([
+      loadProfileConfig(),
       loadProfile(),
       loadUserSubscription(),
     ]);
@@ -146,6 +146,14 @@ class AuthBloc extends ChangeNotifier {
       LoggerHelper.errorLog(e, s);
       loadingProfile = false;
       notifyListeners();
+    }
+  }
+
+  Future<void> loadProfileConfig() async {
+    try {
+      AuthRemoteProvider.getProfileConfig();
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
     }
   }
 

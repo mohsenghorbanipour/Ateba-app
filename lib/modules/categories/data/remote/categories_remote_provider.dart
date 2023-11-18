@@ -6,7 +6,6 @@ import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/modules/categories/data/models/category.dart';
 import 'package:ateba_app/modules/home/data/models/course.dart';
 import 'package:ateba_app/modules/home/data/models/package.dart';
-import 'package:ateba_app/modules/home/data/models/tutorial.dart';
 import 'package:dio/dio.dart';
 
 class CategoriesRemoteProvider {

@@ -1,7 +1,6 @@
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
-import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/auth/bloc/auth_bloc.dart';
 import 'package:ateba_app/modules/profile/ui/dialogs/logout_dialog.dart';
@@ -12,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatelessWidget {

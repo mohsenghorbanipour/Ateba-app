@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ateba_app/ateba_app.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/modules/auth/ui/page/login_otp_page.dart';
 import 'package:ateba_app/modules/auth/ui/page/login_page.dart';
@@ -30,8 +31,8 @@ class AtebaRouter {
     observers: <NavigatorObserver>[
       BotToastNavigatorObserver(),
     ],
-
-    // urlPathStrategy: UrlPathStrategy.path,
+    navigatorKey: AtebaApp.navigatorKey,
+    // ur lPathStrategy: UrlPathStrategy.path,
     // errorPageBuilder: (context, state) => MaterialPage<void>(
     //   key: state.pageKey,
     //   restorationId: state.pageKey.value,

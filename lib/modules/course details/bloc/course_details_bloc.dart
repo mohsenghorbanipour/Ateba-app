@@ -9,7 +9,6 @@ import 'package:ateba_app/modules/cart/data/models/orders_response.dart';
 import 'package:ateba_app/modules/course%20details/data/models/course_details.dart';
 import 'package:ateba_app/modules/course%20details/data/remote/course_details_remote_provider.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/comment.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class CourseDetailsBloc extends ChangeNotifier {

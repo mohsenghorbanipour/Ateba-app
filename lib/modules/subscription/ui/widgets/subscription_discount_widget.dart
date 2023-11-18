@@ -1,6 +1,5 @@
 import 'package:ateba_app/core/components/loading_component.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
-import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/subscription/bloc/subscription_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';

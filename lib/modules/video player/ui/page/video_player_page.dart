@@ -5,7 +5,6 @@ import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';
 import 'package:ateba_app/modules/video%20player/bloc/video_player_bloc.dart';
-import 'package:ateba_app/modules/video%20player/data/models/video_chapter.dart';
 import 'package:ateba_app/modules/video%20player/ui/modals/video_chapter_modal.dart';
 import 'package:ateba_app/modules/video%20player/ui/modals/video_player_setting_modal.dart';
 import 'package:easy_localization/easy_localization.dart';

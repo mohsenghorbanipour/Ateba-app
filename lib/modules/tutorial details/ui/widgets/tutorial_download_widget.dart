@@ -3,7 +3,6 @@ import 'package:ateba_app/core/components/toast_component.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
-import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/core/widgets/no_active_subscription_dialog.dart';
 import 'package:ateba_app/modules/tutorial%20details/bloc/tutorial_details_bloc.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';

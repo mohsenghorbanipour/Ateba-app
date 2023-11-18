@@ -1,6 +1,5 @@
 import 'package:ateba_app/core/components/shimmer_components.dart';
 import 'package:ateba_app/modules/home/data/models/students_sample.dart';
-import 'package:ateba_app/modules/home/data/models/tutorials_sample.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 

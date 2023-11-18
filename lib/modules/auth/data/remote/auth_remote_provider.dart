@@ -1,4 +1,3 @@
-import 'package:ateba_app/core/components/toast_component.dart';
 import 'package:ateba_app/core/constants/remote_routes.dart';
 import 'package:ateba_app/core/network/api_response_model.dart';
 import 'package:ateba_app/core/network/network_helper.dart';
@@ -7,7 +6,6 @@ import 'package:ateba_app/modules/auth/data/models/token_response.dart';
 import 'package:ateba_app/modules/auth/data/models/user.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:logger/logger.dart';
 
 class AuthRemoteProvider {
   static final NetworkHelper _networkHelper = NetworkHelper();
@@ -132,6 +130,16 @@ class AuthRemoteProvider {
         message: 'sth_wrong'.tr(),
         data: null,
       );
+    }
+  }
+
+  static Future<void> getProfileConfig() async {
+    try {
+      Response response = await _networkHelper.dio.get(
+        RemoteRoutes.getProfileConfig,
+      );
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
     }
   }
 

@@ -2,7 +2,6 @@ import 'package:ateba_app/core/base/base_comment_page.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/date_helper.dart';
-import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/course%20details/bloc/course_details_bloc.dart';
 import 'package:ateba_app/modules/package%20details/bloc/package_details_bloc.dart';

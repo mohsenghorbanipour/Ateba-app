@@ -3,7 +3,6 @@ import 'package:ateba_app/core/components/button_component.dart';
 import 'package:ateba_app/core/components/textfiled_component.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/modules/package%20details/bloc/package_details_bloc.dart';
-import 'package:ateba_app/modules/tutorial%20details/data/models/comment.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/modals/send_comment_modals.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/widgets/comment_card.dart';
 import 'package:easy_localization/easy_localization.dart';

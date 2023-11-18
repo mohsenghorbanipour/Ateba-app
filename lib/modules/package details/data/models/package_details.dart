@@ -1,8 +1,6 @@
 import 'package:ateba_app/core/base/base_model.dart';
 import 'package:ateba_app/modules/home/data/models/teacher.dart';
-import 'package:ateba_app/modules/home/data/models/tutorial.dart';
 import 'package:ateba_app/modules/package%20details/data/models/tutorial_package.dart';
-import 'package:ateba_app/modules/tutorial%20details/data/models/tutorial_details.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'package_details.g.dart';

@@ -1,6 +1,5 @@
 import 'package:ateba_app/core/base/enums/tab_state.dart';
 import 'package:ateba_app/core/components/button_component.dart';
-import 'package:ateba_app/core/components/toast_component.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';

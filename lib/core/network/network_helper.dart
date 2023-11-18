@@ -1,15 +1,26 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
-import 'dart:io';
+import 'package:ateba_app/ateba_app.dart';
 import 'package:ateba_app/core/constants/constants.dart';
 import 'package:ateba_app/core/network/dio_connectivity_request_retrier.dart';
 import 'package:ateba_app/core/network/retry_on_connection_change_inceptor.dart';
+import 'package:ateba_app/core/router/ateba_router.dart';
+import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/utils/app_directory.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/modules/auth/bloc/auth_bloc.dart';
+import 'package:ateba_app/modules/bookmarks/bloc/bookmarks_bloc.dart';
+import 'package:ateba_app/modules/cart/bloc/cart_bloc.dart';
+import 'package:ateba_app/modules/categories/bloc/categories_bloc.dart';
+import 'package:ateba_app/modules/home/bloc/home_bloc.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class NetworkHelper {
   factory NetworkHelper() => _instance;
@@ -53,8 +64,13 @@ class NetworkHelper {
       ..interceptors.add(RetryOnConnectionChangeInterceptor(
           requestRetrier: DioConnectivityRequestRetrier(dio: dio)));
     if (!kIsWeb) {
-      dio.interceptors.add(CookieManager(
-          PersistCookieJar(storage: FileStorage((await appDirectory()).path))));
+      dio.interceptors.add(
+        CookieManager(
+          PersistCookieJar(
+            storage: FileStorage((await appDirectory()).path),
+          ),
+        ),
+      );
     }
   }
 
@@ -102,25 +118,35 @@ class NetworkHelper {
       );
     }
     if (isLogin && (response.statusCode ?? 0) == 401) {
-      // LoggerHelper.logger.wtf('401');
-      // if (isWorking != null) {
-      //   await isWorking;
-      //   responseInterceptorHandler
-      //       .resolve(await retry(dio, response.requestOptions));
-      // }
+      // LoggerHelper.logger.i('401');
+      if (isWorking != null) {
+        await isWorking;
+        responseInterceptorHandler
+            .resolve(await retry(dio, response.requestOptions));
+      }
       // //!LOCK
-      // var completer = Completer<void>();
-      // isWorking = completer.future;
+      var completer = Completer<void>();
+      isWorking = completer.future;
+      BuildContext context = AtebaApp.navigatorKey.currentContext!;
+      Provider.of<AuthBloc>(context, listen: false).logout();
+      Provider.of<HomeBloc>(context, listen: false).clearData();
+      Provider.of<CategoriesBloc>(context, listen: false).clearData();
+      Provider.of<BookmarksBloc>(context, listen: false).clearData();
+      Provider.of<CartBloc>(context, listen: false).clearData();
+      context.goNamed(
+        Routes.login,
+      );
+      await initDio();
       // // dio.lock();
       // //!TASK
       // // await AuthBloc().refreshToken();
       // //!UNLOCK
-      // completer.complete();
-      // isWorking = null;
-      // // dio.unlock();
+      completer.complete();
+      isWorking = null;
+      // dio.unlock();
       // LoggerHelper.logger.wtf('retry');
-      // responseInterceptorHandler
-      //     .resolve(await retry(dio, response.requestOptions));
+      responseInterceptorHandler
+          .resolve(await retry(dio, response.requestOptions));
     }
     return responseInterceptorHandler.next(response);
   }

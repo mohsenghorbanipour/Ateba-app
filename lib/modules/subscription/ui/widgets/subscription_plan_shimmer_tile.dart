@@ -17,7 +17,7 @@ class SubscriptionPlatShimmerTile extends StatelessWidget {
             color: ColorPalette.of(context).border,
           ),
         ),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ShimmerContainer(

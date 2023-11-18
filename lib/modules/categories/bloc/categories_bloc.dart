@@ -5,7 +5,6 @@ import 'package:ateba_app/modules/categories/data/models/category.dart';
 import 'package:ateba_app/modules/categories/data/remote/categories_remote_provider.dart';
 import 'package:ateba_app/modules/home/data/models/course.dart';
 import 'package:ateba_app/modules/home/data/models/package.dart';
-import 'package:ateba_app/modules/home/data/models/tutorial.dart';
 import 'package:flutter/material.dart';
 
 enum TabState {
