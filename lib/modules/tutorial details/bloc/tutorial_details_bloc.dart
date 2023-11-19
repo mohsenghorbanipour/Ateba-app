@@ -7,6 +7,7 @@ import 'package:ateba_app/modules/tutorial%20details/data/models/comment.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/tutorial_details.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/remote/tutorial_details_remote_provider.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
 enum AttachmentType {
@@ -63,6 +64,8 @@ class TutorialDetaialsBloc extends ChangeNotifier {
   }
 
   final TextEditingController commentController = TextEditingController();
+
+  final audioPlayer = AudioPlayer();
 
   Future<void> loadToturialDetials(String slug) async {
     loading = true;
@@ -355,5 +358,11 @@ class TutorialDetaialsBloc extends ChangeNotifier {
       LoggerHelper.errorLog(e, s);
       return null;
     }
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
   }
 }

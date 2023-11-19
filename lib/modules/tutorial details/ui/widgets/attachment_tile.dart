@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class AttachmentTile extends StatefulWidget {
   const AttachmentTile({
@@ -26,6 +27,8 @@ class AttachmentTile extends StatefulWidget {
 
 class _AttachmentTileState extends State<AttachmentTile> {
   bool showDetails = false;
+
+  bool isPlayAudio = false;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -124,6 +127,97 @@ class _AttachmentTileState extends State<AttachmentTile> {
                       ),
                     ),
                   ),
+                if (widget.attachment.type == AttachmentType.voice.name)
+                  ListView.separated(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: widget.attachment.files?.length ?? 0,
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                    shrinkWrap: true,
+                    separatorBuilder: (_, __) => const SizedBox(
+                      height: 8,
+                    ),
+                    itemBuilder: (_, index) => InkWell(
+                      onTap: () {
+                        if (isPlayAudio) {
+                          Provider.of<TutorialDetaialsBloc>(context,
+                                  listen: false)
+                              .audioPlayer
+                              .pause();
+                        } else {
+                          Provider.of<TutorialDetaialsBloc>(context,
+                                  listen: false)
+                              .audioPlayer
+                              .play(
+                                UrlSource(
+                                  widget.attachment.files?[index].url ?? '',
+                                ),
+                              );
+                        }
+                        setState(() {
+                          isPlayAudio = !isPlayAudio;
+                        });
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            widget.attachment.files?[index].title ?? '',
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ),
+                          Icon(
+                            isPlayAudio
+                                ? Icons.pause
+                                : Icons.play_arrow_rounded,
+                            size: 18,
+                            color: ColorPalette.of(context)
+                                .textPrimary
+                                .withOpacity(0.6),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                if (widget.attachment.type == AttachmentType.pdf.name)
+                  ListView.separated(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: widget.attachment.files?.length ?? 0,
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                    shrinkWrap: true,
+                    separatorBuilder: (_, __) => const SizedBox(
+                      height: 8,
+                    ),
+                    itemBuilder: (_, index) => InkWell(
+                      onTap: () {
+                        context.goNamed(
+                          Routes.pdfViewPage,
+                          pathParameters: {
+                            'slug': Provider.of<TutorialDetaialsBloc>(context,
+                                        listen: false)
+                                    .tutorialDetaials
+                                    ?.slug ??
+                                '',
+                          },
+                          extra: widget.attachment.files?[index],
+                        );
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            widget.attachment.files?[index].title ?? '',
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ),
+                          Icon(
+                            Icons.picture_as_pdf_outlined,
+                            size: 18,
+                            color: ColorPalette.of(context)
+                                .textPrimary
+                                .withOpacity(0.6),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 if (widget.attachment.type == AttachmentType.video.name)
                   ListView.separated(
                     physics: const NeverScrollableScrollPhysics(),
@@ -133,57 +227,81 @@ class _AttachmentTileState extends State<AttachmentTile> {
                     separatorBuilder: (_, __) => const SizedBox(
                       height: 8,
                     ),
-                    itemBuilder: (_, index) => Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          widget.attachment.files?[index].title ?? '',
-                          style: Theme.of(context).textTheme.labelMedium,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            context.goNamed(
-                              Routes.videoPlayer,
-                              pathParameters: {
-                                'slug': Provider.of<TutorialDetaialsBloc>(
-                                            context,
-                                            listen: false)
-                                        .tutorialDetaials
-                                        ?.slug ??
-                                    '',
-                              },
-                              extra: {
-                                'show_with_path': false,
-                                'slug': Provider.of<TutorialDetaialsBloc>(
-                                            context,
-                                            listen: false)
-                                        .tutorialDetaials
-                                        ?.slug ??
-                                    '',
-                                'video': Video(
-                                  id: widget.attachment.files?[index].id,
-                                  description: widget
-                                      .attachment.files?[index].description,
-                                  download_links: widget
-                                      .attachment.files?[index].download_links,
-                                  duration:
-                                      widget.attachment.files?[index].duration,
-                                  hls_url:
-                                      widget.attachment.files?[index].hls_url,
-                                  size: widget.attachment.files?[index].size,
-                                  thumbnail_url: widget
-                                      .attachment.files?[index].thumbnail_url,
-                                  title: widget.attachment.files?[index].title,
-                                  type: widget.attachment.files?[index].type,
-                                ),
-                              },
-                            );
+                    itemBuilder: (_, index) => InkWell(
+                      onTap: () {
+                        context.goNamed(
+                          Routes.videoPlayer,
+                          pathParameters: {
+                            'id': Provider.of<TutorialDetaialsBloc>(context,
+                                        listen: false)
+                                    .getVideo()
+                                    ?.id
+                                    .toString() ??
+                                '',
+                            'slug': Provider.of<TutorialDetaialsBloc>(context,
+                                        listen: false)
+                                    .tutorialDetaials
+                                    ?.slug ??
+                                '',
                           },
-                          child: SvgPicture.asset(
-                            Assets.videoCircleIc,
+                          extra: {
+                            'playFromOfflineGallery': false,
+                            'slug': Provider.of<TutorialDetaialsBloc>(context,
+                                        listen: false)
+                                    .tutorialDetaials
+                                    ?.slug ??
+                                '',
+                            'video': Provider.of<TutorialDetaialsBloc>(context,
+                                    listen: false)
+                                .getVideo(),
+                          },
+                        );
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            widget.attachment.files?[index].title ?? '',
+                            style: Theme.of(context).textTheme.labelMedium,
                           ),
-                        )
-                      ],
+                          SvgPicture.asset(
+                            Assets.videoCircleIc,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                if (widget.attachment.type == AttachmentType.link.name)
+                  ListView.separated(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: widget.attachment.files?.length ?? 0,
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                    shrinkWrap: true,
+                    separatorBuilder: (_, __) => const SizedBox(
+                      height: 8,
+                    ),
+                    itemBuilder: (_, index) => InkWell(
+                      onTap: () {
+                        LauncherHelper.launch(
+                          widget.attachment.files?[index].url ?? '',
+                        );
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            widget.attachment.files?[index].title ?? '',
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ),
+                          SvgPicture.asset(
+                            Assets.downloadIc,
+                            width: 16,
+                            color: ColorPalette.of(context)
+                                .textPrimary
+                                .withOpacity(0.6),
+                          )
+                        ],
+                      ),
                     ),
                   ),
               ],

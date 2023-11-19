@@ -12,6 +12,7 @@ import 'package:ateba_app/modules/auth/data/remote/auth_remote_provider.dart';
 import 'package:ateba_app/modules/cart/bloc/cart_bloc.dart';
 import 'package:ateba_app/modules/categories/bloc/categories_bloc.dart';
 import 'package:ateba_app/modules/home/bloc/home_bloc.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -38,6 +39,8 @@ class AuthBloc extends ChangeNotifier {
 
   String phone = '';
 
+  String _fcmToken = '';
+
   Future<void> loadData() async {
     await Future.wait([
       loadProfileConfig(),
@@ -59,6 +62,18 @@ class AuthBloc extends ChangeNotifier {
       } else {
         await networkHelper.initDio();
       }
+      getFcmToken();
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> getFcmToken() async {
+    try {
+      FirebaseMessaging messaging = FirebaseMessaging.instance;
+      _fcmToken = await messaging.getToken() ?? ' ';
+      await FirebaseMessaging.instance.setAutoInitEnabled(true);
+      print(_fcmToken);
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
     }
@@ -98,26 +113,26 @@ class AuthBloc extends ChangeNotifier {
         response.success ?? false,
       );
       if (response.success ?? false) {
-        if (response.data?.has_completed_profile ?? false) {
-          _token = response.data?.token ?? '';
-          _isLogin = true;
-          authenticateUser(_token ?? '');
-          await loadProfile();
-          loading = false;
-          notifyListeners();
-          AuthBloc().loadData();
-          Provider.of<HomeBloc>(context, listen: false).loadData();
-          CategoriesBloc().loadCategories();
-          CartBloc().loadOrders();
-          context.goNamed(
-            Routes.main,
-          );
-        } else {
-          await loadProfileConfig();
-          context.goNamed(
-            Routes.completeInfo,
-          );
-        }
+        // if (response.data?.has_completed_profile ?? false) {
+        _token = response.data?.token ?? '';
+        _isLogin = true;
+        authenticateUser(_token ?? '');
+        await loadProfile();
+        loading = false;
+        notifyListeners();
+        AuthBloc().loadData();
+        Provider.of<HomeBloc>(context, listen: false).loadData();
+        CategoriesBloc().loadCategories();
+        CartBloc().loadOrders();
+        context.goNamed(
+          Routes.main,
+        );
+        // } else {
+        //   await loadProfileConfig();
+        //   context.goNamed(
+        //     Routes.completeInfo,
+        //   );
+        // }
       }
       loading = false;
       notifyListeners();

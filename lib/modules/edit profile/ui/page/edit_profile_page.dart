@@ -16,7 +16,11 @@ class EditProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => isEditProfile
       ? ChangeNotifierProvider(
-          create: (context) => EditProfileBloc()..loadProfileConfig(),
+          create: (context) => EditProfileBloc()
+            ..gender = AuthBloc().userProfile?.gender == Gender.male.name
+                ? Gender.male
+                : Gender.female
+            ..loadProfileConfig(),
           lazy: false,
           builder: (context, child) => UserInfoWidget(
             user: context.select<AuthBloc, User>(

@@ -7,9 +7,9 @@ import 'package:ateba_app/core/constants/image_compress.dart';
 import 'package:ateba_app/core/network/api_response_model.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
+import 'package:ateba_app/modules/auth/bloc/auth_bloc.dart';
 import 'package:ateba_app/modules/auth/data/models/config_item.dart';
 import 'package:ateba_app/modules/auth/data/models/profile_config_response.dart';
-import 'package:ateba_app/modules/auth/data/models/user.dart';
 import 'package:ateba_app/modules/auth/data/remote/auth_remote_provider.dart';
 import 'package:ateba_app/modules/edit%20profile/data/remote/edit_profile_remote_provider.dart';
 import 'package:dio/dio.dart';
@@ -28,6 +28,7 @@ class EditProfileBloc extends ChangeNotifier {
 
   bool loadingProfileConfig = false;
   bool loadingCities = false;
+  bool loadingEditProfile = false;
 
   String imagePath = '';
 
@@ -41,8 +42,15 @@ class EditProfileBloc extends ChangeNotifier {
   Gender _gender = Gender.male;
   Gender get gender => _gender;
   set gender(val) {
-    _gender = val;
-    notifyListeners();
+    if (val != _gender) {
+      _gender = val;
+      if (_gender.name != AuthBloc().userProfile?.gender) {
+        isEditedProfile = true;
+      } else {
+        isEditedProfile = false;
+      }
+      notifyListeners();
+    }
   }
 
   ProfileConfigResponse? profileConfigResponse;
@@ -182,6 +190,7 @@ class EditProfileBloc extends ChangeNotifier {
       );
       if (response.success ?? false) {
         imagePath = response.data ?? '';
+        isEditedProfile = true;
       } else {
         pickedImage = null;
       }
@@ -229,9 +238,12 @@ class EditProfileBloc extends ChangeNotifier {
     }
   }
 
-  Future<void> editProfile() async {
+  Future<bool> editProfile(String name, String email) async {
+    loadingEditProfile = true;
+    notifyListeners();
     try {
-      EditProfileRemoteProvider.updataProfile(
+      ApiResponseModel<bool> response =
+          await EditProfileRemoteProvider.updataProfile(
         FormData.fromMap(
           {
             'field_id': _selectedFiled?.id,
@@ -240,11 +252,25 @@ class EditProfileBloc extends ChangeNotifier {
             'province_id': _selectedProvince?.id,
             'city_id': _selectedCity?.id,
             'gender': gender.name,
+            'name': name,
+            'email': email,
+            'picture_path': imagePath,
           },
         ),
       );
+      showMessageToast(response.message, response.success ?? false);
+      if (response.success ?? false) {
+        await AuthBloc().loadProfile();
+        return true;
+      }
+      loadingEditProfile = false;
+      notifyListeners();
+      return false;
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+      loadingEditProfile = false;
+      notifyListeners();
+      return false;
     }
   }
 

@@ -5,10 +5,12 @@ import 'package:ateba_app/core/base/base_box.dart';
 import 'package:ateba_app/core/components/toast_component.dart';
 import 'package:ateba_app/core/network/network_helper.dart';
 import 'package:ateba_app/core/resources/models/cache_video_model.dart';
+import 'package:ateba_app/core/resources/notification%20service/notification_service.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:path_provider/path_provider.dart';
 
 class DownloadVideoBloc extends ChangeNotifier {
@@ -72,6 +74,7 @@ class DownloadVideoBloc extends ChangeNotifier {
         savePath,
         onReceiveProgress: (count, total) {
           percentage = ((count / total) * 100).floor();
+          updateNotification(percentage);
           notifyListeners();
         },
         cancelToken: cancelToken,
@@ -106,6 +109,31 @@ class DownloadVideoBloc extends ChangeNotifier {
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
     }
+  }
+
+  void updateNotification(int progress) async {
+    AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'channel_id',
+      'channel_name',
+      importance: Importance.high,
+      priority: Priority.high,
+      ticker: 'ticker',
+      onlyAlertOnce: true,
+      showProgress: true, // Show the progress indicator in the notification
+      maxProgress: 100, // The maximum value of the progress indicator
+      progress: progress, // The current progress value
+    );
+
+    NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await NotificationService.flutterLocalNotificationsPlugin.show(
+      0,
+      'Download Video',
+      'Downloading ...',
+      platformChannelSpecifics,
+    );
   }
 
   void saveData() {

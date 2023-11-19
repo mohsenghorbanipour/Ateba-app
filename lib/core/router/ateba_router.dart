@@ -16,6 +16,8 @@ import 'package:ateba_app/modules/photo%20gallery/ui/page/photo_gallery_page.dar
 import 'package:ateba_app/modules/subscription/ui/page/subscription_page.dart';
 import 'package:ateba_app/modules/transactions/ui/page/transactions_page.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/attachment.dart';
+import 'package:ateba_app/modules/tutorial%20details/data/models/file_data.dart';
+import 'package:ateba_app/modules/tutorial%20details/ui/page/pdf_view_page.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/page/tutorial_details_page.dart';
 import 'package:ateba_app/modules/category%20details/ui/page/category_details_page.dart';
 import 'package:ateba_app/modules/video%20player/ui/page/video_player_page.dart';
@@ -97,6 +99,13 @@ class AtebaRouter {
                 name: Routes.photoGalleryPage,
                 pageBuilder: (state) => PhotoGalleryPage(
                   attachment: state.extra as Attachment,
+                ),
+              ),
+              _routeFade(
+                path: Routes.pdfViewPage,
+                name: Routes.pdfViewPage,
+                pageBuilder: (state) => PdfViewPage(
+                  file: state.extra as FileData,
                 ),
               ),
             ],

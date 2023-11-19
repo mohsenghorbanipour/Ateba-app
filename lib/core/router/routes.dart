@@ -10,7 +10,7 @@ class Routes {
   static const String packageDetails = 'package/:slug';
   static const String videoPlayer = 'player/:id';
   static const String mainPagevideoPlayer = 'video-player/:id';
-  static const String packageVideoPlayer = 'package-video-player';
+  static const String packageVideoPlayer = 'package-video-player/:id';
   static const String cart = 'cart';
   static const String subscription = 'subscription';
   static const String subscriptions = 'subscriptions';
@@ -19,4 +19,5 @@ class Routes {
   static const String editProfile = 'edit-profile';
   static const String completeInfo = 'complete-info';
   static const String photoGalleryPage = 'photo-gallry';
+  static const String pdfViewPage = 'pdf-view';
 }

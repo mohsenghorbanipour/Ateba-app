@@ -37,8 +37,8 @@ class ProfilePage extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(40),
                   child: CachedNetworkImage(
-                    imageUrl:
-                        'https://images.squarespace-cdn.com/content/v1/5a1c2452268b96d901cd3471/1546637246803-H5RMXRRU7TN92M7PJAE5/beautiful-boy1.jpg?format=2500w',
+                    imageUrl: context.select<AuthBloc, String>(
+                        (bloc) => bloc.userProfile?.picture_url ?? ''),
                     width: 40,
                     height: 40,
                     fit: BoxFit.cover,
@@ -78,7 +78,6 @@ class ProfilePage extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    
                     context.goNamed(
                       Routes.editProfile,
                       extra: true,

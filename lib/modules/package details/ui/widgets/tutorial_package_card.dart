@@ -1,5 +1,6 @@
 import 'package:ateba_app/core/base/bloc/download_video_bloc.dart';
 import 'package:ateba_app/core/components/shimmer_components.dart';
+import 'package:ateba_app/core/components/toast_component.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
@@ -62,17 +63,27 @@ class _TutorialPackageCardState extends State<TutorialPackageCard> {
                       padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
                       child: InkWell(
                         onTap: () {
-                          context.goNamed(
-                            Routes.packageVideoPlayer,
-                            pathParameters: {
-                              'slug': widget.tutorialPackage.slug ?? '',
-                            },
-                            extra: {
-                              'show_with_path': false,
-                              'slug': widget.tutorialPackage.slug ?? '',
-                              'video': widget.tutorialPackage.videos?.first,
-                            },
-                          );
+                          if (widget.tutorialPackage.has_bought ?? false) {
+                            context.goNamed(
+                              Routes.packageVideoPlayer,
+                              pathParameters: {
+                                'id': widget.tutorialPackage.videos?.first.id
+                                        .toString() ??
+                                    '',
+                                'slug': widget.tutorialPackage.slug ?? '',
+                              },
+                              extra: {
+                                'playFromOfflineGallery': false,
+                                'slug': widget.tutorialPackage.slug ?? '',
+                                'video': widget.tutorialPackage.videos?.first,
+                              },
+                            );
+                          } else {
+                            ToastComponent.show(
+                              'you_are_not_access_this_package'.tr(),
+                              type: ToastType.info,
+                            );
+                          }
                         },
                         child: Stack(
                           children: [
@@ -102,18 +113,28 @@ class _TutorialPackageCardState extends State<TutorialPackageCard> {
                                 children: [
                                   Container(
                                     alignment: Alignment.center,
-                                    width: 20,
-                                    height: 20,
+                                    width: 25,
+                                    height: 25,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: ColorPalette.of(context).error,
                                     ),
                                     child: Center(
-                                      child: Icon(
-                                        Icons.play_arrow_rounded,
-                                        color: ColorPalette.of(context).white,
-                                        size: 16,
-                                      ),
+                                      child: widget
+                                                  .tutorialPackage.has_bought ??
+                                              false
+                                          ? Icon(
+                                              Icons.play_arrow_rounded,
+                                              color: ColorPalette.of(context)
+                                                  .white,
+                                              size: 16,
+                                            )
+                                          : Icon(
+                                              Icons.lock,
+                                              color: ColorPalette.of(context)
+                                                  .white,
+                                              size: 16,
+                                            ),
                                     ),
                                   ),
                                 ],
