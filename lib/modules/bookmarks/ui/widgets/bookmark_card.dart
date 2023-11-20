@@ -219,7 +219,9 @@ class BookmarkCard extends StatelessWidget {
                         curve: Curves.easeIn,
                         animationType: DialogTransitionType.fade,
                         duration: const Duration(milliseconds: 300),
-                        builder: (context) => const ConfirmDeleteDialog(),
+                        builder: (context) => ConfirmDeleteDialog(
+                          index: index,
+                        ),
                       );
                     },
                     child: Icon(

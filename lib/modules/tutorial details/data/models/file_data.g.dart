@@ -20,6 +20,7 @@ FileData _$FileDataFromJson(Map<String, dynamic> json) => FileData(
       download_links: (json['download_links'] as List<dynamic>?)
           ?.map((e) => VideoLink.fromJson(e as Map<String, dynamic>))
           .toList(),
+      text: json['text'] as String?,
     );
 
 Map<String, dynamic> _$FileDataToJson(FileData instance) {
@@ -43,5 +44,6 @@ Map<String, dynamic> _$FileDataToJson(FileData instance) {
   writeNotNull('duration', instance.duration);
   writeNotNull('download_links',
       instance.download_links?.map((e) => e.toJson()).toList());
+  writeNotNull('text', instance.text);
   return val;
 }

@@ -226,63 +226,63 @@ class UserInfoWidget extends StatelessWidget {
                         );
                       },
                     ),
-                    InputComponent(
-                      labelText: 'country'.tr(),
-                      margin: const EdgeInsets.fromLTRB(16, 24, 16, 24),
-                      hintText: 'select'.tr(),
-                      onTap: () {},
-                    ),
-                    InputComponent(
-                      labelText: 'province'.tr(),
-                      margin: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-                      hintText: 'select'.tr(),
-                      value: context.select<EditProfileBloc, String?>(
-                        (bloc) =>
-                            bloc.selectedProvince?.name ??
-                            AuthBloc().userProfile?.province,
-                      ),
-                      onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                          builder: (ctx) => ChangeNotifierProvider.value(
-                            value: Provider.of<EditProfileBloc>(context,
-                                listen: false),
-                            child: const SelectProvinceModal(),
-                          ),
-                        );
-                      },
-                    ),
-                    InputComponent(
-                      labelText: 'city'.tr(),
-                      margin: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-                      hintText: 'select'.tr(),
-                      value: context.select<EditProfileBloc, String?>(
-                        (bloc) =>
-                            bloc.selectedCity?.name ??
-                            AuthBloc().userProfile?.city,
-                      ),
-                      onTap: () {
-                        if (Provider.of<EditProfileBloc>(context, listen: false)
-                                .selectedProvince !=
-                            null) {
-                          Provider.of<EditProfileBloc>(context, listen: false)
-                              .loadCities();
+                    // InputComponent(
+                    //   labelText: 'country'.tr(),
+                    //   margin: const EdgeInsets.fromLTRB(16, 24, 16, 24),
+                    //   hintText: 'select'.tr(),
+                    //   onTap: () {},
+                    // ),
+                    // InputComponent(
+                    //   labelText: 'province'.tr(),
+                    //   margin: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+                    //   hintText: 'select'.tr(),
+                    //   value: context.select<EditProfileBloc, String?>(
+                    //     (bloc) =>
+                    //         bloc.selectedProvince?.name ??
+                    //         AuthBloc().userProfile?.province,
+                    //   ),
+                    //   onTap: () {
+                    //     showModalBottomSheet(
+                    //       context: context,
+                    //       isScrollControlled: true,
+                    //       backgroundColor: Colors.transparent,
+                    //       builder: (ctx) => ChangeNotifierProvider.value(
+                    //         value: Provider.of<EditProfileBloc>(context,
+                    //             listen: false),
+                    //         child: const SelectProvinceModal(),
+                    //       ),
+                    //     );
+                    //   },
+                    // ),
+                    // InputComponent(
+                    //   labelText: 'city'.tr(),
+                    //   margin: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+                    //   hintText: 'select'.tr(),
+                    //   value: context.select<EditProfileBloc, String?>(
+                    //     (bloc) =>
+                    //         bloc.selectedCity?.name ??
+                    //         AuthBloc().userProfile?.city,
+                    //   ),
+                    //   onTap: () {
+                    //     if (Provider.of<EditProfileBloc>(context, listen: false)
+                    //             .selectedProvince !=
+                    //         null) {
+                    //       Provider.of<EditProfileBloc>(context, listen: false)
+                    //           .loadCities();
 
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            builder: (ctx) => ChangeNotifierProvider.value(
-                              value: Provider.of<EditProfileBloc>(context,
-                                  listen: false),
-                              child: const SelectCityModal(),
-                            ),
-                          );
-                        }
-                      },
-                    ),
+                    //       showModalBottomSheet(
+                    //         context: context,
+                    //         isScrollControlled: true,
+                    //         backgroundColor: Colors.transparent,
+                    //         builder: (ctx) => ChangeNotifierProvider.value(
+                    //           value: Provider.of<EditProfileBloc>(context,
+                    //               listen: false),
+                    //           child: const SelectCityModal(),
+                    //         ),
+                    //       );
+                    //     }
+                    //   },
+                    // ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
                       child: SelectGenderInput(

@@ -1,5 +1,6 @@
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
+import 'package:ateba_app/core/utils/color_helper.dart';
 import 'package:ateba_app/core/utils/date_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/comment.dart';
@@ -12,12 +13,16 @@ class ReplyCard extends StatelessWidget {
     required this.reply,
     required this.likeTap,
     required this.replyTap,
+    this.likeReplayLoading = false,
+    this.likedReplyId,
     super.key,
   });
 
   final Comment reply;
   final Function() likeTap;
   final Function() replyTap;
+  final bool likeReplayLoading;
+  final String? likedReplyId;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -36,7 +41,8 @@ class ReplyCard extends StatelessWidget {
                       height: 32,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: ColorPalette.of(context).primary,
+                        color: ColorHelper.getRandomColorForProfileUsers(
+                            reply.user?.name ?? ''),
                       ),
                       child: Center(
                         child: Padding(
@@ -98,11 +104,21 @@ class ReplyCard extends StatelessWidget {
                                 style: Theme.of(context).textTheme.labelSmall,
                               ),
                             ),
-                          SvgPicture.asset(
-                            (reply.is_liked ?? false)
-                                ? Assets.likeHandFillIc
-                                : Assets.likeHandIc,
-                          ),
+                          if (likeReplayLoading && likedReplyId == reply.id)
+                            SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 1.5,
+                                color: ColorPalette.of(context).primary,
+                              ),
+                            )
+                          else
+                            SvgPicture.asset(
+                              (reply.is_liked ?? false)
+                                  ? Assets.likeHandFillIc
+                                  : Assets.likeHandIc,
+                            ),
                         ],
                       ),
                     ),

@@ -113,6 +113,8 @@ class CommentsWidget extends StatelessWidget {
                         commentIdForShowReplies: bloc.commentIdForShowReplies,
                         baseCommentPage: BaseCommentPage.packageDetailsPage,
                         replies: bloc.replies,
+                        likeCommentLoading: bloc.commentLikeLoading,
+                        likedCommentId: bloc.likedCommentId,
                         likeTap: () {
                           if (bloc.comments[index].is_liked ?? false) {
                             bloc.unlikeComment(

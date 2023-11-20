@@ -1,6 +1,7 @@
 import 'package:ateba_app/core/base/base_comment_page.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
+import 'package:ateba_app/core/utils/color_helper.dart';
 import 'package:ateba_app/core/utils/date_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/course%20details/bloc/course_details_bloc.dart';
@@ -25,7 +26,9 @@ class CommentCard extends StatelessWidget {
     this.commentIdForShowReplies,
     this.selected = false,
     this.repliesLoading = false,
+    this.likeCommentLoading = false,
     this.replies,
+    this.likedCommentId,
     super.key,
   });
 
@@ -39,6 +42,8 @@ class CommentCard extends StatelessWidget {
   final String? commentIdForShowReplies;
   final List<Comment>? replies;
   final bool repliesLoading;
+  final bool likeCommentLoading;
+  final String? likedCommentId;
 
   @override
   Widget build(BuildContext context) => InkWell(
@@ -62,7 +67,9 @@ class CommentCard extends StatelessWidget {
                         height: 40,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: ColorPalette.of(context).error,
+                          color: ColorHelper.getRandomColorForProfileUsers(
+                            comment.user?.name ?? '',
+                          ),
                         ),
                         child: Center(
                           child: SvgPicture.asset(
@@ -117,11 +124,22 @@ class CommentCard extends StatelessWidget {
                                       Theme.of(context).textTheme.labelMedium,
                                 ),
                               ),
-                            SvgPicture.asset(
-                              (comment.is_liked ?? false)
-                                  ? Assets.likeHandFillIc
-                                  : Assets.likeHandIc,
-                            ),
+                            if (likeCommentLoading &&
+                                likedCommentId == comment.id)
+                              SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 1.5,
+                                  color: ColorPalette.of(context).primary,
+                                ),
+                              )
+                            else
+                              SvgPicture.asset(
+                                (comment.is_liked ?? false)
+                                    ? Assets.likeHandFillIc
+                                    : Assets.likeHandIc,
+                              ),
                           ],
                         ),
                       ),
@@ -210,6 +228,8 @@ class CommentCard extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 12),
                   itemBuilder: (context, index) => ReplyCard(
                     reply: replies?[index] ?? Comment(),
+                    likeReplayLoading: likeCommentLoading,
+                    likedReplyId: likedCommentId,
                     replyTap: () {
                       switch (baseCommentPage) {
                         case BaseCommentPage.tutorialDetaialsPage:

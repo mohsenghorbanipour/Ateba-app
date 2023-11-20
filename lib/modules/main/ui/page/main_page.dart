@@ -1,16 +1,19 @@
 // ignore_for_file: use_build_context_synchronously
 
-
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/router/routes.dart';
+import 'package:ateba_app/core/theme/bloc/theme_bloc.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
+import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/cart/bloc/cart_bloc.dart';
 import 'package:ateba_app/modules/main/bloc/main_page_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:ateba_app/core/theme/style/ateba_theme.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
@@ -22,6 +25,48 @@ class MainPage extends StatelessWidget {
           surfaceTintColor: ColorPalette.of(context).background,
           backgroundColor: ColorPalette.of(context).background,
           actions: [
+            IconButton(
+              onPressed: () {
+                try {
+                  // if (Provider.of<ThemeBloc>(context, listen: false).currentTheme ==
+                  //     theme.system) {
+                  //   Provider.of<ThemeBloc>(context, listen: false)
+                  //       .setNewTheme(context, theme.light.toString());
+                  // } else
+                  if (Provider.of<ThemeBloc>(context, listen: false)
+                          .currentTheme ==
+                      theme.light) {
+                    Provider.of<ThemeBloc>(context, listen: false)
+                        .setNewTheme(context, theme.dark.toString());
+                    SystemChrome.setSystemUIOverlayStyle(
+                      const SystemUiOverlayStyle(
+                        statusBarColor: Colors.transparent,
+                        statusBarIconBrightness: Brightness.light,
+                      ),
+                    );
+                  } else if (Provider.of<ThemeBloc>(context, listen: false)
+                          .currentTheme ==
+                      theme.dark) {
+                    Provider.of<ThemeBloc>(context, listen: false)
+                        .setNewTheme(context, theme.light.toString());
+                    SystemChrome.setSystemUIOverlayStyle(
+                      const SystemUiOverlayStyle(
+                        statusBarColor: Colors.transparent,
+                        statusBarIconBrightness: Brightness.dark,
+                      ),
+                    );
+                  }
+                } catch (e, s) {
+                  LoggerHelper.errorLog(e, s);
+                }
+              },
+              icon: Icon(
+                context.select<ThemeBloc, bool>(
+                        (bloc) => bloc.isThemeSelected(theme.light))
+                    ? Icons.light_mode_rounded
+                    : Icons.dark_mode_rounded,
+              ),
+            ),
             InkWell(
               onTap: () {
                 context.goNamed(

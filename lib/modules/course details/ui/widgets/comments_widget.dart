@@ -31,6 +31,9 @@ class CommentsWidget extends StatelessWidget {
                 Provider.of<CourseDetailsBloc>(context, listen: false).comment =
                     val;
               },
+              controller:
+                  context.select<CourseDetailsBloc, TextEditingController>(
+                      (bloc) => bloc.commentController),
               textAlign: TextAlign.right,
               hintText: 'comment_hint'.tr(),
             ),
@@ -110,6 +113,8 @@ class CommentsWidget extends StatelessWidget {
                         comment: bloc.comments[index],
                         commentIdForShowReplies: bloc.commentIdForShowReplies,
                         replies: bloc.replies,
+                        likeCommentLoading: bloc.commentLikeLoading,
+                        likedCommentId: bloc.likedCommentId,
                         baseCommentPage: BaseCommentPage.courseDetailsPage,
                         likeTap: () {
                           if (bloc.comments[index].is_liked ?? false) {

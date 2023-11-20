@@ -63,7 +63,11 @@ class _TutorialPackageCardState extends State<TutorialPackageCard> {
                       padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
                       child: InkWell(
                         onTap: () {
-                          if (widget.tutorialPackage.has_bought ?? false) {
+                          if (Provider.of<PackageDetailsBloc>(context,
+                                      listen: false)
+                                  .packageDetails
+                                  ?.has_bought ??
+                              false) {
                             context.goNamed(
                               Routes.packageVideoPlayer,
                               pathParameters: {
@@ -120,9 +124,12 @@ class _TutorialPackageCardState extends State<TutorialPackageCard> {
                                       color: ColorPalette.of(context).error,
                                     ),
                                     child: Center(
-                                      child: widget
-                                                  .tutorialPackage.has_bought ??
-                                              false
+                                      child: context
+                                              .select<PackageDetailsBloc, bool>(
+                                                  (bloc) =>
+                                                      bloc.packageDetails
+                                                          ?.has_bought ??
+                                                      false)
                                           ? Icon(
                                               Icons.play_arrow_rounded,
                                               color: ColorPalette.of(context)

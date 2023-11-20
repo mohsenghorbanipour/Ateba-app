@@ -1,10 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ateba_app/core/theme/data/theme_cache.dart';
 import 'package:ateba_app/core/theme/style/ateba_theme.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:theme_provider/theme_provider.dart';
 
 class ThemeBloc extends ChangeNotifier {

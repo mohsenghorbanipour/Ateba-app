@@ -5,6 +5,7 @@ import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/video_link.dart';
 import 'package:ateba_app/modules/video%20player/bloc/video_player_bloc.dart';
 import 'package:ateba_app/modules/video%20player/ui/modals/select_quality_modal.dart';
+import 'package:ateba_app/modules/video%20player/ui/modals/speed_video_modal.dart';
 import 'package:ateba_app/modules/video%20player/ui/widgets/video_player_setting_tile.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -63,6 +64,41 @@ class VideoPlayerSettingModal extends StatelessWidget {
                     Text(
                       context.select<VideoPlayerBloc, String>(
                           (bloc) => bloc.selectedQuality),
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          color: ColorPalette.of(context)
+                              .textPrimary
+                              .withOpacity(0.8)),
+                    ),
+                    Icon(Icons.arrow_back_ios_new_rounded,
+                        size: 12,
+                        color: ColorPalette.of(context)
+                            .textPrimary
+                            .withOpacity(0.8))
+                  ],
+                ),
+              ),
+              VideoPlayerSettingTile(
+                icon: Icons.speed,
+                title: 'speed'.tr(),
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (ctx) => ChangeNotifierProvider.value(
+                      value:
+                          Provider.of<VideoPlayerBloc>(context, listen: false),
+                      builder: (ctx, child) => SpeedVideoModal(),
+                    ),
+                  );
+                },
+                optionWidget: Row(
+                  children: [
+                    Text(
+                      context.select<VideoPlayerBloc, String>(
+                        (bloc) =>
+                            bloc.controller?.value.playbackSpeed.toString() ??
+                            '',
+                      ),
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
                           color: ColorPalette.of(context)
                               .textPrimary

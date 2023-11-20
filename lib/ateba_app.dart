@@ -19,7 +19,6 @@ import 'package:ateba_app/core/theme/style/ateba_theme.dart' as mytheme;
 class AtebaApp extends StatelessWidget {
   const AtebaApp({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     final botToastBuilder = BotToastInit();
@@ -93,15 +92,11 @@ class AtebaApp extends StatelessWidget {
                     child = botToastBuilder(context, child);
                     return child;
                   },
-                  
                   routeInformationParser: router.routeInformationParser,
                   routerDelegate: router.routerDelegate,
                   routeInformationProvider: router.routeInformationProvider,
                   debugShowCheckedModeBanner: false,
-                  theme: mytheme.AtebaTheme.light,
-                  themeMode: ThemeMode.light,
-                  // darkTheme: mytheme.LiomTheme.light,
-                  // theme: ThemeProvider.themeOf(context).data,
+                  theme: ThemeProvider.themeOf(context).data,
                 );
               }),
             ),

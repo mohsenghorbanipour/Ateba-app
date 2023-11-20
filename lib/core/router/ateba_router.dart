@@ -11,9 +11,11 @@ import 'package:ateba_app/modules/categories/data/models/category.dart'
 import 'package:ateba_app/modules/course%20details/ui/page/course_details_page.dart';
 import 'package:ateba_app/modules/edit%20profile/ui/page/edit_profile_page.dart';
 import 'package:ateba_app/modules/main/ui/page/main_page.dart';
+import 'package:ateba_app/modules/notifications/ui/page/notification_page.dart';
 import 'package:ateba_app/modules/package%20details/ui/page/package_details_page.dart';
 import 'package:ateba_app/modules/photo%20gallery/ui/page/photo_gallery_page.dart';
 import 'package:ateba_app/modules/subscription/ui/page/subscription_page.dart';
+import 'package:ateba_app/modules/text%20viewer/ui/page/text_viewer_page.dart';
 import 'package:ateba_app/modules/transactions/ui/page/transactions_page.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/attachment.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/file_data.dart';
@@ -108,6 +110,13 @@ class AtebaRouter {
                   file: state.extra as FileData,
                 ),
               ),
+              _routeFade(
+                path: Routes.textViewerPage,
+                name: Routes.textViewerPage,
+                pageBuilder: (state) => TextViewerPage(
+                  file: state.extra as FileData,
+                ),
+              )
             ],
           ),
           _routeFade(
@@ -206,6 +215,11 @@ class AtebaRouter {
               isEditProfile: (state.extra as bool?) ?? false,
             ),
           ),
+          _routeFade(
+            path: Routes.notifications,
+            name: Routes.notifications,
+            pageBuilder: (state) => const NotificationPage(),
+          )
         ],
       )
     ],

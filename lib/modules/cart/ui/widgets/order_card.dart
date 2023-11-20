@@ -55,6 +55,7 @@ class OrderCard extends StatelessWidget {
                 children: [
                   Text(
                     order.title ?? '',
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(
                     height: 8,
@@ -70,10 +71,7 @@ class OrderCard extends StatelessWidget {
                           DateHelper.getDistanceWithToday(
                             order.updated_at ?? '',
                           ),
-                          style:
-                              Theme.of(context).textTheme.labelSmall?.copyWith(
-                                    fontSize: 8,
-                                  ),
+                          style: Theme.of(context).textTheme.labelSmall,
                         ),
                       ),
                       if (order.duration?.isNotEmpty ?? false)
@@ -91,12 +89,7 @@ class OrderCard extends StatelessWidget {
                                   TextInputFormatters.toPersianNumber(
                                     order.duration ?? '',
                                   ),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelSmall
-                                      ?.copyWith(
-                                        fontSize: 8,
-                                      ),
+                                  style: Theme.of(context).textTheme.labelSmall,
                                 ),
                               ),
                             ],
@@ -108,9 +101,9 @@ class OrderCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        TextInputFormatters.toPersianNumber(
+                        '${TextInputFormatters.toPersianNumber(
                           order.price.toString(),
-                        ),
+                        )} ',
                         style: Theme.of(context).textTheme.titleSmall,
                       ),
                       Text(
@@ -130,8 +123,8 @@ class OrderCard extends StatelessWidget {
               },
               child: SvgPicture.asset(
                 Assets.closeIc,
-                width: 16,
-                height: 16,
+                width: 18,
+                height: 18,
               ),
             )
           ],

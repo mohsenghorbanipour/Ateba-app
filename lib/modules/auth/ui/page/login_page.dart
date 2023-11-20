@@ -74,6 +74,7 @@ class LoginPage extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 24),
                           child: TextFieldComponent(
                             name: 'phone',
+                            maxLength: 10,
                             initialValue: context
                                 .select<AuthBloc, String>((bloc) => bloc.phone),
                             showLabel: false,

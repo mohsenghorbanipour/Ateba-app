@@ -30,6 +30,9 @@ class TutorialDetaialsBloc extends ChangeNotifier {
   bool commentLoading = true;
   bool sendCommentLoading = false;
   bool repliesLoading = false;
+  bool bookmarkLoading = false;
+  bool likeLoading = false;
+  bool commentLikeLoading = false;
 
   TutorialDetaials? tutorialDetaials;
   List<Comment> comments = [];
@@ -66,6 +69,8 @@ class TutorialDetaialsBloc extends ChangeNotifier {
   final TextEditingController commentController = TextEditingController();
 
   final audioPlayer = AudioPlayer();
+
+  String likedCommentId = '';
 
   Future<void> loadToturialDetials(String slug) async {
     loading = true;
@@ -131,6 +136,8 @@ class TutorialDetaialsBloc extends ChangeNotifier {
   }
 
   Future<void> likeTutorial(String slug) async {
+    likeLoading = true;
+    notifyListeners();
     try {
       bool response = await TutorialDetaialsRemoteProvider.likeTutorial(
         slug,
@@ -139,14 +146,19 @@ class TutorialDetaialsBloc extends ChangeNotifier {
         tutorialDetaials?.is_liked = true;
         tutorialDetaials?.likes_count =
             (tutorialDetaials?.likes_count ?? 0) + 1;
-        notifyListeners();
       }
+      likeLoading = false;
+      notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+      likeLoading = false;
+      notifyListeners();
     }
   }
 
   Future<void> unlikeTutorial(String slug) async {
+    likeLoading = true;
+    notifyListeners();
     try {
       bool? response = await TutorialDetaialsRemoteProvider.unlikeTutorial(
         slug,
@@ -155,43 +167,59 @@ class TutorialDetaialsBloc extends ChangeNotifier {
         tutorialDetaials?.is_liked = false;
         tutorialDetaials?.likes_count =
             (tutorialDetaials?.likes_count ?? 0) - 1;
-        notifyListeners();
       }
+      likeLoading = false;
+      notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+      likeLoading = false;
+      notifyListeners();
     }
   }
 
   Future<void> bookmarkTutorial(String slug) async {
+    bookmarkLoading = true;
+    notifyListeners();
     try {
       bool response = await TutorialDetaialsRemoteProvider.bookmarkTutorial(
         slug,
       );
       if (response) {
         tutorialDetaials?.is_bookmarked = true;
-        notifyListeners();
       }
+      bookmarkLoading = false;
+      notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+      bookmarkLoading = false;
+      notifyListeners();
     }
   }
 
   Future<void> unBookmarkTutorial(String slug) async {
+    bookmarkLoading = true;
+    notifyListeners();
     try {
       bool? response = await TutorialDetaialsRemoteProvider.unBookmarkTutorial(
         slug,
       );
       if (response) {
         tutorialDetaials?.is_bookmarked = false;
-        notifyListeners();
       }
+      bookmarkLoading = false;
+      notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+      bookmarkLoading = false;
+      notifyListeners();
     }
   }
 
   Future<void> likeComment(String id, int index,
       {bool likeReply = false}) async {
+    commentLikeLoading = true;
+    likedCommentId = id;
+    notifyListeners();
     try {
       bool response = await TutorialDetaialsRemoteProvider.likeComment(
         id,
@@ -204,15 +232,23 @@ class TutorialDetaialsBloc extends ChangeNotifier {
           comments[index].is_liked = true;
           comments[index].likes_count = (comments[index].likes_count ?? 0) + 1;
         }
-        notifyListeners();
       }
+      commentLikeLoading = false;
+      likedCommentId = '';
+      notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+      commentLikeLoading = false;
+      likedCommentId = '';
+      notifyListeners();
     }
   }
 
   Future<void> unlikeComment(String id, int index,
       {bool likeReply = false}) async {
+    commentLikeLoading = true;
+    likedCommentId = id;
+    notifyListeners();
     try {
       bool? response = await TutorialDetaialsRemoteProvider.unlikeComment(
         id,
@@ -225,10 +261,15 @@ class TutorialDetaialsBloc extends ChangeNotifier {
           comments[index].is_liked = false;
           comments[index].likes_count = (comments[index].likes_count ?? 0) - 1;
         }
-        notifyListeners();
       }
+      commentLikeLoading = false;
+      likedCommentId = '';
+      notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+      commentLikeLoading = false;
+      likedCommentId = '';
+      notifyListeners();
     }
   }
 

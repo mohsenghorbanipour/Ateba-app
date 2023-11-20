@@ -57,9 +57,9 @@ class DownloadVideoBloc extends ChangeNotifier {
     downloading = true;
     notifyListeners();
     try {
-      // Directory? tempDir = await getExternalStorageDirectory();
-      Directory? tempDir = await getApplicationCacheDirectory();
-      String tempPath = tempDir.path;
+      Directory? tempDir = await getExternalStorageDirectory();
+      // Directory? tempDir = await getApplicationCacheDirectory();
+      String tempPath = tempDir?.path ?? '';
 
       String number = '';
       Random random = Random();
@@ -74,7 +74,8 @@ class DownloadVideoBloc extends ChangeNotifier {
         savePath,
         onReceiveProgress: (count, total) {
           percentage = ((count / total) * 100).floor();
-          updateNotification(percentage);
+          updateNotification(_selectedVideoIdForDownload!, percentage);
+
           notifyListeners();
         },
         cancelToken: cancelToken,
@@ -101,6 +102,9 @@ class DownloadVideoBloc extends ChangeNotifier {
           type: ToastType.error,
         );
       }
+      await NotificationService.flutterLocalNotificationsPlugin.cancel(
+        selectedVideoIdForDownload!,
+      );
       downloading = false;
       selectedVideoIndexForDownload = null;
       selectedVideoIdForDownload = null;
@@ -111,22 +115,31 @@ class DownloadVideoBloc extends ChangeNotifier {
     }
   }
 
-  void updateNotification(int progress) async {
+  void updateNotification(int channelId, int progress) async {
     AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-      'channel_id',
+      channelId.toString(),
       'channel_name',
       importance: Importance.high,
       priority: Priority.high,
       ticker: 'ticker',
       onlyAlertOnce: true,
       showProgress: true, // Show the progress indicator in the notification
-      maxProgress: 100, // The maximum value of the progress indicator
-      progress: progress, // The current progress value
+      maxProgress: 100,
+      // The maximum value of the progress indicator
+      progress: progress,
+      enableVibration: false,
+      playSound: false,
+      // The current progress value
     );
 
-    NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
+    IOSNotificationDetails iosNotificationDetails =
+        const IOSNotificationDetails();
+
+    NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iosNotificationDetails,
+    );
 
     await NotificationService.flutterLocalNotificationsPlugin.show(
       0,
@@ -144,11 +157,13 @@ class DownloadVideoBloc extends ChangeNotifier {
     }
   }
 
-  void cancelDownload() {
+  Future<void> cancelDownload() async {
     try {
       cancelToken.cancel();
       downloading = false;
       percentage = 0;
+      await NotificationService.flutterLocalNotificationsPlugin
+          .cancel(selectedVideoIdForDownload!);
       selectedVideoIndexForDownload = null;
       selectedVideoIdForDownload = null;
       notifyListeners();
@@ -184,6 +199,18 @@ class DownloadVideoBloc extends ChangeNotifier {
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
       return '';
+    }
+  }
+
+  void deleteFromGallery(int index) {
+    try {
+      File file = File(videos[index].path ?? '');
+      file.deleteSync();
+      videos.removeAt(index);
+      saveData();
+      notifyListeners();
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
     }
   }
 

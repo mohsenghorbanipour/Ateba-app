@@ -30,6 +30,7 @@ class PackageDetailsBloc extends ChangeNotifier {
   bool sendReplyLoading = false;
   bool repliesLoading = false;
   bool orderLoading = false;
+  bool commentLikeLoading = false;
 
   PackageDetails? packageDetails;
 
@@ -64,6 +65,8 @@ class PackageDetailsBloc extends ChangeNotifier {
 
   final TextEditingController commentController = TextEditingController();
   final TextEditingController replyController = TextEditingController();
+
+  String likedCommentId = '';
 
   Future<void> loadPackageDetials(String slug) async {
     loading = true;
@@ -124,6 +127,9 @@ class PackageDetailsBloc extends ChangeNotifier {
 
   Future<void> likeComment(String id, int index,
       {bool likeReply = false}) async {
+    commentLikeLoading = true;
+    likedCommentId = id;
+    notifyListeners();
     try {
       bool response = await PackageDetailsRemoteProvider.likeComment(
         id,
@@ -137,14 +143,22 @@ class PackageDetailsBloc extends ChangeNotifier {
           comments[index].likes_count = (comments[index].likes_count ?? 0) + 1;
         }
       }
+      commentLikeLoading = false;
+      likedCommentId = '';
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+      commentLikeLoading = false;
+      likedCommentId = '';
+      notifyListeners();
     }
   }
 
   Future<void> unlikeComment(String id, int index,
       {bool likeReply = false}) async {
+    commentLikeLoading = true;
+    likedCommentId = id;
+    notifyListeners();
     try {
       bool response = await PackageDetailsRemoteProvider.unlikeComment(
         id,
@@ -158,9 +172,14 @@ class PackageDetailsBloc extends ChangeNotifier {
           comments[index].likes_count = (comments[index].likes_count ?? 0) - 1;
         }
       }
+      commentLikeLoading = false;
+      likedCommentId = '';
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+      commentLikeLoading = false;
+      likedCommentId = '';
+      notifyListeners();
     }
   }
 

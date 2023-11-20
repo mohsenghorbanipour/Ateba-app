@@ -20,4 +20,6 @@ class Routes {
   static const String completeInfo = 'complete-info';
   static const String photoGalleryPage = 'photo-gallry';
   static const String pdfViewPage = 'pdf-view';
+  static const String notifications = 'notifications';
+  static const String textViewerPage = 'text-viewer';
 }

@@ -13,6 +13,7 @@ class RemoteRoutes {
   static const String getProfileConfig = 'profile/configs';
   static String getCities(int provinceId) =>
       'profile/province/$provinceId/cities';
+  static const String getNotifications = 'notifications';
 
   // Banners Api
   static const String getTopBanner = 'banners/slider';

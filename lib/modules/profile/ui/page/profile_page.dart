@@ -1,3 +1,4 @@
+import 'package:ateba_app/core/components/shimmer_components.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
@@ -34,16 +35,37 @@ class ProfilePage extends StatelessWidget {
             ),
             child: Row(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(40),
-                  child: CachedNetworkImage(
-                    imageUrl: context.select<AuthBloc, String>(
-                        (bloc) => bloc.userProfile?.picture_url ?? ''),
+                if (context.select<AuthBloc, bool>((bloc) =>
+                    bloc.userProfile?.picture_url?.isNotEmpty ?? false))
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(40),
+                    child: CachedNetworkImage(
+                      imageUrl: context.select<AuthBloc, String>(
+                          (bloc) => bloc.userProfile?.picture_url ?? ''),
+                      width: 40,
+                      height: 40,
+                      placeholder: (_, __) => const ShimmerContainer(
+                        width: 40,
+                        height: 40,
+                        radius: 40,
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                else
+                  Container(
                     width: 40,
                     height: 40,
-                    fit: BoxFit.cover,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: ColorPalette.of(context).primary,
+                    ),
+                    child: Center(
+                      child: SvgPicture.asset(
+                        Assets.personUserIc,
+                      ),
+                    ),
                   ),
-                ),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(right: 8),
@@ -170,7 +192,11 @@ class ProfilePage extends StatelessWidget {
               children: [
                 ProfileTile(
                   title: 'notifications',
-                  onTap: () {},
+                  onTap: () {
+                    context.goNamed(
+                      Routes.notifications,
+                    );
+                  },
                   icon: Assets.notificationIc,
                 ),
                 Divider(

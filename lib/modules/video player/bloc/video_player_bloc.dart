@@ -2,19 +2,24 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:ateba_app/core/network/api_response_model.dart';
+import 'package:ateba_app/core/resources/cache%20provider/config_box.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';
 import 'package:ateba_app/modules/video%20player/data/models/video_chapter.dart';
 import 'package:ateba_app/modules/video%20player/data/remote/video_player_remote_provider.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerBloc extends ChangeNotifier {
   VideoPlayerBloc(String id, Video video) {
+    videoId = int.parse(id);
     loadVideoChapter(int.parse(id));
   }
 
   // Online Data
+  int? videoId;
+
   bool loading = false;
   List<VideoChapter> chapters = [];
 
@@ -64,6 +69,26 @@ class VideoPlayerBloc extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool _showArrowLeft = false;
+  bool get showArrowLeft => _showArrowLeft;
+  Future<void> setShowArrowLeft() async {
+    _showArrowLeft = true;
+    notifyListeners();
+    await Future.delayed(const Duration(seconds: 1));
+    _showArrowLeft = false;
+    notifyListeners();
+  }
+
+  bool _showArrowRight = false;
+  bool get showArrowRight => _showArrowRight;
+  Future<void> setShowArrowRight() async {
+    _showArrowRight = true;
+    notifyListeners();
+    await Future.delayed(const Duration(seconds: 1));
+    _showArrowRight = false;
+    notifyListeners();
+  }
+
   int? onUpdateControllerTime;
 
   int? duration;
@@ -80,6 +105,8 @@ class VideoPlayerBloc extends ChangeNotifier {
   Future<void> initialVideoPlayer(String url,
       {bool playFromOfflineGallery = false, String cacheQuality = ''}) async {
     try {
+      int lastDuration = await getLastPlayTime();
+      LoggerHelper.logger.wtf('lastDuration $lastDuration');
       if (playFromOfflineGallery) {
         final controller = VideoPlayerController.file(
           File(url),
@@ -88,7 +115,7 @@ class VideoPlayerBloc extends ChangeNotifier {
         selectedQuality = cacheQuality;
         notifyListeners();
         _controller?.initialize().then(
-          (_) {
+          (_) async {
             _controller?.addListener(() {
               onControllerUpdata();
             });
@@ -102,6 +129,7 @@ class VideoPlayerBloc extends ChangeNotifier {
         notifyListeners();
         _controller?.initialize().then(
           (_) {
+            _controller?.seekTo(Duration(seconds: lastDuration));
             _controller?.addListener(() {
               onControllerUpdata();
             });
@@ -109,7 +137,7 @@ class VideoPlayerBloc extends ChangeNotifier {
         );
       }
       initialized = true;
-      playOrPauseVideo();
+      await playOrPauseVideo();
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
@@ -206,8 +234,25 @@ class VideoPlayerBloc extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setPlaybackSpeed(double speed) {
+    _controller?.setPlaybackSpeed(speed);
+  }
+
+  Future<int> getLastPlayTime() async {
+    try {
+      return int.parse(await ConfigBox.getConfig(videoId.toString()) ?? '0');
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      return 0;
+    }
+  }
+
   @override
   void dispose() {
+    ConfigBox.setConfig(
+      videoId.toString(),
+      ((duration ?? 0) - (remained ?? 0)).toString(),
+    );
     _controller?.dispose();
     super.dispose();
   }

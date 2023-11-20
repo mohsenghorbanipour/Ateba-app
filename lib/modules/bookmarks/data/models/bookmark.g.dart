@@ -17,6 +17,8 @@ Bookmark _$BookmarkFromJson(Map<String, dynamic> json) => Bookmark(
           ? null
           : LinkTo.fromJson(json['link_to'] as Map<String, dynamic>),
       path: json['path'] as String?,
+      quality: json['quality'] as String?,
+      videoId: json['videoId'] as int?,
     );
 
 Map<String, dynamic> _$BookmarkToJson(Bookmark instance) {
@@ -36,5 +38,7 @@ Map<String, dynamic> _$BookmarkToJson(Bookmark instance) {
   writeNotNull('video', instance.video);
   writeNotNull('link_to', instance.link_to?.toJson());
   writeNotNull('path', instance.path);
+  writeNotNull('quality', instance.quality);
+  writeNotNull('videoId', instance.videoId);
   return val;
 }

@@ -38,6 +38,11 @@ class DateHelper {
     } else if (distance == 1) {
       return 'yesterday'.tr();
     } else {
+      if (distance >= 365) {
+        return TextInputFormatters.toEnglishNumber(
+                (distance ~/ 365).toString()) +
+            'year_ago'.tr();
+      }
       return TextInputFormatters.toPersianNumber('$distance ${'day_ago'.tr()}');
     }
   }
@@ -76,6 +81,11 @@ class DateHelper {
     } else if (distance == 1) {
       return 'yesterday'.tr();
     } else {
+      if (distance >= 365) {
+        return TextInputFormatters.toEnglishNumber(
+                (distance ~/ 365).toString()) +
+            'year_ago'.tr();
+      }
       return TextInputFormatters.toPersianNumber('$distance ${'day_ago'.tr()}');
     }
   }

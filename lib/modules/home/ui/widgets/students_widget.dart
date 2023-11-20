@@ -27,6 +27,7 @@ class StudentsWidget extends StatelessWidget {
                 child: CachedNetworkImage(
                   width: 18,
                   height: 18,
+                  fit: BoxFit.cover,
                   imageUrl: students.pictures_sample?[0] ?? '',
                   placeholder: (_, __) => const ShimmerContainer(
                     width: 18,

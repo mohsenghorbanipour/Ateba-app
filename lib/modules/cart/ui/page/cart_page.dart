@@ -57,32 +57,45 @@ class CartPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Consumer<CartBloc>(
-                  builder: (context, bloc, child) => ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(16, 20, 16, 120),
-                    physics: const NeverScrollableScrollPhysics(),
-                    separatorBuilder: (_, __) => const SizedBox(
-                      height: 12,
-                    ),
-                    shrinkWrap: true,
-                    itemCount: bloc.ordersResponse?.orders?.length ?? 0,
-                    itemBuilder: (context, index) => OrderCard(
-                      order: bloc.ordersResponse?.orders?[index] ?? Order(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                if (context.select<CartBloc, bool>(
+                    (bloc) => bloc.ordersResponse?.orders?.isNotEmpty ?? false))
+                  Consumer<CartBloc>(
+                    builder: (context, bloc, child) => ListView.separated(
+                      padding: const EdgeInsets.fromLTRB(16, 20, 16, 120),
+                      physics: const NeverScrollableScrollPhysics(),
+                      separatorBuilder: (_, __) => const SizedBox(
+                        height: 12,
+                      ),
+                      shrinkWrap: true,
+                      itemCount: bloc.ordersResponse?.orders?.length ?? 0,
+                      itemBuilder: (context, index) => OrderCard(
+                        order: bloc.ordersResponse?.orders?[index] ?? Order(),
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
+            if (!context.select<CartBloc, bool>(
+                (bloc) => bloc.ordersResponse?.orders?.isNotEmpty ?? false))
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'cart_empty'.tr(),
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
             Positioned(
               left: 16,
               right: 16,
               bottom: 28,
               child: Column(
                 children: [
-                  const CartDiscountWidget(),
+                  if (context.select<CartBloc, bool>((bloc) =>
+                      bloc.ordersResponse?.orders?.isNotEmpty ?? false))
+                    const CartDiscountWidget(),
                   const SizedBox(
                     height: 24,
                   ),
@@ -94,6 +107,8 @@ class CartPage extends StatelessWidget {
                         Provider.of<CartBloc>(context, listen: false).payment();
                       }
                     },
+                    enabled: context.select<CartBloc, bool>((bloc) =>
+                        bloc.ordersResponse?.orders?.isNotEmpty ?? false),
                     loading: context
                         .select<CartBloc, bool>((bloc) => bloc.paymentLoading),
                     height: 40,

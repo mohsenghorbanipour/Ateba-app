@@ -30,6 +30,7 @@ class CourseDetailsBloc extends ChangeNotifier {
   bool sendReplyLoading = false;
   bool repliesLoading = false;
   bool orderLoading = false;
+  bool commentLikeLoading = false;
 
   CourseDetails? courseDetails;
 
@@ -64,6 +65,8 @@ class CourseDetailsBloc extends ChangeNotifier {
 
   final TextEditingController commentController = TextEditingController();
   final TextEditingController replayController = TextEditingController();
+
+  String likedCommentId = '';
 
   Future<void> loadCourseDetials(String slug) async {
     try {
@@ -123,6 +126,9 @@ class CourseDetailsBloc extends ChangeNotifier {
 
   Future<void> likeComment(String id, int index,
       {bool likeReply = false}) async {
+    commentLikeLoading = true;
+    likedCommentId = id;
+    notifyListeners();
     try {
       bool response = await CourseDetailsRemoteProvider.likeComment(
         id,
@@ -136,14 +142,22 @@ class CourseDetailsBloc extends ChangeNotifier {
           comments[index].likes_count = (comments[index].likes_count ?? 0) + 1;
         }
       }
+      commentLikeLoading = false;
+      likedCommentId = '';
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+      commentLikeLoading = false;
+      likedCommentId = '';
+      notifyListeners();
     }
   }
 
   Future<void> unlikeComment(String id, int index,
       {bool likeReply = false}) async {
+    commentLikeLoading = true;
+    likedCommentId = id;
+    notifyListeners();
     try {
       bool response = await CourseDetailsRemoteProvider.unlikeComment(
         id,
@@ -157,9 +171,14 @@ class CourseDetailsBloc extends ChangeNotifier {
           comments[index].likes_count = (comments[index].likes_count ?? 0) - 1;
         }
       }
+      commentLikeLoading = false;
+      likedCommentId = '';
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+      commentLikeLoading = false;
+      likedCommentId = '';
+      notifyListeners();
     }
   }
 

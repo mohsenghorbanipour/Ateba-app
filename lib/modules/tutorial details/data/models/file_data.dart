@@ -18,6 +18,7 @@ class FileData implements BaseModel<FileData> {
     this.length,
     this.duration,
     this.download_links,
+    this.text,
   });
 
   final int? id;
@@ -31,6 +32,7 @@ class FileData implements BaseModel<FileData> {
   final String? length;
   final String? duration;
   final List<VideoLink>? download_links;
+  final String? text;
 
 
   @override

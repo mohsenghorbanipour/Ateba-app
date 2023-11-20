@@ -110,7 +110,11 @@ class PackageCard extends StatelessWidget {
                   runAlignment: WrapAlignment.start,
                   alignment: WrapAlignment.start,
                   children: List.generate(
-                    4,
+                    (package.tutorials_sample?.tutorials_titles?.length ?? 0) >=
+                            4
+                        ? 3
+                        : (package.tutorials_sample?.tutorials_titles?.length ??
+                            0),
                     (index) => (index == 3)
                         ? TechingNameChip(
                             teachingName:
