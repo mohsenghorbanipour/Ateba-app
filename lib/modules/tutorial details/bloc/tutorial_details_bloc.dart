@@ -37,6 +37,13 @@ class TutorialDetaialsBloc extends ChangeNotifier {
   TutorialDetaials? tutorialDetaials;
   List<Comment> comments = [];
 
+  int? _selectedVideoIndex;
+  int? get selectedVideoIndex => _selectedVideoIndex;
+  set selectedVideoIndex(val) {
+    _selectedVideoIndex = val;
+    notifyListeners();
+  }
+
   bool isLoadingMoreComments = false;
   bool canLoadMoreComment = false;
   int currentPageComments = 1;
@@ -80,6 +87,9 @@ class TutorialDetaialsBloc extends ChangeNotifier {
           await TutorialDetaialsRemoteProvider.getToturialDetials(slug);
       if (response != null) {
         tutorialDetaials = response.data;
+        if (tutorialDetaials?.videos is List<dynamic>) {
+          selectedVideoIndex = 0;
+        }
       }
       loading = false;
       notifyListeners();
@@ -389,12 +399,15 @@ class TutorialDetaialsBloc extends ChangeNotifier {
 
   Video? getVideo() {
     try {
-      List<Video> videos = (tutorialDetaials?.videos as List<dynamic>)
-          .map(
-            (e) => Video.fromJson(e),
-          )
-          .toList();
-      return videos.first;
+      if (selectedVideoIndex != null && selectedVideoIndex != -1) {
+        List<Video> videos = (tutorialDetaials?.videos as List<dynamic>)
+            .map(
+              (e) => Video.fromJson(e),
+            )
+            .toList();
+        return videos[selectedVideoIndex!];
+      }
+      return null;
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
       return null;

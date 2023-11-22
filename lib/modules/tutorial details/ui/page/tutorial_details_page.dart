@@ -17,6 +17,7 @@ import 'package:ateba_app/modules/tutorial%20details/ui/widgets/attachment_tile.
 import 'package:ateba_app/modules/tutorial%20details/ui/widgets/comment_card.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/widgets/tutorial_details_shimmer.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/widgets/tutorial_download_widget.dart';
+import 'package:ateba_app/modules/tutorial%20details/ui/widgets/tutorial_video_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -212,95 +213,13 @@ class TutorialDetailsPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        InkWell(
-                          onTap: () async {
-                            if ((Provider.of<TutorialDetaialsBloc>(context,
-                                        listen: false)
-                                    .tutorialDetaials
-                                    ?.videos is int) &&
-                                (Provider.of<TutorialDetaialsBloc>(context,
-                                            listen: false)
-                                        .tutorialDetaials
-                                        ?.videos ==
-                                    402)) {
-                              showAnimatedDialog(
-                                context: context,
-                                curve: Curves.easeIn,
-                                animationType: DialogTransitionType.fade,
-                                duration: const Duration(milliseconds: 300),
-                                builder: (context) =>
-                                    NoActiveSubscriptionDialog(
-                                  slug: slug,
-                                ),
-                              );
-                            } else {
-                              context.goNamed(
-                                Routes.videoPlayer,
-                                pathParameters: {
-                                  'id': Provider.of<TutorialDetaialsBloc>(
-                                              context,
-                                              listen: false)
-                                          .getVideo()
-                                          ?.id
-                                          .toString() ??
-                                      '',
-                                  'slug': slug,
-                                },
-                                extra: {
-                                  'playFromOfflineGallery': false,
-                                  'slug': slug,
-                                  'video': Provider.of<TutorialDetaialsBloc>(
-                                          context,
-                                          listen: false)
-                                      .getVideo(),
-                                },
-                              );
-                            }
-                          },
-                          child: Container(
-                            width: double.infinity,
-                            height: 150,
-                            margin: const EdgeInsets.symmetric(horizontal: 16),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                8,
-                              ),
-                              image: DecorationImage(
-                                image: CachedNetworkImageProvider(
-                                  context.select<TutorialDetaialsBloc, String>(
-                                      (bloc) =>
-                                          bloc.tutorialDetaials?.cover_url ??
-                                          ''),
-                                ),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            child: Center(
-                              child: Container(
-                                width: 40,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: ColorPalette.of(context).error,
-                                ),
-                                child: Center(
-                                  child: Icon(
-                                    context.select<TutorialDetaialsBloc, bool>(
-                                            (bloc) =>
-                                                (bloc.tutorialDetaials?.videos
-                                                    is int) &&
-                                                (bloc.tutorialDetaials
-                                                        ?.videos ==
-                                                    402))
-                                        ? Icons.lock
-                                        : Icons.play_arrow_rounded,
-                                    color: ColorPalette.light.background,
-                                    size: 24,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                        TutorialVideoWidget(
+                          videos: context.select<TutorialDetaialsBloc, dynamic>(
+                              (bloc) => bloc.tutorialDetaials?.videos),
+                          coverUrl: context
+                              .select<TutorialDetaialsBloc, String>((bloc) =>
+                                  bloc.tutorialDetaials?.cover_url ?? ''),
+                          slug: slug,
                         ),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
@@ -414,11 +333,9 @@ class TutorialDetailsPage extends StatelessWidget {
                                   ),
                                   TutorialDownloadWidget(
                                     slug: slug,
-                                    video: Provider.of<TutorialDetaialsBloc>(
-                                                context,
-                                                listen: false)
-                                            .getVideo() ??
-                                        Video(),
+                                    video: context.select<TutorialDetaialsBloc,
+                                            Video>(
+                                        (bloc) => bloc.getVideo() ?? Video()),
                                   ),
                                 ],
                               )

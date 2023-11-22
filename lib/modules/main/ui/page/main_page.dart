@@ -8,6 +8,8 @@ import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/cart/bloc/cart_bloc.dart';
 import 'package:ateba_app/modules/main/bloc/main_page_bloc.dart';
+import 'package:ateba_app/modules/video%20player/data/models/video_quiz.dart';
+import 'package:ateba_app/modules/video%20player/ui/modals/quiz_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,8 +17,23 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:ateba_app/core/theme/style/ateba_theme.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   const MainPage({super.key});
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  @override
+  void initState() {
+    var window = WidgetsBinding.instance.window;
+    window.onPlatformBrightnessChanged = () {
+      Provider.of<ThemeBloc>(context, listen: false)
+          .onSystemBrightnessChanged(context, window.platformBrightness);
+    };
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -63,8 +80,8 @@ class MainPage extends StatelessWidget {
               icon: Icon(
                 context.select<ThemeBloc, bool>(
                         (bloc) => bloc.isThemeSelected(theme.light))
-                    ? Icons.light_mode_rounded
-                    : Icons.dark_mode_rounded,
+                    ? Icons.dark_mode_rounded
+                    : Icons.light_mode_rounded,
               ),
             ),
             InkWell(

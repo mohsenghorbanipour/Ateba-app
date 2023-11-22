@@ -233,34 +233,34 @@ class _AttachmentTileState extends State<AttachmentTile> {
                       ),
                       itemBuilder: (_, index) => InkWell(
                         onTap: () {
-                          context.goNamed(
-                            Routes.videoPlayer,
-                            pathParameters: {
-                              'id': Provider.of<TutorialDetaialsBloc>(context,
-                                          listen: false)
-                                      .getVideo()
-                                      ?.id
-                                      .toString() ??
-                                  '',
-                              'slug': Provider.of<TutorialDetaialsBloc>(context,
-                                          listen: false)
-                                      .tutorialDetaials
-                                      ?.slug ??
-                                  '',
-                            },
-                            extra: {
-                              'playFromOfflineGallery': false,
-                              'slug': Provider.of<TutorialDetaialsBloc>(context,
-                                          listen: false)
-                                      .tutorialDetaials
-                                      ?.slug ??
-                                  '',
-                              'video': Provider.of<TutorialDetaialsBloc>(
-                                      context,
-                                      listen: false)
-                                  .getVideo(),
-                            },
-                          );
+                          // context.goNamed(
+                          //   Routes.videoPlayer,
+                          //   pathParameters: {
+                          //     'id': Provider.of<TutorialDetaialsBloc>(context,
+                          //                 listen: false)
+                          //             .getVideo()
+                          //             ?.id
+                          //             .toString() ??
+                          //         '',
+                          //     'slug': Provider.of<TutorialDetaialsBloc>(context,
+                          //                 listen: false)
+                          //             .tutorialDetaials
+                          //             ?.slug ??
+                          //         '',
+                          //   },
+                          //   extra: {
+                          //     'playFromOfflineGallery': false,
+                          //     'slug': Provider.of<TutorialDetaialsBloc>(context,
+                          //                 listen: false)
+                          //             .tutorialDetaials
+                          //             ?.slug ??
+                          //         '',
+                          //     'video': Provider.of<TutorialDetaialsBloc>(
+                          //             context,
+                          //             listen: false)
+                          //         .getVideo(),
+                          //   },
+                          // );
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

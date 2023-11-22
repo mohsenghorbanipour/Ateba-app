@@ -1,27 +1,35 @@
 import 'dart:io';
 import 'dart:math';
-
 import 'package:ateba_app/core/network/api_response_model.dart';
 import 'package:ateba_app/core/resources/cache%20provider/config_box.dart';
+import 'package:ateba_app/core/router/ateba_router.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';
 import 'package:ateba_app/modules/video%20player/data/models/video_chapter.dart';
+import 'package:ateba_app/modules/video%20player/data/models/video_quiz.dart';
 import 'package:ateba_app/modules/video%20player/data/remote/video_player_remote_provider.dart';
-import 'package:flutter/foundation.dart';
+import 'package:ateba_app/modules/video%20player/ui/modals/quiz_modal.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerBloc extends ChangeNotifier {
   VideoPlayerBloc(String id, Video video) {
     videoId = int.parse(id);
     loadVideoChapter(int.parse(id));
+    loadVideoQuiz(int.parse(id));
   }
 
   // Online Data
+  bool answerQuestionLoading = false;
+
   int? videoId;
 
   bool loading = false;
   List<VideoChapter> chapters = [];
+
+  List<VideoQuiz> quizes = [];
+  List<int> showedVideoId = [];
 
   Future<void> loadVideoChapter(int id) async {
     loading = true;
@@ -36,6 +44,33 @@ class VideoPlayerBloc extends ChangeNotifier {
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> loadVideoQuiz(int id) async {
+    try {
+      ApiResponseModel<List<VideoQuiz>?> response =
+          await VideoPlayerRemoteProvider.getVideoQuiz(id);
+      if (response.success ?? false) {
+        quizes = response.data ?? [];
+      }
+      notifyListeners();
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> answerQuestion(int id, int answerId) async {
+    answerQuestionLoading = true;
+    notifyListeners();
+    try {
+      await VideoPlayerRemoteProvider.answerQuestion(id, answerId);
+      answerQuestionLoading = false;
+      notifyListeners();
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      answerQuestionLoading = false;
+      notifyListeners();
     }
   }
 
@@ -106,7 +141,6 @@ class VideoPlayerBloc extends ChangeNotifier {
       {bool playFromOfflineGallery = false, String cacheQuality = ''}) async {
     try {
       int lastDuration = await getLastPlayTime();
-      LoggerHelper.logger.wtf('lastDuration $lastDuration');
       if (playFromOfflineGallery) {
         final controller = VideoPlayerController.file(
           File(url),
@@ -209,6 +243,19 @@ class VideoPlayerBloc extends ChangeNotifier {
       progress =
           (_controller?.value.position.inMilliseconds.ceilToDouble() ?? 0) /
               controller.value.duration.inMilliseconds.ceilToDouble();
+      for (var e in quizes) {
+        if (((duration ?? 0) - (remained ?? 0)) < (e.at_second ?? -1)) {
+          if (showedVideoId.contains(e.id)) {
+            showedVideoId.remove(e.id);
+          }
+        }
+        if (e.at_second == ((duration ?? 0) - (remained ?? 0))) {
+          if (!showedVideoId.contains(e.id)) {
+            showQuizeModal(quizes.indexOf(e));
+          }
+          showedVideoId.add(e.id ?? -1);
+        }
+      }
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
@@ -244,6 +291,24 @@ class VideoPlayerBloc extends ChangeNotifier {
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
       return 0;
+    }
+  }
+
+  void showQuizeModal(int index) {
+    try {
+      BuildContext context = AtebaRouter.navigatorKey.currentContext!;
+      showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (ctx) => ChangeNotifierProvider.value(
+          value: this,
+          builder: (ctx, child) => QuizModal(
+            videoQuiz: quizes[index],
+          ),
+        ),
+      );
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
     }
   }
 

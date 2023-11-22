@@ -62,4 +62,6 @@ class RemoteRoutes {
 
   // Video Features Api
   static String getVideoChapter(int id) => 'videos/$id/chapters';
+  static String getVideoQuiz(int id) => 'videos/$id/quiz';
+  static String answerQuestion(int id) => 'videos/questions/$id/answer';
 }
