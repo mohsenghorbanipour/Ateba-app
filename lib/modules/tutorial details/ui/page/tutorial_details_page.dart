@@ -333,9 +333,10 @@ class TutorialDetailsPage extends StatelessWidget {
                                   ),
                                   TutorialDownloadWidget(
                                     slug: slug,
-                                    video: context.select<TutorialDetaialsBloc,
-                                            Video>(
-                                        (bloc) => bloc.getVideo() ?? Video()),
+                                    video: context
+                                        .select<TutorialDetaialsBloc, Video>(
+                                      (bloc) => bloc.getVideo() ?? Video(),
+                                    ),
                                   ),
                                 ],
                               )

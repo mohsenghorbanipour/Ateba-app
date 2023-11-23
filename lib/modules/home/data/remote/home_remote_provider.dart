@@ -6,8 +6,10 @@ import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/modules/home/data/models/banner_slider.dart';
 import 'package:ateba_app/modules/home/data/models/course.dart';
 import 'package:ateba_app/modules/home/data/models/package.dart';
+import 'package:ateba_app/modules/home/data/models/suggestions.dart';
 import 'package:ateba_app/modules/home/data/models/tutorial.dart';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class HomeRemoteProvider {
   static final NetworkHelper _networkHelper = NetworkHelper();
@@ -31,6 +33,35 @@ class HomeRemoteProvider {
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
       return null;
+    }
+  }
+
+  static Future<ApiResponseModel<Suggestions?>> getSuggestion() async {
+    try {
+      Response response = await _networkHelper.dio.get(
+        RemoteRoutes.getSuggestion,
+      );
+      if (response.statusCode == 200) {
+        return ApiResponseModel(
+          success: true,
+          message: response.data['message'],
+          data: Suggestions.fromJson(
+            response.data,
+          ),
+        );
+      }
+      return ApiResponseModel(
+        success: false,
+        message: response.data['message'],
+        data: null,
+      );
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      return ApiResponseModel(
+        success: false,
+        message: 'sth_wrong'.tr(),
+        data: null,
+      );
     }
   }
 

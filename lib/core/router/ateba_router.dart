@@ -10,6 +10,7 @@ import 'package:ateba_app/modules/categories/data/models/category.dart'
     as category;
 import 'package:ateba_app/modules/course%20details/ui/page/course_details_page.dart';
 import 'package:ateba_app/modules/edit%20profile/ui/page/edit_profile_page.dart';
+import 'package:ateba_app/modules/fast%20search/ui/page/fast_search_page.dart';
 import 'package:ateba_app/modules/main/ui/page/main_page.dart';
 import 'package:ateba_app/modules/notifications/ui/page/notification_page.dart';
 import 'package:ateba_app/modules/package%20details/ui/page/package_details_page.dart';
@@ -219,6 +220,13 @@ class AtebaRouter {
             path: Routes.notifications,
             name: Routes.notifications,
             pageBuilder: (state) => const NotificationPage(),
+          ),
+          _routeFade(
+            path: Routes.fastSearchPage,
+            name: Routes.fastSearchPage,
+            pageBuilder: (state) => FastSearchPage(
+              query: state.extra as String?,
+            ),
           )
         ],
       )

@@ -8,6 +8,7 @@ import 'package:ateba_app/modules/home/data/models/course.dart';
 import 'package:ateba_app/modules/home/data/models/package.dart';
 import 'package:ateba_app/modules/home/ui/widgets/banner_slider_widget.dart';
 import 'package:ateba_app/modules/home/ui/widgets/course_card.dart';
+import 'package:ateba_app/modules/home/ui/widgets/home_search_widget.dart';
 import 'package:ateba_app/modules/home/ui/widgets/latest_tutorials_widget.dart';
 import 'package:ateba_app/modules/home/ui/widgets/course_shimmer_card.dart';
 import 'package:ateba_app/modules/home/ui/widgets/package_card.dart';
@@ -38,6 +39,16 @@ class HomePage extends StatelessWidget {
             SliverList(
               delegate: SliverChildListDelegate([
                 const BannerSliderWidget(),
+                if (context
+                    .select<HomeBloc, bool>((bloc) => bloc.suggestionsLoading))
+                  const ShimmerContainer(
+                    width: double.infinity,
+                    margin: EdgeInsets.only(top: 24),
+                    height: 100,
+                  )
+                else if (context
+                    .select<HomeBloc, bool>((bloc) => bloc.suggestions != null))
+                  const HomeSearchWidget(),
                 Padding(
                   padding:
                       const EdgeInsets.only(top: 24, right: 16, bottom: 12),

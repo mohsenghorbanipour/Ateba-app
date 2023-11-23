@@ -59,6 +59,7 @@ class Assets {
   static const String unbookmarkIc = '${_iconsBasePath}unbookmark_ic.svg';
   static const String videoCircleIc = '${_iconsBasePath}video_circle_ic.svg';
   static const String voiceIc = '${_iconsBasePath}voice_ic.svg';
+  static const String emptyImg = '${_imagesBasePath}empty_img.svg';
 
   static const String testIc = '${_iconsBasePath}test_ic.png';
   static const String test2Ic = '${_iconsBasePath}test_2_ic.svg';

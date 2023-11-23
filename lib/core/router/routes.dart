@@ -22,4 +22,5 @@ class Routes {
   static const String pdfViewPage = 'pdf-view';
   static const String notifications = 'notifications';
   static const String textViewerPage = 'text-viewer';
+  static const String fastSearchPage = 'fast-search';
 }

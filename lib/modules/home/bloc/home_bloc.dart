@@ -1,9 +1,11 @@
+import 'package:ateba_app/core/components/toast_component.dart';
 import 'package:ateba_app/core/network/api_response_model.dart';
 import 'package:ateba_app/core/network/pagination_response_model.dart';
 import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:ateba_app/modules/home/data/models/banner_slider.dart';
 import 'package:ateba_app/modules/home/data/models/course.dart';
 import 'package:ateba_app/modules/home/data/models/package.dart';
+import 'package:ateba_app/modules/home/data/models/suggestions.dart';
 import 'package:ateba_app/modules/home/data/models/tutorial.dart';
 import 'package:ateba_app/modules/home/data/remote/home_remote_provider.dart';
 import 'package:flutter/foundation.dart';
@@ -26,6 +28,9 @@ class HomeBloc extends ChangeNotifier {
   bool packagesLoading = true;
   List<Package> packages = [];
 
+  bool suggestionsLoading = true;
+  Suggestions? suggestions;
+
   // ==== ==== //
 
   Future<void> loadData() async {
@@ -35,6 +40,7 @@ class HomeBloc extends ChangeNotifier {
       loadCourses(),
       loadMiddleBanner(),
       loadPackages(),
+      loadSuggestions(),
     ]);
   }
 
@@ -51,6 +57,25 @@ class HomeBloc extends ChangeNotifier {
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  Future<void> loadSuggestions() async {
+    suggestionsLoading = true;
+    notifyListeners();
+    try {
+      ApiResponseModel<Suggestions?> response =
+          await HomeRemoteProvider.getSuggestion();
+      showMessageToast(response.message, response.success ?? false);
+      if (response.success ?? false) {
+        suggestions = response.data;
+      }
+      suggestionsLoading = false;
+      notifyListeners();
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      suggestionsLoading = false;
+      notifyListeners();
     }
   }
 
@@ -115,6 +140,15 @@ class HomeBloc extends ChangeNotifier {
       notifyListeners();
     } catch (e, s) {
       LoggerHelper.errorLog(e, s);
+    }
+  }
+
+  void showMessageToast(String? message, bool success) {
+    if (message?.isNotEmpty ?? false) {
+      ToastComponent.show(
+        message,
+        type: success ? ToastType.success : ToastType.error,
+      );
     }
   }
 

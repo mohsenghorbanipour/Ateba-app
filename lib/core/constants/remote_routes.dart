@@ -19,6 +19,10 @@ class RemoteRoutes {
   static const String getTopBanner = 'banners/slider';
   static const String getMiddleBanner = 'banners/middle';
 
+  // Search Api
+  static const String getSuggestion = 'search/suggestions';
+  static const String searchFase = 'search/fast';
+
   // Packages Api
   static const String getToturials = 'tutorials';
   static String getTutorialDetails(String slug) => 'tutorials/$slug';

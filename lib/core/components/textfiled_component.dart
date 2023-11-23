@@ -243,8 +243,10 @@ class _TextFieldComponentState extends State<TextFieldComponent> {
               ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(widget.borderRadius),
-                borderSide: BorderSide(
-                    color: ColorPalette.of(context).border, width: 1),
+                borderSide: !widget.enabled
+                    ? BorderSide.none
+                    : BorderSide(
+                        color: ColorPalette.of(context).border, width: 1),
               ),
               errorBorder: OutlineInputBorder(
                 borderSide: widget.readOnly
