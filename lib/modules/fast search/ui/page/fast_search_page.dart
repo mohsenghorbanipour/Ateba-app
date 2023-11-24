@@ -3,7 +3,6 @@ import 'package:ateba_app/core/resources/assets/assets.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/utils/debouncer.dart';
 import 'package:ateba_app/modules/fast%20search/bloc/fase_search_bloc.dart';
-import 'package:ateba_app/modules/fast%20search/data/models/fast_search.dart';
 import 'package:ateba_app/modules/fast%20search/ui/widget/fast_search_result_widget.dart';
 import 'package:ateba_app/modules/home/bloc/home_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -23,7 +22,11 @@ class FastSearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
-        create: (context) => FastSearchBloc()..search(query ?? ''),
+        create: (context) => FastSearchBloc()
+          ..search(
+            query ?? '',
+            isSuggested: query?.isNotEmpty ?? false,
+          ),
         lazy: false,
         builder: (context, child) => Scaffold(
           backgroundColor: ColorPalette.of(context).scaffoldBackground,
@@ -37,7 +40,7 @@ class FastSearchPage extends StatelessWidget {
               width: double.infinity,
               height: 50,
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: TextField(
+              child: TextFormField(
                 textAlign: TextAlign.right,
                 onChanged: (val) {
                   if ((val).length > 2) {
@@ -51,13 +54,21 @@ class FastSearchPage extends StatelessWidget {
                     );
                   }
                 },
+                initialValue: query,
                 decoration: InputDecoration(
                   filled: true,
-                  prefixIcon: Icon(
-                    Icons.search,
-                    size: 22,
-                    color:
-                        ColorPalette.of(context).textPrimary.withOpacity(0.5),
+                  prefixIcon: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: SvgPicture.asset(
+                          Assets.closeIc,
+                        ),
+                      ),
+                    ],
                   ),
                   hintText: context.select<HomeBloc, String>(
                     (bloc) => bloc.suggestions?.search_placeholder ?? '',

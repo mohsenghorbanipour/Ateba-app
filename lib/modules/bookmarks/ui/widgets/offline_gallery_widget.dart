@@ -11,11 +11,10 @@ class OfflineGalleryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Expanded(
-        child: Selector<DownloadVideoBloc, List<CacheVideoModel>>(
-          selector: (context, bloc) => bloc.videos,
-          builder: (context, videos, child) => ListView.separated(
+        child: Consumer<DownloadVideoBloc>(
+          builder: (context, bloc, child) => ListView.separated(
             physics: const BouncingScrollPhysics(),
-            itemCount: videos.length,
+            itemCount: bloc.videos.length,
             separatorBuilder: (_, __) => const SizedBox(
               height: 12,
             ),
@@ -26,16 +25,16 @@ class OfflineGalleryWidget extends StatelessWidget {
               bookmark: Bookmark(
                 link_to: LinkTo(
                   type: 'tutorial',
-                  slug: videos[index].slug,
+                  slug: bloc.videos[index].slug,
                 ),
-                videoId: videos[index].id,
-                thumbnail_url: videos[index].thumbnail_url,
-                title: videos[index].title,
-                video: videos[index].url,
-                duration: videos[index].duration,
-                updated_at: videos[index].updated_at,
-                path: videos[index].path,
-                quality: videos[index].qality,
+                videoId: bloc.videos[index].id,
+                thumbnail_url: bloc.videos[index].thumbnail_url,
+                title: bloc.videos[index].title,
+                video: bloc.videos[index].url,
+                duration: bloc.videos[index].duration,
+                updated_at: bloc.videos[index].updated_at,
+                path: bloc.videos[index].path,
+                quality: bloc.videos[index].qality,
               ),
             ),
           ),

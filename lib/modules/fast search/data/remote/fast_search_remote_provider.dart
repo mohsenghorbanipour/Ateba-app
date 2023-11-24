@@ -9,13 +9,16 @@ import 'package:easy_localization/easy_localization.dart';
 class FaseSearchRemotePeovider {
   static final NetworkHelper _networkHelper = NetworkHelper();
 
-  static Future<ApiResponseModel<List<FastSearch>?>> search(
-      String query) async {
+  static Future<ApiResponseModel<List<FastSearch>?>> search(String query,
+      {bool isSuggested = false}) async {
     try {
-      Response response = await _networkHelper.dio
-          .get(RemoteRoutes.searchFase, queryParameters: {
-        'query': query,
-      });
+      Response response = await _networkHelper.dio.get(
+        RemoteRoutes.searchFase,
+        queryParameters: {
+          'query': query,
+          'is_suggested': isSuggested,
+        },
+      );
       if (response.statusCode == 200) {
         return ApiResponseModel(
           success: true,

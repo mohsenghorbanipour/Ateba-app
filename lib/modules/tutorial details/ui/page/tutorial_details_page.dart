@@ -224,6 +224,7 @@ class TutorialDetailsPage extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
@@ -232,6 +233,7 @@ class TutorialDetailsPage extends StatelessWidget {
                                     (bloc) =>
                                         '${bloc.tutorialDetaials?.title ?? ''} - ${bloc.tutorialDetaials?.teacher?.name ?? ''}',
                                   ),
+                                  maxLines: 2,
                                   style:
                                       Theme.of(context).textTheme.titleMedium,
                                   overflow: TextOverflow.ellipsis,
@@ -329,6 +331,19 @@ class TutorialDetailsPage extends StatelessWidget {
                                             )
                                         ],
                                       ),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 24,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4),
+                                    margin: const EdgeInsets.only(right: 12),
+                                    decoration: BoxDecoration(
+                                      color: ColorPalette.of(context).border,
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: SvgPicture.asset(
+                                      Assets.shareIc,
                                     ),
                                   ),
                                   TutorialDownloadWidget(

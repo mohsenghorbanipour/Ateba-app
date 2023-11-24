@@ -9,13 +9,19 @@ class FastSearchBloc extends ChangeNotifier {
 
   List<FastSearch> result = [];
 
-  Future<void> search(String query) async {
+  Future<void> search(
+    String query, {
+    bool isSuggested = false,
+  }) async {
     if (query.length > 2) {
       loading = true;
       notifyListeners();
       try {
         ApiResponseModel<List<FastSearch>?> response =
-            await FaseSearchRemotePeovider.search(query);
+            await FaseSearchRemotePeovider.search(
+          query,
+          isSuggested: isSuggested,
+        );
         if (response.success ?? false) {
           result = response.data ?? [];
         }

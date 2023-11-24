@@ -22,6 +22,7 @@ class RemoteRoutes {
   // Search Api
   static const String getSuggestion = 'search/suggestions';
   static const String searchFase = 'search/fast';
+  static const String advancedSearch = 'search/advanced';
 
   // Packages Api
   static const String getToturials = 'tutorials';

@@ -18,6 +18,9 @@ PaginationResponseModel<T> _$PaginationResponseModelFromJson<T>(
       links: json['links'] == null
           ? null
           : PaginationLink.fromJson(json['links'] as Map<String, dynamic>),
+      filters: (json['filters'] as List<dynamic>?)
+          ?.map((e) => Filter.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$PaginationResponseModelToJson<T>(
@@ -35,6 +38,7 @@ Map<String, dynamic> _$PaginationResponseModelToJson<T>(
   writeNotNull('data', _$nullableGenericToJson(instance.data, toJsonT));
   writeNotNull('meta', instance.meta?.toJson());
   writeNotNull('links', instance.links?.toJson());
+  writeNotNull('filters', instance.filters?.map((e) => e.toJson()).toList());
   return val;
 }
 

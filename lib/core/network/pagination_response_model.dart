@@ -1,6 +1,7 @@
 import 'package:ateba_app/core/base/base_model.dart';
 import 'package:ateba_app/core/network/pagination_data.dart';
 import 'package:ateba_app/core/network/pagination_link.dart';
+import 'package:ateba_app/modules/search/data/models/filter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pagination_response_model.g.dart';
@@ -13,11 +14,13 @@ class PaginationResponseModel<T> implements BaseModel {
     this.data,
     this.meta,
     this.links,
+    this.filters,
   });
 
   final T? data;
   final PaginationData? meta;
   final PaginationLink? links;
+  final List<Filter>? filters;
 
   @override
   factory PaginationResponseModel.fromJson(

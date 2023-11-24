@@ -56,6 +56,7 @@ class ConfirmDeleteDialog extends StatelessWidget {
                             .deleteFromGallery(
                           index,
                         );
+                        Navigator.of(context).pop();
                       },
                       height: 40,
                       color: Colors.transparent,

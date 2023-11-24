@@ -8,6 +8,7 @@ import 'package:ateba_app/modules/cart/bloc/cart_bloc.dart';
 import 'package:ateba_app/modules/categories/bloc/categories_bloc.dart';
 import 'package:ateba_app/modules/home/bloc/home_bloc.dart';
 import 'package:ateba_app/modules/main/bloc/main_page_bloc.dart';
+import 'package:ateba_app/modules/search/bloc/search_bloc.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +56,9 @@ class AtebaApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => CartBloc(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SearchBloc(),
         ),
       ],
       child: EasyLocalization(

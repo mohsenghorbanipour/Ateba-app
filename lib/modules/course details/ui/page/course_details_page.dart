@@ -142,6 +142,7 @@ class CourseDetailsPage extends StatelessWidget {
                               child: SvgPicture.asset(
                                 Assets.shareIc,
                                 width: 16,
+                                color: ColorPalette.of(context).textPrimary,
                               ),
                             ),
                           ),

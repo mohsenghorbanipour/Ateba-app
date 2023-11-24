@@ -2,13 +2,12 @@ import 'package:ateba_app/modules/bookmarks/ui/page/bookmarks_page.dart';
 import 'package:ateba_app/modules/categories/ui/page/categories_page.dart';
 import 'package:ateba_app/modules/home/ui/page/home_page.dart';
 import 'package:ateba_app/modules/profile/ui/page/profile_page.dart';
+import 'package:ateba_app/modules/search/ui/page/search_page.dart';
 import 'package:flutter/material.dart';
 
 final List<Widget> pages = <Widget>[
   HomePage(),
-  const Text(
-    'Search Page',
-  ),
+  const SearchPage(),
   const CategoriesPage(),
   const BookmarksPage(),
   const ProfilePage()

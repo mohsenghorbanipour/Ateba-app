@@ -128,6 +128,9 @@
     "year_ago": "سال قبل",
     "register_answer": "ثبت پاسخ",
     "month_ago": "ماه قبل",
-    "not_fount_items": "موردی یافت نشد!"
+    "not_fount_items": "موردی یافت نشد!",
+    "search_education_lable": "جست و جوی عنوان آموزشی ...",
+    "search": "جستوجو",
+    "ateba_categories": "دسته بندی اطبا"
     
 }
