@@ -1,3 +1,5 @@
+// ignore_for_file: unrelated_type_equality_checks
+
 import 'package:ateba_app/core/base/bloc/download_video_bloc.dart';
 import 'package:ateba_app/core/components/toast_component.dart';
 import 'package:ateba_app/core/resources/assets/assets.dart';
@@ -6,6 +8,7 @@ import 'package:ateba_app/core/router/routes.dart';
 import 'package:ateba_app/core/theme/style/color_palatte.dart';
 import 'package:ateba_app/core/widgets/no_active_subscription_dialog.dart';
 import 'package:ateba_app/modules/tutorial%20details/bloc/tutorial_details_bloc.dart';
+import 'package:ateba_app/modules/tutorial%20details/data/models/playlist.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/video_link.dart';
 import 'package:ateba_app/modules/tutorial%20details/ui/dialogs/download_dialog.dart';
@@ -21,11 +24,13 @@ class TutorialDownloadWidget extends StatelessWidget {
   const TutorialDownloadWidget({
     required this.slug,
     required this.video,
+    required this.hasAccess,
     super.key,
   });
 
   final String slug;
   final Video video;
+  final bool hasAccess;
 
   @override
   Widget build(BuildContext context) {
@@ -113,12 +118,15 @@ class TutorialDownloadWidget extends StatelessWidget {
                         Provider.of<DownloadVideoBloc>(context, listen: false)
                             .getPath(video.id ?? -1, slug),
                     'video': Video(
-                      download_links: [
-                        VideoLink(
-                          quality: cacheVideoModel.qality,
-                          size: cacheVideoModel.size,
-                        ),
-                      ],
+                      playlist: PlayList(
+                        hls: '',
+                        download: [
+                          VideoLink(
+                            quality: cacheVideoModel.qality,
+                            size: cacheVideoModel.size,
+                          )
+                        ],
+                      ),
                       id: cacheVideoModel.id,
                       hls_url: cacheVideoModel.url,
                       thumbnail_url: cacheVideoModel.thumbnail_url,
@@ -140,13 +148,7 @@ class TutorialDownloadWidget extends StatelessWidget {
                 );
                 return;
               }
-              if (Provider.of<TutorialDetaialsBloc>(context, listen: false)
-                      .tutorialDetaials
-                      ?.videos is int &&
-                  Provider.of<TutorialDetaialsBloc>(context, listen: false)
-                          .tutorialDetaials
-                          ?.videos ==
-                      402) {
+              if (!hasAccess) {
                 showAnimatedDialog(
                   context: context,
                   curve: Curves.easeIn,

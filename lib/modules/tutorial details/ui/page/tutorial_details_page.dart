@@ -27,6 +27,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:styled_text/styled_text.dart';
 
 class TutorialDetailsPage extends StatelessWidget {
@@ -220,6 +221,9 @@ class TutorialDetailsPage extends StatelessWidget {
                               .select<TutorialDetaialsBloc, String>((bloc) =>
                                   bloc.tutorialDetaials?.cover_url ?? ''),
                           slug: slug,
+                          hasAccess: context.select<TutorialDetaialsBloc, bool>(
+                              (bloc) =>
+                                  bloc.tutorialDetaials?.has_access ?? false),
                         ),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
@@ -333,17 +337,30 @@ class TutorialDetailsPage extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 24,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 4),
-                                    margin: const EdgeInsets.only(right: 12),
-                                    decoration: BoxDecoration(
-                                      color: ColorPalette.of(context).border,
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                    child: SvgPicture.asset(
-                                      Assets.shareIc,
+                                  InkWell(
+                                    onTap: () {
+                                      Share.share(
+                                        Provider.of<TutorialDetaialsBloc>(
+                                                    context,
+                                                    listen: false)
+                                                .tutorialDetaials
+                                                ?.share
+                                                ?.link ??
+                                            '',
+                                      );
+                                    },
+                                    child: Container(
+                                      height: 24,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 4),
+                                      margin: const EdgeInsets.only(right: 12),
+                                      decoration: BoxDecoration(
+                                        color: ColorPalette.of(context).border,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: SvgPicture.asset(
+                                        Assets.shareIc,
+                                      ),
                                     ),
                                   ),
                                   TutorialDownloadWidget(
@@ -352,6 +369,12 @@ class TutorialDetailsPage extends StatelessWidget {
                                         .select<TutorialDetaialsBloc, Video>(
                                       (bloc) => bloc.getVideo() ?? Video(),
                                     ),
+                                    hasAccess: context
+                                        .select<TutorialDetaialsBloc, bool>(
+                                            (bloc) =>
+                                                bloc.tutorialDetaials
+                                                    ?.has_access ??
+                                                false),
                                   ),
                                 ],
                               )

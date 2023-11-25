@@ -22,6 +22,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:ateba_app/core/utils/price_ext.dart';
+import 'package:share_plus/share_plus.dart';
 
 class PackageDetailsPage extends StatelessWidget {
   const PackageDetailsPage({
@@ -124,6 +125,39 @@ class PackageDetailsPage extends StatelessWidget {
                             ),
                           ],
                         ),
+                        actions: [
+                          InkWell(
+                            onTap: () {
+                              Share.share(
+                                Provider.of<PackageDetailsBloc>(context,
+                                            listen: false)
+                                        .packageDetails
+                                        ?.share
+                                        ?.link ??
+                                    '',
+                              );
+                            },
+                            child: Container(
+                              width: 32,
+                              height: 32,
+                              margin: const EdgeInsets.only(left: 12),
+                              decoration: BoxDecoration(
+                                color: ColorPalette.of(context).background,
+                                borderRadius: BorderRadius.circular(6),
+                                border: Border.all(
+                                  width: 1,
+                                  color: ColorPalette.of(context).border,
+                                ),
+                              ),
+                              child: Center(
+                                child: SvgPicture.asset(
+                                  Assets.shareIc,
+                                  width: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                         expandedHeight: 200,
                         floating: false,
                         pinned: true,

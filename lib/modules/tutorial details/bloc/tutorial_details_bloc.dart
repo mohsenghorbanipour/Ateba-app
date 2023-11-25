@@ -400,12 +400,7 @@ class TutorialDetaialsBloc extends ChangeNotifier {
   Video? getVideo() {
     try {
       if (selectedVideoIndex != null && selectedVideoIndex != -1) {
-        List<Video> videos = (tutorialDetaials?.videos as List<dynamic>)
-            .map(
-              (e) => Video.fromJson(e),
-            )
-            .toList();
-        return videos[selectedVideoIndex!];
+        return (tutorialDetaials?.videos ?? [])[selectedVideoIndex!];
       }
       return null;
     } catch (e, s) {

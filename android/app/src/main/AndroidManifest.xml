@@ -28,6 +28,29 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <!-- App Links -->
+            <intent-filter android:autoVerify="true">
+              <action android:name="android.intent.action.VIEW" />
+              <category android:name="android.intent.category.DEFAULT" />
+              <category android:name="android.intent.category.BROWSABLE" />
+              <!-- Accepts URIs that begin with https://YOUR_HOST -->
+              <data
+                android:scheme="http"
+                android:host="a-bridge.site"
+                android:pathPrefix="/app" />
+            </intent-filter>
+            <!-- App Links -->
+            <intent-filter android:autoVerify="true">
+              <action android:name="android.intent.action.VIEW" />
+              <category android:name="android.intent.category.DEFAULT" />
+              <category android:name="android.intent.category.BROWSABLE" />
+              <!-- Accepts URIs that begin with https://YOUR_HOST -->
+              <data
+                android:scheme="http"
+                android:host="a-bridge.site"
+                android:pathPrefix="/app" />
+            </intent-filter>
+
         </activity>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"

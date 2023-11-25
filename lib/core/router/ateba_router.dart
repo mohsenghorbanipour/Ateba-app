@@ -85,8 +85,8 @@ class AtebaRouter {
             ),
             routes: [
               _routeFade(
-                path: Routes.subscriptions,
-                name: Routes.subscriptions,
+                path: Routes.tutorialSubscription,
+                name: Routes.tutorialSubscription,
                 pageBuilder: (state) => const SubscriptionPage(),
               ),
               _routeFade(
@@ -142,6 +142,11 @@ class AtebaRouter {
                   //   ),
                   // )
                 ],
+              ),
+              _routeFade(
+                path: Routes.courseSubscription,
+                name: Routes.courseSubscription,
+                pageBuilder: (state) => const SubscriptionPage(),
               ),
             ],
           ),

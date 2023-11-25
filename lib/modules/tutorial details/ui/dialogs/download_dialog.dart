@@ -91,7 +91,7 @@ class _DownloadDialogState extends State<DownloadDialog> {
                   ],
                 ),
                 ListView.separated(
-                  itemCount: widget.video.download_links?.length ?? 0,
+                  itemCount: widget.video.playlist?.download?.length ?? 0,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   shrinkWrap: true,
@@ -100,7 +100,7 @@ class _DownloadDialogState extends State<DownloadDialog> {
                   ),
                   itemBuilder: (_, index) => DownloadVideoTile(
                     videoLink:
-                        widget.video.download_links?[index] ?? VideoLink(),
+                        widget.video.playlist?.download?[index] ?? VideoLink(),
                     onTap: () {
                       setState(() {
                         selectedIndexForDownload = index;
@@ -128,17 +128,20 @@ class _DownloadDialogState extends State<DownloadDialog> {
                           CacheVideoModel(
                             url: widget
                                     .video
-                                    .download_links?[selectedIndexForDownload!]
+                                    .playlist
+                                    ?.download?[selectedIndexForDownload!]
                                     .url ??
                                 '',
                             qality: widget
                                     .video
-                                    .download_links?[selectedIndexForDownload!]
+                                    .playlist
+                                    ?.download?[selectedIndexForDownload!]
                                     .quality ??
                                 '',
                             size: widget
                                     .video
-                                    .download_links?[selectedIndexForDownload!]
+                                    .playlist
+                                    ?.download?[selectedIndexForDownload!]
                                     .size ??
                                 '',
                             slug: widget.slug,

@@ -16,103 +16,119 @@ class VideoPlayerSettingModal extends StatelessWidget {
     required this.videoQualities,
     required this.hlsUrl,
     this.cacheVideo = false,
+    this.isRotate = false,
     super.key,
   });
 
   final List<VideoLink> videoQualities;
   final String hlsUrl;
   final bool cacheVideo;
+  final bool isRotate;
 
   @override
-  Widget build(BuildContext context) => Modal(
-        margin: const EdgeInsets.all(8),
-        borderRadius: BorderRadius.circular(8),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(8, 6, 8, 8),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 65,
-                height: 6,
-                margin: const EdgeInsets.only(bottom: 12),
-                decoration: BoxDecoration(
-                    color:
-                        ColorPalette.of(context).textPrimary.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(6)),
-              ),
-              VideoPlayerSettingTile(
-                icon: Icons.tune_rounded,
-                title: 'quality'.tr(),
-                onTap: () async {
-                  Navigator.of(context).pop();
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (ctx) => ChangeNotifierProvider.value(
-                      value:
-                          Provider.of<VideoPlayerBloc>(context, listen: false),
-                      builder: (ctx, child) => SelectQualityModal(
-                        videoQualities: videoQualities,
-                        hlsUrl: hlsUrl,
-                        cacheVideo: cacheVideo,
+  Widget build(BuildContext context) => RotatedBox(
+        quarterTurns: isRotate ? 1 : 0,
+        child: Modal(
+          margin: const EdgeInsets.all(8),
+          borderRadius: BorderRadius.circular(8),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(8, 6, 8, 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 65,
+                  height: 6,
+                  margin: const EdgeInsets.only(bottom: 12),
+                  decoration: BoxDecoration(
+                      color:
+                          ColorPalette.of(context).textPrimary.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(6)),
+                ),
+                VideoPlayerSettingTile(
+                  icon: Icons.tune_rounded,
+                  title: 'quality'.tr(),
+                  onTap: () async {
+                    Navigator.of(context).pop();
+                    showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      builder: (ctx) => ChangeNotifierProvider.value(
+                        value: Provider.of<VideoPlayerBloc>(context,
+                            listen: false),
+                        builder: (ctx, child) => SelectQualityModal(
+                          videoQualities: videoQualities,
+                          isRotate: isRotate,
+                          hlsUrl: hlsUrl,
+                          cacheVideo: cacheVideo,
+                        ),
                       ),
-                    ),
-                  );
-                },
-                optionWidget: Row(
-                  children: [
-                    Text(
-                      context.select<VideoPlayerBloc, String>(
-                          (bloc) => bloc.selectedQuality),
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    );
+                  },
+                  optionWidget: Row(
+                    children: [
+                      Text(
+                        context.select<VideoPlayerBloc, String>(
+                            (bloc) => bloc.selectedQuality),
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium
+                            ?.copyWith(
+                                color: ColorPalette.of(context)
+                                    .textPrimary
+                                    .withOpacity(0.8)),
+                      ),
+                      Icon(Icons.arrow_back_ios_new_rounded,
+                          size: 12,
                           color: ColorPalette.of(context)
                               .textPrimary
-                              .withOpacity(0.8)),
-                    ),
-                    Icon(Icons.arrow_back_ios_new_rounded,
-                        size: 12,
-                        color: ColorPalette.of(context)
-                            .textPrimary
-                            .withOpacity(0.8))
-                  ],
+                              .withOpacity(0.8))
+                    ],
+                  ),
                 ),
-              ),
-              VideoPlayerSettingTile(
-                icon: Icons.speed,
-                title: 'speed'.tr(),
-                onTap: () async {
-                  Navigator.of(context).pop();
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (ctx) => ChangeNotifierProvider.value(
-                      value:
-                          Provider.of<VideoPlayerBloc>(context, listen: false),
-                      builder: (ctx, child) => SpeedVideoModal(),
-                    ),
-                  );
-                },
-                optionWidget: Row(
-                  children: [
-                    Text(
-                      context.select<VideoPlayerBloc, String>(
-                        (bloc) =>
-                            bloc.controller?.value.playbackSpeed.toString() ??
-                            '',
+                VideoPlayerSettingTile(
+                  icon: Icons.speed,
+                  title: 'speed'.tr(),
+                  onTap: () async {
+                    Navigator.of(context).pop();
+                    showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      builder: (ctx) => ChangeNotifierProvider.value(
+                        value: Provider.of<VideoPlayerBloc>(context,
+                            listen: false),
+                        builder: (ctx, child) => SpeedVideoModal(
+                          isRotate: isRotate,
+                        ),
                       ),
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    );
+                  },
+                  optionWidget: Row(
+                    children: [
+                      Text(
+                        context.select<VideoPlayerBloc, String>(
+                          (bloc) =>
+                              bloc.controller?.value.playbackSpeed.toString() ??
+                              '',
+                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium
+                            ?.copyWith(
+                                color: ColorPalette.of(context)
+                                    .textPrimary
+                                    .withOpacity(0.8)),
+                      ),
+                      Icon(Icons.arrow_back_ios_new_rounded,
+                          size: 12,
                           color: ColorPalette.of(context)
                               .textPrimary
-                              .withOpacity(0.8)),
-                    ),
-                    Icon(Icons.arrow_back_ios_new_rounded,
-                        size: 12,
-                        color: ColorPalette.of(context)
-                            .textPrimary
-                            .withOpacity(0.8))
-                  ],
+                              .withOpacity(0.8))
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );

@@ -122,9 +122,14 @@ class SearchResultWidget extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     SvgPicture.asset(
-                                        bloc.results[index].type == 'attachment'
-                                            ? Assets.attachmentIc
-                                            : Assets.videoIc),
+                                      bloc.results[index].type == 'attachment'
+                                          ? Assets.attachmentIc
+                                          : bloc.results[index].type ==
+                                                  'tutorial'
+                                              ? Assets.videoIc
+                                              : Assets.courseIc,
+                                      width: 18,
+                                    ),
                                     Padding(
                                       padding: const EdgeInsets.only(right: 6),
                                       child: Text(

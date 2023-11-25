@@ -23,13 +23,19 @@ TutorialDetaials _$TutorialDetaialsFromJson(Map<String, dynamic> json) =>
       is_liked: json['is_liked'] as bool?,
       is_bookmarked: json['is_bookmarked'] as bool?,
       comments_count: json['comments_count'] as int?,
-      videos: json['videos'],
+      videos: (json['videos'] as List<dynamic>?)
+          ?.map((e) => Video.fromJson(e as Map<String, dynamic>))
+          .toList(),
       attachments: (json['attachments'] as List<dynamic>?)
           ?.map((e) => Attachment.fromJson(e as Map<String, dynamic>))
           .toList(),
       top_comments: (json['top_comments'] as List<dynamic>?)
           ?.map((e) => Comment.fromJson(e as Map<String, dynamic>))
           .toList(),
+      has_access: json['has_access'] as bool?,
+      share: json['share'] == null
+          ? null
+          : Share.fromJson(json['share'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$TutorialDetaialsToJson(TutorialDetaials instance) {
@@ -54,10 +60,12 @@ Map<String, dynamic> _$TutorialDetaialsToJson(TutorialDetaials instance) {
   writeNotNull('is_liked', instance.is_liked);
   writeNotNull('is_bookmarked', instance.is_bookmarked);
   writeNotNull('comments_count', instance.comments_count);
-  writeNotNull('videos', instance.videos);
+  writeNotNull('videos', instance.videos?.map((e) => e.toJson()).toList());
   writeNotNull(
       'attachments', instance.attachments?.map((e) => e.toJson()).toList());
   writeNotNull(
       'top_comments', instance.top_comments?.map((e) => e.toJson()).toList());
+  writeNotNull('has_access', instance.has_access);
+  writeNotNull('share', instance.share?.toJson());
   return val;
 }

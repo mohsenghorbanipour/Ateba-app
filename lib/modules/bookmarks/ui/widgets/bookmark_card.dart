@@ -10,6 +10,7 @@ import 'package:ateba_app/core/utils/text_input_formatters.dart';
 import 'package:ateba_app/modules/bookmarks/bloc/bookmarks_bloc.dart';
 import 'package:ateba_app/modules/bookmarks/data/models/bookmark.dart';
 import 'package:ateba_app/modules/bookmarks/ui/dialogs/confirm_delete_dialog.dart';
+import 'package:ateba_app/modules/tutorial%20details/data/models/playlist.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/video_link.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -88,12 +89,14 @@ class BookmarkCard extends StatelessWidget {
                                     'slug': '',
                                     'path': bookmark.path,
                                     'video': Video(
-                                      download_links: [
-                                        VideoLink(
-                                          quality: bookmark.quality,
-                                          size: '',
-                                        ),
-                                      ],
+                                      playlist: PlayList(
+                                        download: [
+                                          VideoLink(
+                                            quality: bookmark.quality,
+                                            size: '',
+                                          )
+                                        ],
+                                      ),
                                       id: bookmark.videoId,
                                       hls_url: '',
                                       thumbnail_url: bookmark.thumbnail_url,

@@ -1,6 +1,7 @@
 import 'package:ateba_app/core/base/base_model.dart';
 import 'package:ateba_app/modules/home/data/models/teacher.dart';
 import 'package:ateba_app/modules/package%20details/data/models/tutorial_package.dart';
+import 'package:ateba_app/modules/tutorial%20details/data/models/share.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'package_details.g.dart';
@@ -23,6 +24,7 @@ class PackageDetails implements BaseModel<PackageDetails>{
     this.teachers,
     this.is_bookmarked,
     this.has_bought,
+    this.share,
   });
 
   final String? title;
@@ -39,6 +41,7 @@ class PackageDetails implements BaseModel<PackageDetails>{
   final List<Teacher>? teachers;
   final bool? is_bookmarked;
   final bool? has_bought;
+  final Share? share;
 
   @override
   factory PackageDetails.fromJson(Map<String, dynamic> json) =>

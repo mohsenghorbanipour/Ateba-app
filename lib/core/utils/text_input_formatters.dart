@@ -1,3 +1,4 @@
+import 'package:ateba_app/core/utils/logger_helper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -57,5 +58,17 @@ class TextInputFormatters {
         .replaceAll('۸', '8')
         .replaceAll('۹', '9');
     return text;
+  }
+
+  static String getDuration(String duration) {
+    try {
+      String hour = duration.substring(0, 2);
+      String min = duration.substring(3, 5);
+      String sec = duration.substring(6, 8);
+      return toPersianNumber('${hour == '00' ? '' : '$hour:'}$min:$sec');
+    } catch (e, s) {
+      LoggerHelper.errorLog(e, s);
+      return '';
+    }
   }
 }

@@ -13,7 +13,8 @@ class Routes {
   static const String packageVideoPlayer = 'package-video-player/:id';
   static const String cart = 'cart';
   static const String subscription = 'subscription';
-  static const String subscriptions = 'subscriptions';
+  static const String tutorialSubscription = 't-subscription';
+  static const String courseSubscription = 'c-subscription';
   static const String categoryDetials = 'category/:slug';
   static const String transactions = 'transactions';
   static const String editProfile = 'edit-profile';

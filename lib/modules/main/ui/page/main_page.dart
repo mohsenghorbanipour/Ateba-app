@@ -42,48 +42,48 @@ class _MainPageState extends State<MainPage> {
           surfaceTintColor: ColorPalette.of(context).background,
           backgroundColor: ColorPalette.of(context).background,
           actions: [
-            IconButton(
-              onPressed: () {
-                try {
-                  // if (Provider.of<ThemeBloc>(context, listen: false).currentTheme ==
-                  //     theme.system) {
-                  //   Provider.of<ThemeBloc>(context, listen: false)
-                  //       .setNewTheme(context, theme.light.toString());
-                  // } else
-                  if (Provider.of<ThemeBloc>(context, listen: false)
-                          .currentTheme ==
-                      theme.light) {
-                    Provider.of<ThemeBloc>(context, listen: false)
-                        .setNewTheme(context, theme.dark.toString());
-                    SystemChrome.setSystemUIOverlayStyle(
-                      const SystemUiOverlayStyle(
-                        statusBarColor: Colors.transparent,
-                        statusBarIconBrightness: Brightness.light,
-                      ),
-                    );
-                  } else if (Provider.of<ThemeBloc>(context, listen: false)
-                          .currentTheme ==
-                      theme.dark) {
-                    Provider.of<ThemeBloc>(context, listen: false)
-                        .setNewTheme(context, theme.light.toString());
-                    SystemChrome.setSystemUIOverlayStyle(
-                      const SystemUiOverlayStyle(
-                        statusBarColor: Colors.transparent,
-                        statusBarIconBrightness: Brightness.dark,
-                      ),
-                    );
-                  }
-                } catch (e, s) {
-                  LoggerHelper.errorLog(e, s);
-                }
-              },
-              icon: Icon(
-                context.select<ThemeBloc, bool>(
-                        (bloc) => bloc.isThemeSelected(theme.light))
-                    ? Icons.dark_mode_rounded
-                    : Icons.light_mode_rounded,
-              ),
-            ),
+            // IconButton(
+            //   onPressed: () {
+            //     try {
+            //       // if (Provider.of<ThemeBloc>(context, listen: false).currentTheme ==
+            //       //     theme.system) {
+            //       //   Provider.of<ThemeBloc>(context, listen: false)
+            //       //       .setNewTheme(context, theme.light.toString());
+            //       // } else
+            //       if (Provider.of<ThemeBloc>(context, listen: false)
+            //               .currentTheme ==
+            //           theme.light) {
+            //         Provider.of<ThemeBloc>(context, listen: false)
+            //             .setNewTheme(context, theme.dark.toString());
+            //         SystemChrome.setSystemUIOverlayStyle(
+            //           const SystemUiOverlayStyle(
+            //             statusBarColor: Colors.transparent,
+            //             statusBarIconBrightness: Brightness.light,
+            //           ),
+            //         );
+            //       } else if (Provider.of<ThemeBloc>(context, listen: false)
+            //               .currentTheme ==
+            //           theme.dark) {
+            //         Provider.of<ThemeBloc>(context, listen: false)
+            //             .setNewTheme(context, theme.light.toString());
+            //         SystemChrome.setSystemUIOverlayStyle(
+            //           const SystemUiOverlayStyle(
+            //             statusBarColor: Colors.transparent,
+            //             statusBarIconBrightness: Brightness.dark,
+            //           ),
+            //         );
+            //       }
+            //     } catch (e, s) {
+            //       LoggerHelper.errorLog(e, s);
+            //     }
+            //   },
+            //   icon: Icon(
+            //     context.select<ThemeBloc, bool>(
+            //             (bloc) => bloc.isThemeSelected(theme.light))
+            //         ? Icons.dark_mode_rounded
+            //         : Icons.light_mode_rounded,
+            //   ),
+            // ),
             InkWell(
               onTap: () {
                 context.goNamed(

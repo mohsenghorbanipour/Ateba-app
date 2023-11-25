@@ -26,6 +26,9 @@ PackageDetails _$PackageDetailsFromJson(Map<String, dynamic> json) =>
           .toList(),
       is_bookmarked: json['is_bookmarked'] as bool?,
       has_bought: json['has_bought'] as bool?,
+      share: json['share'] == null
+          ? null
+          : Share.fromJson(json['share'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PackageDetailsToJson(PackageDetails instance) {
@@ -52,5 +55,6 @@ Map<String, dynamic> _$PackageDetailsToJson(PackageDetails instance) {
   writeNotNull('teachers', instance.teachers?.map((e) => e.toJson()).toList());
   writeNotNull('is_bookmarked', instance.is_bookmarked);
   writeNotNull('has_bought', instance.has_bought);
+  writeNotNull('share', instance.share?.toJson());
   return val;
 }

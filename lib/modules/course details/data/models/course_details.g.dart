@@ -25,6 +25,9 @@ CourseDetails _$CourseDetailsFromJson(Map<String, dynamic> json) =>
           ?.map((e) => Teacher.fromJson(e as Map<String, dynamic>))
           .toList(),
       has_bought: json['has_bought'] as bool?,
+      share: json['share'] == null
+          ? null
+          : Share.fromJson(json['share'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$CourseDetailsToJson(CourseDetails instance) {
@@ -50,5 +53,6 @@ Map<String, dynamic> _$CourseDetailsToJson(CourseDetails instance) {
   writeNotNull('tutorials_count', instance.tutorials_count);
   writeNotNull('teachers', instance.teachers?.map((e) => e.toJson()).toList());
   writeNotNull('has_bought', instance.has_bought);
+  writeNotNull('share', instance.share?.toJson());
   return val;
 }

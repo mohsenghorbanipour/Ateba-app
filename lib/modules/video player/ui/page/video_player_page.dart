@@ -19,17 +19,11 @@ class VideoPlayerPage extends StatelessWidget {
   const VideoPlayerPage({
     required this.videoId,
     required this.data,
-    // required this.video,
-    // this.pathFile,
-    // this.playFromOfflineGallery = false,
     super.key,
   });
 
   final String videoId;
   final Map<String, dynamic> data;
-  // final Video video;
-  // final String? pathFile;
-  // final bool playFromOfflineGallery;
 
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
@@ -37,10 +31,11 @@ class VideoPlayerPage extends StatelessWidget {
           ..initialVideoPlayer(
             data['playFromOfflineGallery'] as bool
                 ? data['path'] as String
-                : (data['video'] as Video).hls_url ?? '',
+                : (data['video'] as Video).playlist?.hls ?? '',
             playFromOfflineGallery: data['playFromOfflineGallery'] as bool,
             cacheQuality: data['playFromOfflineGallery'] as bool
-                ? (data['video'] as Video).download_links?.first.quality ?? ''
+                ? (data['video'] as Video).playlist?.download?.first.quality ??
+                    ''
                 : '',
           )
           ..setShowOption(),
@@ -255,6 +250,7 @@ class VideoPlayerPage extends StatelessWidget {
                                                                             '',
                                                                     chapters: bloc
                                                                         .chapters,
+                                                                    isRotate: bloc.fullScreen,
                                                                   ),
                                                                 ),
                                                               );
@@ -323,7 +319,7 @@ class VideoPlayerPage extends StatelessWidget {
                                                             child: Text(
                                                               TextInputFormatters
                                                                   .toPersianNumber(
-                                                                      '${bloc.hour ?? ''}:${bloc.mins ?? ''}:${bloc.sec ?? ''}'),
+                                                                      '${bloc.hour == '00' ? '' : '${bloc.hour ?? ''}:'}${bloc.mins ?? ''}:${bloc.sec ?? ''}'),
                                                               style: Theme.of(
                                                                       context)
                                                                   .textTheme
@@ -331,17 +327,15 @@ class VideoPlayerPage extends StatelessWidget {
                                                                   ?.copyWith(
                                                                       color: ColorPalette.of(
                                                                               context)
-                                                                          .white
-                                                                          .withOpacity(
-                                                                              0.7)),
+                                                                          .white),
                                                             ),
                                                           ),
                                                         Text(
-                                                          '/${TextInputFormatters.toPersianNumber(
+                                                          '/${TextInputFormatters.getDuration(
                                                             (data['video']
                                                                         as Video)
                                                                     .duration ??
-                                                                '', // '1:30:27/2:01:0.8',
+                                                                '',
                                                           )}',
                                                           style: Theme.of(
                                                                   context)
@@ -350,7 +344,9 @@ class VideoPlayerPage extends StatelessWidget {
                                                               ?.copyWith(
                                                                   color: ColorPalette.of(
                                                                           context)
-                                                                      .white),
+                                                                      .white
+                                                                      .withOpacity(
+                                                                          0.7)),
                                                         )
                                                       ],
                                                     )
@@ -470,7 +466,8 @@ class VideoPlayerPage extends StatelessWidget {
                                                           videoQualities: (data[
                                                                           'video']
                                                                       as Video)
-                                                                  .download_links ??
+                                                                  .playlist
+                                                                  ?.download ??
                                                               [],
                                                           hlsUrl: (data['video']
                                                                       as Video)
@@ -479,6 +476,8 @@ class VideoPlayerPage extends StatelessWidget {
                                                           cacheVideo: data[
                                                                   'playFromOfflineGallery']
                                                               as bool,
+                                                          isRotate:
+                                                              bloc.fullScreen,
                                                         ),
                                                       ),
                                                     );

@@ -1,6 +1,7 @@
 import 'package:ateba_app/core/base/base_model.dart';
 import 'package:ateba_app/modules/home/data/models/teacher.dart';
 import 'package:ateba_app/modules/home/data/models/tutorial.dart';
+import 'package:ateba_app/modules/tutorial%20details/data/models/share.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'course_details.g.dart';
@@ -21,6 +22,7 @@ class CourseDetails implements BaseModel<CourseDetails> {
     this.tutorials_count,
     this.teachers,
     this.has_bought,
+    this.share,
   });
 
   final String? title;
@@ -36,6 +38,7 @@ class CourseDetails implements BaseModel<CourseDetails> {
   final int? tutorials_count;
   final List<Teacher>? teachers;
   final bool? has_bought;
+  final Share? share;
 
   @override
   factory CourseDetails.fromJson(Map<String, dynamic> json) =>

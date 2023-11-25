@@ -15,9 +15,9 @@ Video _$VideoFromJson(Map<String, dynamic> json) => Video(
       type: json['type'] as String?,
       size: json['size'] as String?,
       duration: json['duration'] as String?,
-      download_links: (json['download_links'] as List<dynamic>?)
-          ?.map((e) => VideoLink.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      playlist: json['playlist'] == null
+          ? null
+          : PlayList.fromJson(json['playlist'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$VideoToJson(Video instance) {
@@ -37,7 +37,6 @@ Map<String, dynamic> _$VideoToJson(Video instance) {
   writeNotNull('type', instance.type);
   writeNotNull('size', instance.size);
   writeNotNull('duration', instance.duration);
-  writeNotNull('download_links',
-      instance.download_links?.map((e) => e.toJson()).toList());
+  writeNotNull('playlist', instance.playlist?.toJson());
   return val;
 }

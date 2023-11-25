@@ -1,4 +1,5 @@
 import 'package:ateba_app/core/base/base_model.dart';
+import 'package:ateba_app/modules/tutorial%20details/data/models/playlist.dart';
 import 'package:ateba_app/modules/tutorial%20details/data/models/video_link.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -15,7 +16,7 @@ class Video implements BaseModel<Video> {
     this.type,
     this.size,
     this.duration,
-    this.download_links,
+    this.playlist,
   });
 
   final int? id;
@@ -26,7 +27,7 @@ class Video implements BaseModel<Video> {
   final String? type;
   final String? size;
   final String? duration;
-  final List<VideoLink>? download_links;
+  final PlayList? playlist;
 
   @override
   factory Video.fromJson(Map<String, dynamic> json) => _$VideoFromJson(json);

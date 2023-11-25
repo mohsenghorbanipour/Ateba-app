@@ -304,6 +304,7 @@ class VideoPlayerBloc extends ChangeNotifier {
           value: this,
           builder: (ctx, child) => QuizModal(
             videoQuiz: quizes[index],
+            isRotate: fullScreen,
           ),
         ),
       );

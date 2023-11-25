@@ -10,97 +10,106 @@ class SelectQualityModal extends StatelessWidget {
     required this.videoQualities,
     required this.hlsUrl,
     this.cacheVideo = false,
+    this.isRotate = false,
     super.key,
   });
 
   final List<VideoLink> videoQualities;
   final String hlsUrl;
   final bool cacheVideo;
+  final bool isRotate;
 
   @override
-  Widget build(BuildContext context) => Modal(
-        child: Column(
-          children: [
-            ListView.builder(
-              reverse: true,
-              padding: const EdgeInsets.all(12),
-              itemCount: cacheVideo
-                  ? videoQualities.length
-                  : videoQualities.length + 1,
-              shrinkWrap: true,
-              itemBuilder: (context, index) => index == videoQualities.length
-                  ? InkWell(
-                      onTap: () {
-                        if (Provider.of<VideoPlayerBloc>(context, listen: false)
-                                .selectedQuality !=
-                            'auto') {
-                          Provider.of<VideoPlayerBloc>(context, listen: false)
-                              .changeVideoQuality(hlsUrl, 'auto');
-                        }
-                        Navigator.of(context).pop();
-                      },
-                      child: Container(
-                        height: 35,
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: Provider.of<VideoPlayerBloc>(context,
-                                          listen: false)
-                                      .selectedQuality ==
-                                  'auto'
-                              ? ColorPalette.of(context)
-                                  .primary
-                                  .withOpacity(0.4)
-                              : Colors.transparent,
+  Widget build(BuildContext context) => RotatedBox(
+        quarterTurns: isRotate ? 1 : 0,
+        child: Modal(
+          margin: const EdgeInsets.all(8),
+          borderRadius: BorderRadius.circular(8),
+          child: Column(
+            children: [
+              ListView.builder(
+                reverse: true,
+                padding: const EdgeInsets.all(12),
+                itemCount: cacheVideo
+                    ? videoQualities.length
+                    : videoQualities.length + 1,
+                shrinkWrap: true,
+                itemBuilder: (context, index) => index == videoQualities.length
+                    ? InkWell(
+                        onTap: () {
+                          if (Provider.of<VideoPlayerBloc>(context,
+                                      listen: false)
+                                  .selectedQuality !=
+                              'auto') {
+                            Provider.of<VideoPlayerBloc>(context, listen: false)
+                                .changeVideoQuality(hlsUrl, 'auto');
+                          }
+                          Navigator.of(context).pop();
+                        },
+                        child: Container(
+                          height: 35,
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: Provider.of<VideoPlayerBloc>(context,
+                                            listen: false)
+                                        .selectedQuality ==
+                                    'auto'
+                                ? ColorPalette.of(context)
+                                    .primary
+                                    .withOpacity(0.4)
+                                : Colors.transparent,
+                          ),
+                          child: const Row(
+                            children: [
+                              Text(
+                                'auto',
+                              ),
+                            ],
+                          ),
                         ),
-                        child: const Row(
-                          children: [
-                            Text(
-                              'auto',
-                            ),
-                          ],
+                      )
+                    : InkWell(
+                        onTap: () {
+                          if (Provider.of<VideoPlayerBloc>(context,
+                                      listen: false)
+                                  .selectedQuality !=
+                              videoQualities[index].quality) {
+                            Provider.of<VideoPlayerBloc>(context, listen: false)
+                                .changeVideoQuality(
+                                    videoQualities[index].url ?? '',
+                                    videoQualities[index].quality ?? '');
+                          }
+                          Navigator.of(context).pop();
+                        },
+                        child: Container(
+                          height: 35,
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: Provider.of<VideoPlayerBloc>(context,
+                                            listen: false)
+                                        .selectedQuality ==
+                                    videoQualities[index].quality
+                                ? ColorPalette.of(context)
+                                    .primary
+                                    .withOpacity(0.4)
+                                : Colors.transparent,
+                          ),
+                          child: Row(
+                            children: [
+                              Text(
+                                videoQualities[index].quality ?? '',
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    )
-                  : InkWell(
-                      onTap: () {
-                        if (Provider.of<VideoPlayerBloc>(context, listen: false)
-                                .selectedQuality !=
-                            videoQualities[index].quality) {
-                          Provider.of<VideoPlayerBloc>(context, listen: false)
-                              .changeVideoQuality(
-                                  videoQualities[index].url ?? '',
-                                  videoQualities[index].quality ?? '');
-                        }
-                        Navigator.of(context).pop();
-                      },
-                      child: Container(
-                        height: 35,
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: Provider.of<VideoPlayerBloc>(context,
-                                          listen: false)
-                                      .selectedQuality ==
-                                  videoQualities[index].quality
-                              ? ColorPalette.of(context)
-                                  .primary
-                                  .withOpacity(0.4)
-                              : Colors.transparent,
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              videoQualities[index].quality ?? '',
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       );
 }

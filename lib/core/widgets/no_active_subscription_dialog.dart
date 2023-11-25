@@ -54,7 +54,7 @@ class NoActiveSubscriptionDialog extends StatelessWidget {
               onPressed: () {
                 context.pop();
                 context.goNamed(
-                  Routes.subscriptions,
+                  Routes.tutorialSubscription,
                   pathParameters: {
                     'slug': slug,
                   },
