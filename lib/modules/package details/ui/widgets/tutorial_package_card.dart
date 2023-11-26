@@ -102,13 +102,9 @@ class _TutorialPackageCardState extends State<TutorialPackageCard> {
                                   height: 56,
                                   radius: 4,
                                 ),
-                                imageUrl:
-                                    widget.tutorialPackage.videos is int &&
-                                            widget.tutorialPackage.videos == 402
-                                        ? ''
-                                        : widget.tutorialPackage.videos?.first
-                                                .thumbnail_url ??
-                                            '',
+                                imageUrl: widget.tutorialPackage.videos?.first
+                                        .thumbnail_url ??
+                                    '',
                               ),
                             ),
                             Positioned(
@@ -128,25 +124,11 @@ class _TutorialPackageCardState extends State<TutorialPackageCard> {
                                       color: ColorPalette.of(context).error,
                                     ),
                                     child: Center(
-                                      child: context
-                                              .select<PackageDetailsBloc, bool>(
-                                                  (bloc) =>
-                                                      bloc.packageDetails
-                                                          ?.has_bought ??
-                                                      false)
-                                          ? Icon(
-                                              Icons.play_arrow_rounded,
-                                              color: ColorPalette.of(context)
-                                                  .white,
-                                              size: 16,
-                                            )
-                                          : Icon(
-                                              Icons.lock,
-                                              color: ColorPalette.of(context)
-                                                  .white,
-                                              size: 16,
-                                            ),
-                                    ),
+                                        child: Icon(
+                                      Icons.play_arrow_rounded,
+                                      color: ColorPalette.of(context).white,
+                                      size: 16,
+                                    )),
                                   ),
                                 ],
                               ),
@@ -173,12 +155,9 @@ class _TutorialPackageCardState extends State<TutorialPackageCard> {
                                 padding: const EdgeInsets.only(right: 4),
                                 child: Text(
                                   TextInputFormatters.toPersianNumber(
-                                    widget.tutorialPackage.videos is int &&
-                                            widget.tutorialPackage.videos == 402
-                                        ? ''
-                                        : widget.tutorialPackage.videos?.first
-                                                .duration ??
-                                            '',
+                                    widget.tutorialPackage.videos?.first
+                                            .duration ??
+                                        '',
                                   ),
                                   style: Theme.of(context).textTheme.labelSmall,
                                 ),
@@ -206,89 +185,89 @@ class _TutorialPackageCardState extends State<TutorialPackageCard> {
                     ),
                   ],
                 ),
-                // Row(
-                //   children: [
-                //     if (context.select<DownloadVideoBloc, bool>((bloc) =>
-                //         bloc.existVideoInCache(
-                //             widget.tutorialPackage.videos?.first.id ?? -1,
-                //             widget.tutorialPackage.slug ?? '')))
-                //       Container(
-                //         height: 24,
-                //         padding: const EdgeInsets.symmetric(horizontal: 4),
-                //         decoration: BoxDecoration(
-                //           color: ColorPalette.of(context).border,
-                //           borderRadius: BorderRadius.circular(4),
-                //         ),
-                //         child: SvgPicture.asset(
-                //           Assets.downloadedIc,
-                //         ),
-                //       ),
-                //     if (context.select<DownloadVideoBloc, bool>((bloc) =>
-                //         bloc.downloading &&
-                //         bloc.selectedVideoIdForDownload ==
-                //             widget.tutorialPackage.videos?.first.id))
-                //       InkWell(
-                //         onTap: () {
-                //           if (Provider.of<DownloadVideoBloc>(context,
-                //                       listen: false)
-                //                   .selectedVideoIdForDownload ==
-                //               widget.tutorialPackage.videos?.first.id) {
-                //             showAnimatedDialog(
-                //               context: context,
-                //               curve: Curves.easeIn,
-                //               animationType: DialogTransitionType.fade,
-                //               duration: const Duration(milliseconds: 300),
-                //               builder: (ctx) => ChangeNotifierProvider.value(
-                //                 value: Provider.of<PackageDetailsBloc>(context,
-                //                     listen: false),
-                //                 child: DownloadDialog(
-                //                   video: widget.tutorialPackage.videos?.first ??
-                //                       Video(),
-                //                   slug: widget.tutorialPackage.slug ?? '',
-                //                   type: 'tutorial',
-                //                   title: widget.tutorialPackage.title ?? '',
-                //                   updated_at: Provider.of<PackageDetailsBloc>(
-                //                               context,
-                //                               listen: false)
-                //                           .packageDetails
-                //                           ?.updated_at ??
-                //                       '',
-                //                   currentIndex: Provider.of<DownloadVideoBloc>(
-                //                           context,
-                //                           listen: false)
-                //                       .selectedVideoIndexForDownload,
-                //                 ),
-                //               ),
-                //             );
-                //           }
-                //         },
-                //         child: Container(
-                //           height: 24,
-                //           padding: const EdgeInsets.symmetric(horizontal: 4),
-                //           decoration: BoxDecoration(
-                //             color: ColorPalette.of(context).border,
-                //             borderRadius: BorderRadius.circular(4),
-                //           ),
-                //           child: SizedBox(
-                //             width: 20,
-                //             height: 20,
-                //             child: CircularPercentIndicator(
-                //               radius: 8.0,
-                //               lineWidth: 1.5,
-                //               percent:
-                //                   context.select<DownloadVideoBloc, double>(
-                //                       (bloc) => (bloc.percentage) / 100),
-                //               progressColor: ColorPalette.of(context).primary,
-                //             ),
-                //           ),
-                //         ),
-                //       ),
-                //     PackageDetailsMenu(
-                //       index: widget.index,
-                //       tutorialPackage: widget.tutorialPackage,
-                //     ),
-                //   ],
-                // ),
+                Row(
+                  children: [
+                    if (context.select<DownloadVideoBloc, bool>((bloc) =>
+                        bloc.existVideoInCache(
+                            widget.tutorialPackage.videos?.first.id ?? -1,
+                            widget.tutorialPackage.slug ?? '')))
+                      Container(
+                        height: 24,
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        decoration: BoxDecoration(
+                          color: ColorPalette.of(context).border,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: SvgPicture.asset(
+                          Assets.downloadedIc,
+                        ),
+                      ),
+                    if (context.select<DownloadVideoBloc, bool>((bloc) =>
+                        bloc.downloading &&
+                        bloc.selectedVideoIdForDownload ==
+                            widget.tutorialPackage.videos?.first.id))
+                      InkWell(
+                        onTap: () {
+                          if (Provider.of<DownloadVideoBloc>(context,
+                                      listen: false)
+                                  .selectedVideoIdForDownload ==
+                              widget.tutorialPackage.videos?.first.id) {
+                            showAnimatedDialog(
+                              context: context,
+                              curve: Curves.easeIn,
+                              animationType: DialogTransitionType.fade,
+                              duration: const Duration(milliseconds: 300),
+                              builder: (ctx) => ChangeNotifierProvider.value(
+                                value: Provider.of<PackageDetailsBloc>(context,
+                                    listen: false),
+                                child: DownloadDialog(
+                                  video: widget.tutorialPackage.videos?.first ??
+                                      Video(),
+                                  slug: widget.tutorialPackage.slug ?? '',
+                                  type: 'tutorial',
+                                  title: widget.tutorialPackage.title ?? '',
+                                  updated_at: Provider.of<PackageDetailsBloc>(
+                                              context,
+                                              listen: false)
+                                          .packageDetails
+                                          ?.updated_at ??
+                                      '',
+                                  currentIndex: Provider.of<DownloadVideoBloc>(
+                                          context,
+                                          listen: false)
+                                      .selectedVideoIndexForDownload,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        child: Container(
+                          height: 24,
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          decoration: BoxDecoration(
+                            color: ColorPalette.of(context).border,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularPercentIndicator(
+                              radius: 8.0,
+                              lineWidth: 1.5,
+                              percent:
+                                  context.select<DownloadVideoBloc, double>(
+                                      (bloc) => (bloc.percentage) / 100),
+                              progressColor: ColorPalette.of(context).primary,
+                            ),
+                          ),
+                        ),
+                      ),
+                    PackageDetailsMenu(
+                      index: widget.index,
+                      tutorialPackage: widget.tutorialPackage,
+                    ),
+                  ],
+                ),
               ],
             ),
             Padding(

@@ -68,62 +68,63 @@ class BookmarkCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      top: 0,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              if (isGalleryOffline) {
-                                context.goNamed(
-                                  Routes.mainPagevideoPlayer,
-                                  pathParameters: {
-                                    'id': bookmark.videoId.toString(),
-                                  },
-                                  extra: {
-                                    'playFromOfflineGallery': true,
-                                    'slug': '',
-                                    'path': bookmark.path,
-                                    'video': Video(
-                                      playlist: PlayList(
-                                        download: [
-                                          VideoLink(
-                                            quality: bookmark.quality,
-                                            size: '',
-                                          )
-                                        ],
+                    if (isGalleryOffline)
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        top: 0,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                if (isGalleryOffline) {
+                                  context.goNamed(
+                                    Routes.mainPagevideoPlayer,
+                                    pathParameters: {
+                                      'id': bookmark.videoId.toString(),
+                                    },
+                                    extra: {
+                                      'playFromOfflineGallery': true,
+                                      'slug': '',
+                                      'path': bookmark.path,
+                                      'video': Video(
+                                        playlist: PlayList(
+                                          download: [
+                                            VideoLink(
+                                              quality: bookmark.quality,
+                                              size: '',
+                                            )
+                                          ],
+                                        ),
+                                        id: bookmark.videoId,
+                                        hls_url: '',
+                                        thumbnail_url: bookmark.thumbnail_url,
+                                        duration: bookmark.duration,
+                                        title: bookmark.title,
                                       ),
-                                      id: bookmark.videoId,
-                                      hls_url: '',
-                                      thumbnail_url: bookmark.thumbnail_url,
-                                      duration: bookmark.duration,
-                                      title: bookmark.title,
-                                    ),
-                                  },
-                                );
-                              }
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 24,
-                              height: 24,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: ColorPalette.of(context).error,
-                              ),
-                              child: Icon(
-                                Icons.play_arrow_rounded,
-                                color: ColorPalette.of(context).white,
+                                    },
+                                  );
+                                }
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 24,
+                                height: 24,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: ColorPalette.of(context).error,
+                                ),
+                                child: Icon(
+                                  Icons.play_arrow_rounded,
+                                  color: ColorPalette.of(context).white,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    )
+                          ],
+                        ),
+                      )
                   ],
                 ),
                 Expanded(

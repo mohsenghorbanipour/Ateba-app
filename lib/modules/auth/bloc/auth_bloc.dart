@@ -85,7 +85,7 @@ class AuthBloc extends ChangeNotifier {
     notifyListeners();
     try {
       ApiResponseModel<bool> response = await AuthRemoteProvider.sendCode(
-        '0098$phone',
+        '0$phone',
       );
       showMessageToast(
         response.message,
@@ -107,7 +107,7 @@ class AuthBloc extends ChangeNotifier {
     notifyListeners();
     try {
       ApiResponseModel<TokenResponse?> response =
-          await AuthRemoteProvider.verifyCode('0098$phone', code);
+          await AuthRemoteProvider.verifyCode('0$phone', code);
       showMessageToast(
         response.message,
         response.success ?? false,
@@ -250,5 +250,6 @@ class AuthBloc extends ChangeNotifier {
     subscriptionExpireDate = null;
     loading = false;
     loadingProfile = false;
+    notifyListeners();
   }
 }

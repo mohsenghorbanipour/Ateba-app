@@ -75,11 +75,14 @@ class LoginPage extends StatelessWidget {
                           child: TextFieldComponent(
                             name: 'phone',
                             maxLength: 10,
-                            initialValue: context
-                                .select<AuthBloc, String>((bloc) => bloc.phone),
+                            initialValue: context.select<AuthBloc, String>(
+                              (bloc) => TextInputFormatters.toPersianNumber(
+                                  bloc.phone),
+                            ),
                             showLabel: false,
                             keyboardType: TextInputType.phone,
-                            hintText: '9121234567',
+                            hintText: TextInputFormatters.toPersianNumber(
+                                '9121234567'),
                             textDirection: ui.TextDirection.rtl,
                             textAlign: TextAlign.end,
                             hintDirection: ui.TextDirection.rtl,

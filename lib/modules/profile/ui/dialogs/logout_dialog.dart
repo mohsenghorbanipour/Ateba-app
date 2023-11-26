@@ -7,6 +7,7 @@ import 'package:ateba_app/modules/bookmarks/bloc/bookmarks_bloc.dart';
 import 'package:ateba_app/modules/cart/bloc/cart_bloc.dart';
 import 'package:ateba_app/modules/categories/bloc/categories_bloc.dart';
 import 'package:ateba_app/modules/home/bloc/home_bloc.dart';
+import 'package:ateba_app/modules/main/bloc/main_page_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -53,6 +54,7 @@ class LogoutDialog extends StatelessWidget {
                     child: ButtonComponent(
                       onPressed: () {
                         Provider.of<AuthBloc>(context, listen: false).logout();
+                        Provider.of<MainPageBloc>(context, listen: false).clearData();
                         Provider.of<HomeBloc>(context, listen: false)
                             .clearData();
                         Provider.of<CategoriesBloc>(context, listen: false)

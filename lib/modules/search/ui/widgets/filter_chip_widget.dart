@@ -33,7 +33,7 @@ class FilterChipWidget extends StatelessWidget {
           ),
           child: Text(
             (filter.label ?? '') +
-                ((filter.results_count ?? 0) > 0
+                ((filter.results_count != null)
                     ? TextInputFormatters.toPersianNumber(
                         ' (${filter.results_count})')
                     : ''),

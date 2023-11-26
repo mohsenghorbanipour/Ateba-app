@@ -250,7 +250,8 @@ class VideoPlayerPage extends StatelessWidget {
                                                                             '',
                                                                     chapters: bloc
                                                                         .chapters,
-                                                                    isRotate: bloc.fullScreen,
+                                                                    isRotate: bloc
+                                                                        .fullScreen,
                                                                   ),
                                                                 ),
                                                               );
@@ -276,8 +277,7 @@ class VideoPlayerPage extends StatelessWidget {
                                                                           .only(
                                                                       right: 2),
                                                                   child: Text(
-                                                                    'chapters'
-                                                                        .tr(),
+                                                                    'chapters${' '.tr()}',
                                                                     style: Theme.of(
                                                                             context)
                                                                         .textTheme

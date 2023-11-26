@@ -35,4 +35,8 @@ class MainPageBloc extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void clearData() {
+    _pageIndex = 0;
+  }
 }

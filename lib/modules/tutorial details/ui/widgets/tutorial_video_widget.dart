@@ -5,6 +5,7 @@ import 'package:ateba_app/modules/tutorial%20details/bloc/tutorial_details_bloc.
 import 'package:ateba_app/modules/tutorial%20details/data/models/video.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:go_router/go_router.dart';
@@ -42,14 +43,11 @@ class TutorialVideoWidget extends StatelessWidget {
             itemBuilder: (context, index, i) => InkWell(
               onTap: () async {
                 if (!hasAccess) {
-                  showAnimatedDialog(
-                    context: context,
-                    curve: Curves.easeIn,
-                    animationType: DialogTransitionType.fade,
-                    duration: const Duration(milliseconds: 300),
-                    builder: (context) => NoActiveSubscriptionDialog(
-                      slug: slug,
-                    ),
+                  context.goNamed(
+                    Routes.tutorialSubscription,
+                    pathParameters: {
+                      'slug': slug,
+                    },
                   );
                 } else {
                   context.goNamed(
@@ -92,21 +90,51 @@ class TutorialVideoWidget extends StatelessWidget {
                   ),
                 ),
                 child: Center(
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: ColorPalette.of(context).error,
-                    ),
-                    child: Center(
-                      child: Icon(
-                        !hasAccess ? Icons.lock : Icons.play_arrow_rounded,
-                        color: ColorPalette.light.background,
-                        size: 24,
-                      ),
-                    ),
-                  ),
+                  child: hasAccess
+                      ? Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: ColorPalette.of(context).error,
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.play_arrow_rounded,
+                              color: ColorPalette.light.background,
+                              size: 24,
+                            ),
+                          ),
+                        )
+                      : Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: ColorPalette.of(context).error,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'access_by_subscription'.tr(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelMedium
+                                    ?.copyWith(
+                                        color: ColorPalette.of(context)
+                                            .background),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 4),
+                                child: Icon(
+                                  Icons.add,
+                                  size: 16,
+                                  color: ColorPalette.of(context).background,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
                 ),
               ),
             ),

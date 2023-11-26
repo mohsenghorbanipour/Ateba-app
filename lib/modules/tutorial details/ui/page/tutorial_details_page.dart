@@ -235,7 +235,12 @@ class TutorialDetailsPage extends StatelessWidget {
                                 child: Text(
                                   context.select<TutorialDetaialsBloc, String>(
                                     (bloc) =>
-                                        '${bloc.tutorialDetaials?.title ?? ''} - ${bloc.tutorialDetaials?.teacher?.name ?? ''}',
+                                        '${(bloc.tutorialDetaials?.videos?.length ?? 0) > 1 ? '${TextInputFormatters.toPersianNumber(
+                                            (bloc.tutorialDetaials?.videos
+                                                        ?.length ??
+                                                    0)
+                                                .toString(),
+                                          )} / ${TextInputFormatters.toPersianNumber((bloc.selectedVideoIndex! + 1).toString())}.' : ''} ${bloc.tutorialDetaials?.title ?? ''} - ${bloc.tutorialDetaials?.teacher?.name ?? ''}',
                                   ),
                                   maxLines: 2,
                                   style:

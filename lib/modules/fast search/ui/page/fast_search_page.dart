@@ -54,6 +54,7 @@ class FastSearchPage extends StatelessWidget {
                     );
                   }
                 },
+                autofocus: true,
                 initialValue: query,
                 decoration: InputDecoration(
                   filled: true,
